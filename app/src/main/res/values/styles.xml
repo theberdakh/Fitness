@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Splash Screen Styles-->
+    <style name="Theme.Fitness.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">?attr/colorPrimaryDark</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.Fitness</item>
+    </style>
+</resources>

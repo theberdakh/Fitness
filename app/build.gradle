@@ -30,6 +30,10 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -45,6 +49,7 @@ dependencies {
 
     implementation libs.viewbindingpropertydelegate.noreflection
     implementation libs.androidx.swiperefreshlayout
+    implementation libs.androidx.core.splashscreen
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
