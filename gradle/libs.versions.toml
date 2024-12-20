@@ -8,7 +8,18 @@ espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.9.3"
-constraintlayout = "2.1.4"
+constraintlayout = "2.2.0"
+viewbindingpropertydelegateNoreflection = "1.5.9"
+koinAndroid = "3.4.3"
+koinAndroidExt = "3.0.2"
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+swiperefreshlayout = "1.1.0"
+glide = "4.16.0"
+orbit = "4.3.2"
+coroutines ="1.7.3"
+navigationFragmentKtx = "2.8.5"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -19,6 +30,19 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+viewbindingpropertydelegate-noreflection = { module = "com.github.kirich1409:viewbindingpropertydelegate-noreflection", version.ref = "viewbindingpropertydelegateNoreflection" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+koin-android-ext = { module = "io.insert-koin:koin-android-ext", version.ref = "koinAndroidExt" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+orbit = {module = "org.orbit-mvi:orbit-core", version.ref = "orbit"}
+orbit-viewmodel = {module ="org.orbit-mvi:orbit-viewmodel", version.ref = "orbit"}
+coroutines-android = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines"}
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
