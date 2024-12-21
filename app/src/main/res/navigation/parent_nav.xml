@@ -1,19 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent_nav">
 
     <fragment
         android:id="@+id/mainScreen"
-        tools:layout="@layout/screen_main"
         android:name="com.theberdakh.fitness.core.navigation.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment"
+        tools:layout="@layout/screen_main" />
 
     <fragment
         android:id="@+id/logoScreen"
-        tools:layout="@layout/screen_logo"
         android:name="com.theberdakh.fitness.feature.auth.LogoScreen"
-        android:label="LogoScreen" />
+        android:label="LogoScreen"
+        tools:layout="@layout/screen_logo">
+
+        <action
+            android:id="@+id/action_logoScreen_to_addPhoneNumberScreen"
+            app:destination="@id/addPhoneNumberScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addPhoneNumberScreen"
+        android:name="com.theberdakh.fitness.feature.auth.AddPhoneNumberScreen"
+        tools:layout="@layout/screen_add_phone_number" >
+
+        <action
+            android:id="@+id/action_addPhoneNumberScreen_to_enterSMSCodeScreen"
+            app:destination="@id/enterSMSCodeScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/enterSMSCodeScreen"
+        android:name="com.theberdakh.fitness.feature.auth.EnterSMSCodeScreen"
+        tools:layout="@layout/screen_enter_sms_code" >
+
+        <action
+            android:id="@+id/action_enterSMSCodeScreen_to_addNameScreen"
+            app:destination="@id/addNameScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+          />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addNameScreen"
+        android:name="com.theberdakh.fitness.feature.auth.AddNameScreen"
+        tools:layout="@layout/screen_add_name">
+
+        <action
+            android:id="@+id/action_addNameScreen_to_addGoalScreen"
+            app:destination="@id/addAgeGenderScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+          />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addAgeGenderScreen"
+        android:name="com.theberdakh.fitness.feature.auth.AddAgeGenderScreen"
+        tools:layout="@layout/screen_add_age_gender" >
+
+        <action
+            android:id="@+id/action_addAgeGenderScreen_to_addWeightScreen"
+            app:destination="@id/addWeightScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+          />
+
+    </fragment>
+    <fragment
+        android:id="@+id/addWeightScreen"
+        android:name="com.theberdakh.fitness.feature.auth.AddWeightScreen"
+        tools:layout="@layout/screen_add_weight">
+
+        <action
+            android:id="@+id/action_addWeightScreen_to_addHeightScreen"
+            app:destination="@id/addHeightScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+         />
+
+    </fragment>
+
+      <fragment
+        android:id="@+id/addHeightScreen"
+        android:name="com.theberdakh.fitness.feature.auth.AddHeightScreen"
+        tools:layout="@layout/screen_add_weight" >
+
+          <action
+              android:id="@+id/action_addHeightScreen_to_addGoalScreen"
+              app:destination="@id/addGoalScreen"
+              app:enterAnim="@anim/to_right"
+              app:exitAnim="@anim/to_left"
+              app:popEnterAnim="@anim/from_left"
+              app:popExitAnim="@anim/from_right"
+              />
+      </fragment>
+
+      <fragment
+        android:id="@+id/addGoalScreen"
+        android:name="com.theberdakh.fitness.feature.auth.AddGoalScreen"
+        tools:layout="@layout/screen_add_weight" >
+
+          <action
+              android:id="@+id/action_addGoalScreen_to_mainScreen"
+              app:destination="@id/mainScreen"
+              app:enterAnim="@anim/to_right"
+              app:exitAnim="@anim/to_left"
+              app:popEnterAnim="@anim/from_left"
+              app:popExitAnim="@anim/from_right"
+              app:popUpTo="@id/logoScreen"
+              app:popUpToInclusive="true"
+
+              />
+
+      </fragment>
+
+
+
 
 </navigation>

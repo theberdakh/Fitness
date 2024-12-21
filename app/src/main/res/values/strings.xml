@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Fitness</string>
     <string name="start">Начать</string>
+    <string name="continuee">Продолжить</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="paste_sms_code">Код подтверждения из СМС</string>
+    <string name="change_phone_number">Изменить номер</string>
+    <string name="name">Имя</string>
+    <string name="your_goal">Ваша цель</string>
+    <string name="male">Мужчина</string>
+    <string name="female">Женщина</string>
+    <string name="age">Возврасть</string>
+    <string name="kg">кг</string>
+    <string name="height">Рост</string>
+    <string name="weight">Весь</string>
 </resources>
