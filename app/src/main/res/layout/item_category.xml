@@ -16,11 +16,12 @@
         android:layout_height="match_parent"
         android:text="@string/app_name"/>
 
-    <View
+    <ImageButton
         android:id="@+id/icon_next"
         android:layout_width="24dp"
+        android:background="@drawable/ripple"
         android:layout_height="24dp"
-        android:background="@drawable/ic_next_24"
+        android:src="@drawable/ic_next_24"
         android:layout_margin="8dp"/>
 
 </LinearLayout>
