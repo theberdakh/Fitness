@@ -7,4 +7,10 @@
         android:icon="@drawable/ic_home_24"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/action_progress"
+        android:title="@string/progress"
+        android:icon="@drawable/ic_progress"
+        app:showAsAction="always"/>
+
 </menu>

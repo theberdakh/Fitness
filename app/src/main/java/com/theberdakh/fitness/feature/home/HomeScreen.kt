@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
@@ -37,6 +38,15 @@ class HomeScreen: Fragment(R.layout.screen_home) {
     }
 
     private fun setUpRecyclerView() {
+        viewBinding.tbHome.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_chat -> findNavController().navigate(R.id.action_mainScreen_to_chatWithCoachScreen)
+                R.id.action_notification -> findNavController().navigate(R.id.action_mainScreen_to_notificationScreen)
+                else -> throw RuntimeException("Unknown menu item ${item.itemId}")
+            }
+            true
+        }
+
         viewBinding.rvHome.apply {
             adapter =homeAdapter
             layoutManager = LinearLayoutManager(requireContext())

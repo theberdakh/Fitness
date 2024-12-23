@@ -16,4 +16,10 @@
     <string name="notification">Уведомления</string>
     <string name="chat_with_coach">Чат с тренером</string>
     <string name="home">Главное меню</string>
+    <string name="progress">Прогресс</string>
+    <string name="workouts">Тренировки</string>
+    <string name="see_workouts">Посмотреть тренировки</string>
+    <string name="update_data">Обновить данные</string>
+    <string name="calendar">Календарь</string>
+    <string name="body">Тела</string>
 </resources>

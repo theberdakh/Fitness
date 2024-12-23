@@ -8,6 +8,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenMainBinding
 import com.theberdakh.fitness.feature.home.HomeScreen
+import com.theberdakh.fitness.feature.progress.ProgressScreen
 
 class MainFragment: Fragment(R.layout.screen_main) {
     private val viewBinding by viewBinding(ScreenMainBinding::bind)
@@ -18,11 +19,28 @@ class MainFragment: Fragment(R.layout.screen_main) {
             .replace(viewBinding.nestedNavHostFragment.id, HomeScreen())
             .commit()
 
-        viewBinding.tbMain.setOnMenuItemClickListener { item ->
+        setUpBottomNav()
+        setUpToolbar()
+    }
+
+    private fun setUpToolbar() {
+
+    }
+
+    private fun setUpBottomNav() {
+        viewBinding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.action_chat -> findNavController().navigate(R.id.action_mainScreen_to_chatWithCoachScreen)
-                R.id.action_notification -> findNavController().navigate(R.id.action_mainScreen_to_notificationScreen)
-                else -> throw RuntimeException("Unknown menu item")
+                R.id.action_home -> {
+                    childFragmentManager.beginTransaction()
+                        .replace(viewBinding.nestedNavHostFragment.id, HomeScreen())
+                        .commit()
+                }
+                R.id.action_progress -> {
+                    childFragmentManager.beginTransaction()
+                        .replace(viewBinding.nestedNavHostFragment.id, ProgressScreen())
+                        .commit()
+                }
+                else -> throw RuntimeException("Unknown menu action ${item.itemId}")
             }
             true
         }

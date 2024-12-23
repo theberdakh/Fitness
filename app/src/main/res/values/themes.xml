@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Fitness" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:colorBackground">@color/white</item>
+        <item name="colorSurfaceContainer">@color/white</item> <!--Bottom Nav container-->
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
