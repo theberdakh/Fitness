@@ -10,4 +10,20 @@
         tools:layout="@layout/screen_home"
         android:name="com.theberdakh.fitness.feature.home.HomeScreen"
         android:label="HomeScreen" />
+    <fragment
+        android:id="@+id/progressScreen"
+        tools:layout="@layout/screen_progress"
+        android:name="com.theberdakh.fitness.feature.progress.ProgressScreen"
+        android:label="ProgressScreen" />
+    <fragment
+        android:id="@+id/profileScreen"
+        tools:layout="@layout/screen_profile"
+        android:name="com.theberdakh.fitness.feature.profile.ProfileScreen"
+        android:label="ProfileScreen">
+
+        <action
+            android:id="@+id/action_profileScreen_to_aboutScreen"
+            app:destination="@+id/aboutScreen"/>
+
+    </fragment>
 </navigation>

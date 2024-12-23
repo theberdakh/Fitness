@@ -27,6 +27,24 @@
             app:popExitAnim="@anim/from_right"
             />
 
+        <action
+            android:id="@+id/action_mainScreen_to_subscriptionsScreen"
+            app:destination="@id/subscriptionsScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
+
+        <action
+            android:id="@+id/action_mainScreen_to_aboutScreen"
+            app:destination="@id/aboutScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
+
     </fragment>
 
     <fragment
@@ -166,6 +184,16 @@
         android:id="@+id/notificationScreen"
         android:name="com.theberdakh.fitness.feature.notification.NotificationScreen"
         tools:layout="@layout/screen_notification"/>
+
+    <fragment
+        android:id="@+id/subscriptionsScreen"
+        android:name="com.theberdakh.fitness.feature.subcriptions.SubscriptionsScreen"
+        tools:layout="@layout/screen_subscription"/>
+
+    <fragment
+        android:id="@+id/aboutScreen"
+        android:name="com.theberdakh.fitness.feature.about.AboutScreen"
+        tools:layout="@layout/screen_about"/>
 
 
 

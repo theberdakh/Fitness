@@ -3,6 +3,7 @@ package com.theberdakh.fitness.feature.profile
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenProfileBinding
@@ -30,10 +31,10 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
         profileAdapter.setOnItemClickListener { profileItem ->
             when (profileItem.type) {
                 ProfileItemType.SUBSCRIPTIONS -> {
-                    // Handle subscriptions click
+                    findNavController().navigate(R.id.action_mainScreen_to_subscriptionsScreen)
                 }
                 ProfileItemType.ABOUT_US -> {
-                    // Handle about us click
+                    findNavController().navigate(R.id.action_profileScreen_to_aboutScreen)
                 }
                 ProfileItemType.LOGOUT -> {
                     // Handle logout click

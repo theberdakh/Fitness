@@ -25,4 +25,6 @@
     <string name="username">Username</string>
     <string name="dummy_phone_number">+998 90 484 48 32</string>
     <string name="profile">Профиль</string>
+    <string name="subscriptions">Подписки</string>
+    <string name="about_us">О нас</string>
 </resources>

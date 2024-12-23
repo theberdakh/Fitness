@@ -22,6 +22,7 @@ class MainFragment : Fragment(R.layout.screen_main) {
     }
 
     private fun setUpBottomNav() {
+
         viewBinding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_home -> {
