@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_notification"
+        android:title="@string/notification"
+        android:icon="@drawable/ic_notifications_none_24"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_chat"
+        android:title="@string/chat_with_coach"
+        android:icon="@drawable/ic_chat_24"
+        app:showAsAction="always"/>
+</menu>

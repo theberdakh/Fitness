@@ -13,4 +13,7 @@
     <string name="kg">кг</string>
     <string name="height">Рост</string>
     <string name="weight">Весь</string>
+    <string name="notification">Уведомления</string>
+    <string name="chat_with_coach">Чат с тренером</string>
+    <string name="home">Главное меню</string>
 </resources>

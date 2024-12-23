@@ -1,4 +1,4 @@
-package com.theberdakh.fitness.feature.auth.domain.model
+package com.theberdakh.fitness.feature.auth.model
 
 import androidx.recyclerview.widget.DiffUtil
 

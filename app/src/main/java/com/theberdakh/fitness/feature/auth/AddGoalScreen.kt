@@ -10,7 +10,7 @@ import com.theberdakh.fitness.R
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenAddGoalBinding
 import com.theberdakh.fitness.feature.auth.adapter.GoalPosterAdapter
-import com.theberdakh.fitness.feature.auth.domain.model.GoalPoster
+import com.theberdakh.fitness.feature.auth.model.GoalPoster
 
 class AddGoalScreen: Fragment(R.layout.screen_add_goal) {
     private val viewBinding by viewBinding(ScreenAddGoalBinding::bind)
