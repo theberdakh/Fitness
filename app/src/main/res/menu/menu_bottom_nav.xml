@@ -12,5 +12,10 @@
         android:title="@string/progress"
         android:icon="@drawable/ic_progress"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_profile_24"
+        app:showAsAction="always"/>
 
 </menu>

@@ -22,4 +22,7 @@
     <string name="update_data">Обновить данные</string>
     <string name="calendar">Календарь</string>
     <string name="body">Тела</string>
+    <string name="username">Username</string>
+    <string name="dummy_phone_number">+998 90 484 48 32</string>
+    <string name="profile">Профиль</string>
 </resources>

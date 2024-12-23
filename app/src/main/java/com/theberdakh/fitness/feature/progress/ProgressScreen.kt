@@ -15,14 +15,13 @@ class ProgressScreen: Fragment(R.layout.screen_progress) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         viewBinding.vpProgress.adapter = ProgressViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         TabLayoutMediator(viewBinding.tablayoutProgress, viewBinding.vpProgress) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.workouts)
                 1 -> getString(R.string.calendar)
                 2 -> getString(R.string.body)
-                else -> throw IllegalArgumentException("Invalid position")
+                else -> throw IllegalArgumentException("TabLayout Mediator invalid position: $position")
             }
         }.attach()
 
