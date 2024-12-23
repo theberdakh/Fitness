@@ -18,6 +18,14 @@
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/from_right"
             />
+        <action
+            android:id="@+id/action_mainScreen_to_notificationScreen"
+            app:destination="@id/notificationScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
 
     </fragment>
 
@@ -153,6 +161,11 @@
         android:id="@+id/chatWithCoachScreen"
         android:name="com.theberdakh.fitness.feature.chat.ChatWithCoachScreen"
         tools:layout="@layout/screen_chat_with_coach"/>
+
+    <fragment
+        android:id="@+id/notificationScreen"
+        android:name="com.theberdakh.fitness.feature.notification.NotificationScreen"
+        tools:layout="@layout/screen_notification"/>
 
 
 

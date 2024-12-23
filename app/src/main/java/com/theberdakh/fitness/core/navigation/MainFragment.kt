@@ -20,7 +20,8 @@ class MainFragment: Fragment(R.layout.screen_main) {
 
         viewBinding.tbMain.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_chat -> {findNavController().navigate(R.id.action_mainScreen_to_chatWithCoachScreen)}
+                R.id.action_chat -> findNavController().navigate(R.id.action_mainScreen_to_chatWithCoachScreen)
+                R.id.action_notification -> findNavController().navigate(R.id.action_mainScreen_to_notificationScreen)
                 else -> throw RuntimeException("Unknown menu item")
             }
             true
