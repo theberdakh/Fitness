@@ -3,6 +3,7 @@ package com.theberdakh.fitness.core.navigation
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenMainBinding
@@ -17,5 +18,12 @@ class MainFragment: Fragment(R.layout.screen_main) {
             .replace(viewBinding.nestedNavHostFragment.id, HomeScreen())
             .commit()
 
+        viewBinding.tbMain.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_chat -> {findNavController().navigate(R.id.action_mainScreen_to_chatWithCoachScreen)}
+                else -> throw RuntimeException("Unknown menu item")
+            }
+            true
+        }
     }
 }

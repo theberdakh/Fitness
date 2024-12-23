@@ -8,7 +8,18 @@
         android:id="@+id/mainScreen"
         android:name="com.theberdakh.fitness.core.navigation.MainFragment"
         android:label="MainFragment"
-        tools:layout="@layout/screen_main" />
+        tools:layout="@layout/screen_main" >
+
+        <action
+            android:id="@+id/action_mainScreen_to_chatWithCoachScreen"
+            app:destination="@id/chatWithCoachScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
+
+    </fragment>
 
     <fragment
         android:id="@+id/logoScreen"
@@ -137,6 +148,11 @@
               />
 
       </fragment>
+
+    <fragment
+        android:id="@+id/chatWithCoachScreen"
+        android:name="com.theberdakh.fitness.feature.chat.ChatWithCoachScreen"
+        tools:layout="@layout/screen_chat_with_coach"/>
 
 
 
