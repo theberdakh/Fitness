@@ -1,7 +1,8 @@
-package com.theberdakh.fitness.core.data.network.model
+package com.theberdakh.fitness.core.network.model
 
 
 data class BaseNetworkModel<T>(
     val message: String,
     val data: T
 )
+

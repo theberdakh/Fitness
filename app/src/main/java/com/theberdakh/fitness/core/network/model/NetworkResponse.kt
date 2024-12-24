@@ -1,4 +1,4 @@
-package com.theberdakh.fitness.core.data.network.model
+package com.theberdakh.fitness.core.network.model
 
 sealed class NetworkResponse<out T> {
     data class Success<T>(val data: T): NetworkResponse<T>()

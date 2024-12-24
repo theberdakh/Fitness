@@ -1,4 +1,4 @@
-package com.theberdakh.fitness.core.data.network.model.auth
+package com.theberdakh.fitness.core.network.model.auth
 
 import com.google.gson.annotations.SerializedName
 
@@ -13,7 +13,9 @@ data class LoginResponse(
     @SerializedName("access_token")
     val accessToken: String,
     @SerializedName("token_type")
-    val tokenType: String
+    val tokenType: String,
+    @SerializedName("target_id")
+    val targetId: Int
 )
 
 data class LoginResponseUser(
