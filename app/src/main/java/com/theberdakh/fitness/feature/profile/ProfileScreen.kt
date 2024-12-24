@@ -34,7 +34,7 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
                     findNavController().navigate(R.id.action_mainScreen_to_subscriptionsScreen)
                 }
                 ProfileItemType.ABOUT_US -> {
-                    findNavController().navigate(R.id.action_profileScreen_to_aboutScreen)
+                    findNavController().navigate(R.id.action_mainScreen_to_aboutScreen)
                 }
                 ProfileItemType.LOGOUT -> {
                     // Handle logout click

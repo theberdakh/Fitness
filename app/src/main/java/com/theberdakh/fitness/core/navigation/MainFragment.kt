@@ -17,8 +17,14 @@ class MainFragment : Fragment(R.layout.screen_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        replaceFragment(HomeScreen())
+        setHomeScreen()
         setUpBottomNav()
+    }
+
+    private fun setHomeScreen() {
+        if (childFragmentManager.fragments.isEmpty()) {
+            replaceFragment(HomeScreen())
+        }
     }
 
     private fun setUpBottomNav() {
@@ -26,13 +32,15 @@ class MainFragment : Fragment(R.layout.screen_main) {
         viewBinding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_home -> {
-                   replaceFragment(HomeScreen())
+                    replaceFragment(HomeScreen())
                     true
                 }
+
                 R.id.action_progress -> {
                     replaceFragment(ProgressScreen())
                     true
                 }
+
                 R.id.action_profile -> {
                     replaceFragment(ProfileScreen())
                     true
