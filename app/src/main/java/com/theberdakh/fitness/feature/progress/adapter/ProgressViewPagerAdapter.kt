@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.theberdakh.fitness.feature.body.BodyScreen
 import com.theberdakh.fitness.feature.calendar.CalendarScreen
-import com.theberdakh.fitness.feature.workouts.WorkoutsScreens
+import com.theberdakh.fitness.feature.workouts.WorkoutsScreen
 
 class ProgressViewPagerAdapter(private val fragmentManager: FragmentManager, lifecycle: Lifecycle): FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
@@ -15,7 +15,7 @@ class ProgressViewPagerAdapter(private val fragmentManager: FragmentManager, lif
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> WorkoutsScreens()
+            0 -> WorkoutsScreen()
             1 -> CalendarScreen()
             2 -> BodyScreen()
             else -> throw IllegalArgumentException("Invalid position")

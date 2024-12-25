@@ -1,4 +1,4 @@
-package com.theberdakh.fitness.feature.subcriptions
+package com.theberdakh.fitness.feature.subscriptions
 
 import android.os.Bundle
 import android.view.View

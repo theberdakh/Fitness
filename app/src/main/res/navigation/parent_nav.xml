@@ -200,7 +200,7 @@
 
     <fragment
         android:id="@+id/subscriptionsScreen"
-        android:name="com.theberdakh.fitness.feature.subcriptions.SubscriptionsScreen"
+        android:name="com.theberdakh.fitness.feature.subscriptions.SubscriptionsScreen"
         tools:layout="@layout/screen_subscription"/>
 
     <fragment
