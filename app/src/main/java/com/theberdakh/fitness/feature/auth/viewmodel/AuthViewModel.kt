@@ -9,8 +9,9 @@ import com.theberdakh.fitness.core.network.model.auth.LoginRequestBody
 import com.theberdakh.fitness.core.network.model.auth.LoginResponse
 import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
 import com.theberdakh.fitness.core.network.model.mobile.Profile
-import com.theberdakh.fitness.core.network.model.mobile.UpdateNameRequestBody
+import com.theberdakh.fitness.core.network.model.mobile.toDomain
 import com.theberdakh.fitness.core.preferences.FitnessPreferences
+import com.theberdakh.fitness.feature.auth.model.GoalPoster
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -75,9 +76,28 @@ class AuthViewModel(
             _updateNameState.value = it
         }.launchIn(viewModelScope)
     }
+
     fun resetUpdateNameState() {
         _updateNameState.value = null
     }
 
+    private val _getTargetsState = MutableStateFlow<NetworkResponse<List<GoalPoster>>?>(null)
+    val getTargetsState = _getTargetsState.asStateFlow()
+    fun getTargets() = viewModelScope.launch {
+        _getTargetsState.value = NetworkResponse.Loading
+        repository.getTargets().onEach { targets ->
+            when (targets) {
+                is NetworkResponse.Error ->  {
+                    _getTargetsState.value = NetworkResponse.Error(targets.message)
+                }
+                NetworkResponse.Loading -> {
+                    _getTargetsState.value = NetworkResponse.Loading
+                }
+                is NetworkResponse.Success -> {
+                    _getTargetsState.value = NetworkResponse.Success(targets.data.map { it.toDomain() })
+                }
+            }
 
+        }.launchIn(viewModelScope)
+    }
 }
