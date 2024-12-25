@@ -90,7 +90,8 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/from_right"
-          />
+            app:popUpTo="@id/logoScreen"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -101,11 +102,13 @@
 
         <action
             android:id="@+id/action_addNameScreen_to_addGoalScreen"
-            app:destination="@id/addAgeGenderScreen"
+            app:destination="@id/addGoalScreen"
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/from_right"
+            app:popUpTo="@id/logoScreen"
+            app:popUpToInclusive="true"
           />
 
     </fragment>
@@ -159,7 +162,7 @@
       <fragment
         android:id="@+id/addGoalScreen"
         android:name="com.theberdakh.fitness.feature.auth.AddGoalScreen"
-        tools:layout="@layout/screen_add_weight" >
+        tools:layout="@layout/screen_add_goal" >
 
           <action
               android:id="@+id/action_addGoalScreen_to_mainScreen"

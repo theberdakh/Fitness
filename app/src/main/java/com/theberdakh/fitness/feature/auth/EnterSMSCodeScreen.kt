@@ -34,7 +34,7 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
 
     private fun initObservers() {
         viewModel.loginState.onEach {
-            when(it){
+            when (it) {
                 is NetworkResponse.Error -> handleError(it.message)
                 NetworkResponse.Loading -> handleLoading()
                 is NetworkResponse.Success -> handleSuccess(it.data)
@@ -44,9 +44,10 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
     }
 
     private fun handleSuccess(data: LoginResponse) {
-        viewBinding.btnContinue.stopLoading()
         Log.i(TAG, "handleSuccess: $data")
+        viewBinding.btnContinue.stopLoading()
         findNavController().navigate(R.id.action_enterSMSCodeScreen_to_addNameScreen)
+
     }
 
     private fun handleLoading() {
@@ -56,9 +57,11 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
     private fun handleError(message: String) {
         Log.i(TAG, "handleError: $message")
         viewBinding.btnContinue.stopLoading()
-        Toast.makeText(requireContext(),
-            getString(R.string.error_something_went_wrong), Toast.LENGTH_SHORT).show()
-        
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.error_something_went_wrong), Toast.LENGTH_SHORT
+        ).show()
+
     }
 
     private fun handleNull() {

@@ -53,9 +53,7 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
     private fun handleSuccess(data: String) {
         Log.i(TAG, "handleSuccess: $data")
         viewBinding.btnContinue.stopLoading()
-        val arg = Bundle().apply {
-            putString(EnterSMSCodeScreen.ARG_PHONE_NUMBER, phoneNumber)
-        }
+        val arg = Bundle().apply { putString(EnterSMSCodeScreen.ARG_PHONE_NUMBER, phoneNumber) }
         findNavController().navigate(R.id.action_addPhoneNumberScreen_to_enterSMSCodeScreen, arg)
         viewModel.resetSendCodeState()
     }

@@ -7,10 +7,12 @@ import com.theberdakh.fitness.core.network.model.auth.LoginResponse
 import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
 import com.theberdakh.fitness.core.network.model.mobile.Profile
 import com.theberdakh.fitness.core.network.model.mobile.Target
+import com.theberdakh.fitness.core.network.model.mobile.UpdateNameRequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface FitnessNetworkApi {
@@ -29,5 +31,8 @@ interface FitnessNetworkApi {
 
     @GET("api/v1/mobile/profile")
     suspend fun getProfile(): Response<BaseNetworkModel<Profile>>
+
+    @PATCH("api/v1/mobile/profile")
+    suspend fun updateName(@Body body: UpdateNameRequestBody): Response<BaseNetworkModel<Profile>>
 
 }
