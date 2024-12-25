@@ -22,11 +22,6 @@ class AddGoalScreen: Fragment(R.layout.screen_add_goal) {
     private val viewModel by viewModel<AuthViewModel>()
     private val viewBinding by viewBinding(ScreenAddGoalBinding::bind)
     private val adapter = GoalPosterAdapter()
-    val goals = listOf(
-        "Похудение",
-        "Набор массы",
-        "Улучшение выносливости"
-    ).map { GoalPoster(it) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,12 +29,6 @@ class AddGoalScreen: Fragment(R.layout.screen_add_goal) {
         getGoals()
         initViews()
         initObservers()
-
-        adapter.submitList(goals)
-
-
-
-
 
     }
 
@@ -49,7 +38,7 @@ class AddGoalScreen: Fragment(R.layout.screen_add_goal) {
                 is NetworkResponse.Error -> handleError(it.message)
                 NetworkResponse.Loading -> handleLoading()
                 is NetworkResponse.Success -> handleSuccess(it.data)
-                null -> handleNull()
+                NetworkResponse.Initial -> handleNull()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

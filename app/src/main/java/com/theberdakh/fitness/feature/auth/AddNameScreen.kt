@@ -36,7 +36,7 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
                 is NetworkResponse.Error -> handleError(it.message)
                 NetworkResponse.Loading -> handleLoading()
                 is NetworkResponse.Success -> handleSuccess(it.data)
-                null -> handleNull()
+                NetworkResponse.Initial -> handleNull()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

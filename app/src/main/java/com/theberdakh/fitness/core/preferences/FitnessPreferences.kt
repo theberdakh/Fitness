@@ -1,9 +1,12 @@
 package com.theberdakh.fitness.core.preferences
 
 import android.content.SharedPreferences
-import com.theberdakh.fitness.core.network.model.auth.LoginResponse
 
 class FitnessPreferences(private val preferences: SharedPreferences){
+    fun clear(): Boolean {
+        preferences.edit().clear().apply()
+        return true
+    }
     var isUserLoggedIn by BooleanPreference(preferences)
     var accessToken by StringPreference(preferences)
     var tokenType by StringPreference(preferences)

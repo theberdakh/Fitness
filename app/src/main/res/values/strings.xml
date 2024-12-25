@@ -29,4 +29,9 @@
     <string name="about_us">О нас</string>
     <string name="error_invalid_phone_number">Неверный номер телефона</string>
     <string name="error_something_went_wrong">Что-то пошло не так</string>
+    <string name="about_text">Мы создаем тренировки, которые помогут вам стать сильнее, выносливее и увереннее в себе. Наши авторские методики разработаны профессиональным спортсменом и тренером, чтобы каждый мог достичь своих целей — будь то снижение веса, набор мышечной массы или улучшение физической формы.\nПрисоединяйтесь к нам и начните свой путь к лучшей версии себя уже сегодня!</string>
+    <string name="about_title">Добро пожаловать в Fitness App</string>
+    <string name="exit">Выход</string>
+    <string name="message_are_your_sure_to_leave">Вы уверены, что хотите выйти?</string>
+    <string name="stay">Остаться</string>
 </resources>

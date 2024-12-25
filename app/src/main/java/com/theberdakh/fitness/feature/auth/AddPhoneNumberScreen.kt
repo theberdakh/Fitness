@@ -41,7 +41,7 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
                 is NetworkResponse.Error -> handleError(it.message)
                 NetworkResponse.Loading -> handleLoading()
                 is NetworkResponse.Success -> handleSuccess(it.data.toString())
-                null -> {handleNull()}
+                NetworkResponse.Initial -> {handleNull()}
             }
         }.launchIn(lifecycleScope)
     }

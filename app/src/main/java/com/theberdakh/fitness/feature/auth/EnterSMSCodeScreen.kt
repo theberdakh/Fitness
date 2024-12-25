@@ -38,7 +38,7 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
                 is NetworkResponse.Error -> handleError(it.message)
                 NetworkResponse.Loading -> handleLoading()
                 is NetworkResponse.Success -> handleSuccess(it.data)
-                null -> handleNull()
+                NetworkResponse.Initial -> handleNull()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

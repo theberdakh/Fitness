@@ -11,6 +11,36 @@
         android:title="@string/about_us"
         android:navigationIcon="@drawable/ic_back_24"/>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceDisplaySmall"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginVertical="16dp"
+                android:text="@string/about_title"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceBody1"
+                android:text="@string/about_text"/>
+
+        </LinearLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
 
 
 </LinearLayout>
