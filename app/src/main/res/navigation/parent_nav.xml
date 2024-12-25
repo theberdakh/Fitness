@@ -81,7 +81,7 @@
     <fragment
         android:id="@+id/enterSMSCodeScreen"
         android:name="com.theberdakh.fitness.feature.auth.EnterSMSCodeScreen"
-        tools:layout="@layout/screen_enter_sms_code" >
+        tools:layout="@layout/screen_enter_sms_code">
 
         <action
             android:id="@+id/action_enterSMSCodeScreen_to_addNameScreen"

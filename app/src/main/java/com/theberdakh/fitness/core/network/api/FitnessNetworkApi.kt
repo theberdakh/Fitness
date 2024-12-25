@@ -18,16 +18,16 @@ interface FitnessNetworkApi {
     @POST(value = "api/v1/auth/send-code")
     suspend fun sendCode(@Body body: SendCodeRequestBody): Response<MessageModel>
 
-    @POST(value = "auth/login")
+    @POST(value = "api/v1/auth/login")
     suspend fun login(@Body body: LoginRequestBody): Response<BaseNetworkModel<LoginResponse>>
 
-    @DELETE(value = "auth/logout")
+    @DELETE(value = "api/v1/auth/logout")
     suspend fun logout(): Response<BaseNetworkModel<String>>
 
-    @GET("mobile/targets")
+    @GET("api/v1/mobile/targets")
     suspend fun getTargets(): Response<BaseNetworkModel<List<Target>>>
 
-    @GET("mobile/profile")
+    @GET("api/v1/mobile/profile")
     suspend fun getProfile(): Response<BaseNetworkModel<Profile>>
 
 }

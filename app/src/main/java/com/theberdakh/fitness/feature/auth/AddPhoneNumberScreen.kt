@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
@@ -20,6 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
     private val viewBinding by viewBinding(ScreenAddPhoneNumberBinding::bind)
     private val viewModel: AuthViewModel by viewModel()
+    private var phoneNumber = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +53,11 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
     private fun handleSuccess(data: String) {
         Log.i(TAG, "handleSuccess: $data")
         viewBinding.btnContinue.stopLoading()
-        findNavController().navigate(R.id.action_addPhoneNumberScreen_to_enterSMSCodeScreen)
+        val arg = Bundle().apply {
+            putString(EnterSMSCodeScreen.ARG_PHONE_NUMBER, phoneNumber)
+        }
+        findNavController().navigate(R.id.action_addPhoneNumberScreen_to_enterSMSCodeScreen, arg)
+        viewModel.resetSendCodeState()
     }
 
     private fun handleLoading() {
@@ -67,9 +73,10 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
     }
 
     private fun sendRequest() {
-        val phone = viewBinding.etPhoneNumber.text.toString()
-        if (isValidPhoneNumber(phone)){
-            viewModel.sendCode("$PHONE_NUMBER_PREFIX$phone")
+        val inputText = viewBinding.etPhoneNumber.text.toString()
+        if (isValidPhoneNumber(inputText)){
+            phoneNumber = "$PHONE_NUMBER_PREFIX$inputText"
+            viewModel.sendCode(phoneNumber)
         } else {
             viewBinding.tilPhoneNumber.error = getString(R.string.error_invalid_phone_number)
         }

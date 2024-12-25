@@ -28,4 +28,5 @@
     <string name="subscriptions">Подписки</string>
     <string name="about_us">О нас</string>
     <string name="error_invalid_phone_number">Неверный номер телефона</string>
+    <string name="error_something_went_wrong">Что-то пошло не так</string>
 </resources>

@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.android )
 }
 
 android {
@@ -41,6 +41,7 @@ dependencies {
     implementation libs.koin.android.ext
     implementation libs.koin.android
     implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
 
     implementation libs.converter.gson
     implementation libs.okhttp

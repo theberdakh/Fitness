@@ -8,6 +8,8 @@ import com.theberdakh.fitness.core.network.model.NetworkResponse
 import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
 import com.theberdakh.fitness.core.data.NetworkFitnessRepository
 import com.theberdakh.fitness.core.network.model.MessageModel
+import com.theberdakh.fitness.core.network.model.auth.LoginRequestBody
+import com.theberdakh.fitness.core.network.model.auth.LoginResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -23,6 +25,19 @@ class AuthViewModel(private val repository: NetworkFitnessRepository) : ViewMode
         _sendCodeState.value = NetworkResponse.Loading
         repository.sendCode(SendCodeRequestBody(phone)).onEach {
             _sendCodeState.value = it
+        }.launchIn(viewModelScope)
+    }
+
+    fun resetSendCodeState(){
+        _sendCodeState.value = null
+    }
+
+    private val _loginState = MutableStateFlow<NetworkResponse<LoginResponse>?>(null)
+    val loginState = _loginState.asStateFlow()
+    fun login(phone: String, code: String) = viewModelScope.launch {
+        _loginState.value = NetworkResponse.Loading
+        repository.login(LoginRequestBody(phone = phone, verificationCode = code)).onEach {
+            _loginState.value = it
         }.launchIn(viewModelScope)
     }
 
