@@ -34,3 +34,10 @@ App Module (/app)
 The main application module containing:
 - Application class instance and DI initialization
 
+Tasks: 25/10/2021 
+- []  feat(auth): Add verification logic for user-entered codes
+- []  feat(auth): Implement user logout functionality
+- []  fix(auth): Redirect to login page on 401 error
+- []  feat(videos): Set up fake videos repository for testing
+- []  feat(videos): Implement video playback functionality
+
