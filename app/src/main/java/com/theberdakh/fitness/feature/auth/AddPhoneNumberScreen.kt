@@ -3,6 +3,7 @@ package com.theberdakh.fitness.feature.auth
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -37,7 +38,7 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
             when(it) {
                 is NetworkResponse.Error -> handleError(it.message)
                 NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data)
+                is NetworkResponse.Success -> handleSuccess(it.data.toString())
                 null -> {handleNull()}
             }
         }.launchIn(lifecycleScope)
@@ -67,16 +68,25 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
 
     private fun sendRequest() {
         val phone = viewBinding.etPhoneNumber.text.toString()
-        viewModel.sendCode("$PHONE_NUMBER_PREFIX$phone")
+        if (isValidPhoneNumber(phone)){
+            viewModel.sendCode("$PHONE_NUMBER_PREFIX$phone")
+        } else {
+            viewBinding.tilPhoneNumber.error = getString(R.string.error_invalid_phone_number)
+        }
     }
+
+    private fun isValidPhoneNumber(phone: String): Boolean = phone.length == 9
 
     private fun initViews() {
         viewBinding.iconNavigateBack.setOnClickListener { findNavController().popBackStack() }
         viewBinding.btnContinue.setText(getString(R.string.continuee))
+        viewBinding.etPhoneNumber.addTextChangedListener {
+            viewBinding.tilPhoneNumber.error = null
+        }
     }
 
     companion object {
-        private const val PHONE_NUMBER_PREFIX = "+998"
+        private const val PHONE_NUMBER_PREFIX = "998"
     }
 
 }

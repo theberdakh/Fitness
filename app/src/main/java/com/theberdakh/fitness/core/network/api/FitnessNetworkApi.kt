@@ -15,7 +15,7 @@ import retrofit2.http.POST
 
 interface FitnessNetworkApi {
 
-    @POST(value = "auth/send-code")
+    @POST(value = "api/v1/auth/send-code")
     suspend fun sendCode(@Body body: SendCodeRequestBody): Response<MessageModel>
 
     @POST(value = "auth/login")

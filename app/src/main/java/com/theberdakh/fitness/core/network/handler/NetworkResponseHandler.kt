@@ -1,5 +1,7 @@
 package com.theberdakh.fitness.core.network.handler
 
+import android.util.Log
+import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.core.network.model.BaseNetworkModel
 import com.theberdakh.fitness.core.network.model.MessageModel
 import com.theberdakh.fitness.core.network.model.NetworkResponse
@@ -28,6 +30,17 @@ abstract class NetworkResponseHandler {
         }
     }.flowOn(Dispatchers.IO)
 
+    protected fun <T> handleMessage(
+        apiCall: suspend () -> Response<MessageModel>
+    ) = flow {
+        val response = apiCall()
+        if (response.isSuccessful){
+            Log.i(TAG, "sendCode: body: ${response.body()}, message: ${response.message()}, code: ${response.code()}")
+            emit(NetworkResponse.Success(response.body()!!))
+        } else {
+            emit( NetworkResponse.Error(response.errorBody().toString()))
+        }
+    }.flowOn(Dispatchers.IO)
 
     protected fun <T> handleNetworkResponseOnlyMessage(
         apiCall: suspend () -> Response<MessageModel>
