@@ -41,3 +41,8 @@ Tasks: 25/10/2021
 - [-]  feat(videos): Set up fake videos repository for testing
 - [-]  feat(videos): Implement video playback functionality
 
+Tasks: 26/10/2021
+- []  add support YouTube video thumbnails in home video list
+- []  add support for video playback in lesson screen
+- []  add support for video playback in full screen mode
+

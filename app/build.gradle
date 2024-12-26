@@ -38,6 +38,11 @@ android {
 
 dependencies {
 
+    implementation libs.android.youtubeplayer.core
+    implementation libs.android.youtubeplayer.custom.ui
+
+    implementation libs.glide
+
     implementation libs.koin.android.ext
     implementation libs.koin.android
     implementation libs.androidx.navigation.fragment.ktx

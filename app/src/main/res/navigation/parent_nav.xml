@@ -55,6 +55,13 @@
             app:popUpToInclusive="true"
             />
 
+        <action android:id="@+id/action_mainScreen_to_LessonScreen"
+            app:destination="@id/lessonScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
     </fragment>
 
     <fragment
@@ -208,6 +215,10 @@
         android:name="com.theberdakh.fitness.feature.about.AboutScreen"
         tools:layout="@layout/screen_about"/>
 
+    <fragment
+        android:id="@+id/lessonScreen"
+        android:name="com.theberdakh.fitness.feature.lesson.LessonScreen"
+        tools:layout="@layout/screen_lesson"/>
 
 
 
