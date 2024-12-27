@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.theberdakh.fitness.R
@@ -24,11 +25,12 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
 
 
     private fun initViews() {
-       // val customPlayerView = viewBinding.youtubePlayerView.inflateCustomPlayerUi(R.layout.custom_player_ui)
-
         lifecycle.addObserver(viewBinding.youtubePlayerView)
         viewBinding.youtubePlayerView.addYouTubePlayerListener(YouTubePlayerListener(viewBinding.youtubePlayerView))
         viewBinding.youtubePlayerView.initialize(YouTubePlayerListener(viewBinding.youtubePlayerView), playerOptions = iframePlayerOptions)
+        viewBinding.tbLesson.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
 
     }
 
@@ -42,8 +44,6 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-
-        // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             viewBinding.youtubePlayerView.matchParent();
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -52,7 +52,7 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
     }
 
     private val iframePlayerOptions = IFramePlayerOptions.Builder()
-        .controls(0)
+        .controls(0) // Hides the player controls
         .build()
 
 
