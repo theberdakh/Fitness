@@ -11,7 +11,7 @@ import com.theberdakh.fitness.core.network.model.NetworkResponse
 import com.theberdakh.fitness.core.network.model.mobile.Profile
 import com.theberdakh.fitness.databinding.ScreenProfileBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
-import com.theberdakh.fitness.feature.common.UniversalDialog
+import com.theberdakh.fitness.feature.common.dialog.UniversalDialog
 import com.theberdakh.fitness.feature.profile.adapter.ProfileAdapter
 import com.theberdakh.fitness.feature.profile.model.ProfileItem
 import com.theberdakh.fitness.feature.profile.model.ProfileItemType

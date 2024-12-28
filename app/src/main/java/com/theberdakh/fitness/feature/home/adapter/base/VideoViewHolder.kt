@@ -7,12 +7,12 @@ import android.view.View
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ItemVideoBinding
-import com.theberdakh.fitness.feature.common.YouTubeThumbnail
+import com.theberdakh.fitness.feature.home.utils.YouTubeThumbnail
 import com.theberdakh.fitness.feature.home.model.ListItem
 
 class VideoViewHolder(
     private val binding: ItemVideoBinding,
-    private val onVideoClick: (String) -> Unit
+    private val onVideoClick: (ListItem.VideoItem) -> Unit
 ) : BaseViewHolder(binding.root) {
 
     @SuppressLint("ClickableViewAccessibility")
@@ -20,6 +20,7 @@ class VideoViewHolder(
         animateLoadAnimation(binding.root)
         YouTubeThumbnail.loadThumbnail(binding.ivThumbnail, item.url)
         binding.tvTitle.text = item.name
+        binding.tvSubtitle.text = "Модуль ${item.module}"
 
         binding.root.setOnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
@@ -38,7 +39,7 @@ class VideoViewHolder(
                 }
                 MotionEvent.ACTION_UP -> {
                     Log.i(TAG, "bind: ACTION_UP")
-                    onVideoClick(item.url)
+                    onVideoClick(item)
                     cancelShrinkAnimation(view)
                     true
                 }

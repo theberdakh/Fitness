@@ -12,6 +12,7 @@ import com.theberdakh.fitness.core.network.model.mobile.Profile
 import com.theberdakh.fitness.core.network.model.mobile.toDomain
 import com.theberdakh.fitness.core.preferences.FitnessPreferences
 import com.theberdakh.fitness.feature.auth.model.GoalPoster
+import com.theberdakh.fitness.feature.common.network.NetworkStateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val repository: NetworkFitnessRepository,
-    private val preferences: FitnessPreferences
+    private val preferences: FitnessPreferences,
+    private val networkStateManager: NetworkStateManager
 ) : ViewModel() {
 
     private val _sendCodeState = MutableStateFlow<NetworkResponse<MessageModel>>(NetworkResponse.Initial)
@@ -119,20 +121,31 @@ class AuthViewModel(
     private val _getProfileState = MutableStateFlow<NetworkResponse<Profile>>(NetworkResponse.Initial)
     val getProfileState = _getProfileState.asStateFlow()
     fun getProfile() = viewModelScope.launch {
-        repository.getProfile().onEach {
-          _getProfileState.value = when(it) {
-                is NetworkResponse.Error -> NetworkResponse.Error(it.message)
-                NetworkResponse.Loading -> NetworkResponse.Loading
-                is NetworkResponse.Success -> {
-                    if (saveProfileToPreferences(it.data)) {
-                        NetworkResponse.Success(it.data)
-                    } else {
-                        NetworkResponse.Loading
+        networkStateManager.observeNetworkState().collect{ isConnected ->
+            if (!isConnected) {
+                _getProfileState.value = NetworkResponse.Success(Profile(
+                    name = preferences.userName,
+                    phone = preferences.userPhone,
+                    targetId = preferences.userTargetId
+                ))
+            } else {
+                repository.getProfile().onEach {
+                    _getProfileState.value = when(it) {
+                        is NetworkResponse.Error -> NetworkResponse.Error(it.message)
+                        NetworkResponse.Loading -> NetworkResponse.Loading
+                        is NetworkResponse.Success -> {
+                            if (saveProfileToPreferences(it.data)) {
+                                NetworkResponse.Success(it.data)
+                            } else {
+                                NetworkResponse.Loading
+                            }
+                        }
+                        NetworkResponse.Initial -> NetworkResponse.Initial
                     }
-                }
-                NetworkResponse.Initial -> NetworkResponse.Initial
+                }.launchIn(viewModelScope)
             }
-        }.launchIn(viewModelScope)
+        }
+
     }
 
     private fun saveProfileToPreferences(data: Profile): Boolean {

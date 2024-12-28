@@ -13,6 +13,7 @@ activity = "1.9.3"
 constraintlayout = "2.2.0"
 navigationSafeArgsGradlePlugin = "2.8.5"
 navigationUiKtx = "1.0.0"
+calendar = "2.6.1"
 viewbindingpropertydelegateNoreflection = "1.5.9"
 koinAndroid = "3.4.3"
 koinAndroidExt = "3.0.2"
@@ -39,6 +40,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+calendar-view = { module = "com.kizitonwose.calendar:view", version.ref = "calendar" }
 viewbindingpropertydelegate-noreflection = { module = "com.github.kirich1409:viewbindingpropertydelegate-noreflection", version.ref = "viewbindingpropertydelegateNoreflection" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-android-ext = { module = "io.insert-koin:koin-android-ext", version.ref = "koinAndroidExt" }

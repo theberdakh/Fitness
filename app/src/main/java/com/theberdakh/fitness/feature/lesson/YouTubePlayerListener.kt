@@ -5,14 +5,13 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
-class YouTubePlayerListener(private val youTubePlayerView: YouTubePlayerView): AbstractYouTubePlayerListener(){
+class YouTubePlayerListener(private val youTubePlayerView: YouTubePlayerView, private val videoId: String): AbstractYouTubePlayerListener(){
     override fun onReady(youTubePlayer: YouTubePlayer) {
         val default = DefaultPlayerUiController(youTubePlayerView, youTubePlayer)
         default.enableLiveVideoUi(false)
         default.showYouTubeButton(false)
         youTubePlayerView.setCustomPlayerUi(default.rootView)
-        val videoId = "-gYrijr6Iss"
-        youTubePlayer.loadVideo(videoId, 5f)
+        youTubePlayer.loadVideo(videoId, 0f)
     }
 }
 

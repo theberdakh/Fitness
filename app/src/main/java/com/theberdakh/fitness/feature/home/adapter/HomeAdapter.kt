@@ -14,7 +14,7 @@ import com.theberdakh.fitness.feature.home.model.ListItem
 import com.theberdakh.fitness.feature.home.model.VideoListDiffCallback
 
 class HomeAdapter(
-    private val onVideoClick: (String) -> Unit,
+    private val onVideoClick: (ListItem.VideoItem) -> Unit,
     private val onCategoryClick: (String) -> Unit
 ): ListAdapter<ListItem, BaseViewHolder>(VideoListDiffCallback()) {
 

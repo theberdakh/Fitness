@@ -24,4 +24,12 @@ class NetworkFitnessRepository(private val api: FitnessNetworkApi) :
 
     fun updateName(name: String) = handleNetworkResponse { api.updateName(UpdateNameRequestBody(name)) }
 
+    fun getSubscriptionPacks() = handleNetworkResponse { api.getSubscriptionPacks() }
+
+    fun getModules(packId: Int) = handleNetworkResponse { api.getModules(packId) }
+
+    fun getLessons(moduleId: Int) = handleNetworkResponse { api.getLessons(moduleId) }
+
+    fun getRandomFreeLessons() = handleNetworkResponse { api.getRandomFreeLessons() }
+
 }

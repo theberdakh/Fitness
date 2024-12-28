@@ -47,7 +47,10 @@ Tasks: 26/10/2021
 - [+]  add support for video playback in full screen mode
 
 Tasks: 27/10/2021
-- [] add support for network error handling
-- [] add subscriptions packs screen
-- 
+- [+] add support for network error handling
+
+Tasks: 28/10/2021
+- [+] get packs from server
+- [-] get modules from server
+- [+] get random lessons from server
 

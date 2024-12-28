@@ -5,6 +5,9 @@ import com.theberdakh.fitness.core.network.model.MessageModel
 import com.theberdakh.fitness.core.network.model.auth.LoginRequestBody
 import com.theberdakh.fitness.core.network.model.auth.LoginResponse
 import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
+import com.theberdakh.fitness.core.network.model.mobile.Lesson
+import com.theberdakh.fitness.core.network.model.mobile.Module
+import com.theberdakh.fitness.core.network.model.mobile.Pack
 import com.theberdakh.fitness.core.network.model.mobile.Profile
 import com.theberdakh.fitness.core.network.model.mobile.Target
 import com.theberdakh.fitness.core.network.model.mobile.UpdateNameRequestBody
@@ -14,6 +17,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface FitnessNetworkApi {
 
@@ -34,5 +38,17 @@ interface FitnessNetworkApi {
 
     @PATCH("api/v1/mobile/profile")
     suspend fun updateName(@Body body: UpdateNameRequestBody): Response<BaseNetworkModel<Profile>>
+
+    @GET("api/v1/mobile/packs")
+    suspend fun getSubscriptionPacks(): Response<BaseNetworkModel<List<Pack>>>
+
+    @GET("api/v1/mobile/modules")
+    suspend fun getModules(@Query("pack_id") packId: Int): Response<BaseNetworkModel<List<Module>>>
+
+    @GET("api/v1/mobile/lessons")
+    suspend fun getLessons(@Query("module_id") moduleId: Int): Response<BaseNetworkModel<List<Lesson>>>
+
+    @GET("api/v1/mobile/random-free-lessons")
+    suspend fun getRandomFreeLessons(): Response<BaseNetworkModel<List<Lesson>>>
 
 }

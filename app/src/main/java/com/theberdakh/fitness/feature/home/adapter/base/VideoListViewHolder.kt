@@ -6,7 +6,7 @@ import com.theberdakh.fitness.feature.home.model.ListItem
 
 class VideoListViewHolder(
     private val binding: ItemListBinding,
-    private val onVideoClick: (String) -> Unit
+    private val onVideoClick: (ListItem.VideoItem) -> Unit
 ) : BaseViewHolder(binding.root) {
 
     fun bind(item: ListItem.VideoList) {

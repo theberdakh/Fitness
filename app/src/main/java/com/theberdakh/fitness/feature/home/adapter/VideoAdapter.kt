@@ -8,7 +8,7 @@ import com.theberdakh.fitness.databinding.ItemVideoBinding
 import com.theberdakh.fitness.feature.home.adapter.base.VideoViewHolder
 import com.theberdakh.fitness.feature.home.model.ListItem
 
-class VideoAdapter(private val onVideoClick: (String) -> Unit): ListAdapter<ListItem.VideoItem, VideoViewHolder>(VideoItemCallback){
+class VideoAdapter(private val onVideoClick: (ListItem.VideoItem) -> Unit): ListAdapter<ListItem.VideoItem, VideoViewHolder>(VideoItemCallback){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         return VideoViewHolder(
             ItemVideoBinding.inflate(

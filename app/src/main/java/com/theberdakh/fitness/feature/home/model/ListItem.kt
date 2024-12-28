@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 sealed class ListItem {
     data class CategoryHeader(val name: String): ListItem()
-    data class VideoItem(val name: String, val url: String = ""): ListItem()
+    data class VideoItem(val name: String, val url: String = "", val module: String = ""): ListItem()
     data class VideoList(val items: List<VideoItem>): ListItem()
 }
 

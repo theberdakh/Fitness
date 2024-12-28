@@ -6,8 +6,8 @@
     android:orientation="vertical"
     tools:context=".feature.calendar.CalendarScreen">
 
+
     <CalendarView
-        android:id="@+id/cv_calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
