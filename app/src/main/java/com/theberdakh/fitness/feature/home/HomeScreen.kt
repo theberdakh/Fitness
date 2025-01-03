@@ -18,6 +18,7 @@ import com.theberdakh.fitness.feature.home.model.ListItem
 import com.theberdakh.fitness.feature.lesson.LessonScreen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -32,7 +33,9 @@ class HomeScreen : Fragment(R.layout.screen_home) {
     )
 
     private fun handleCategoryClick(category: String) {
-
+        if (category == CATEGORY_FREE_VIDEOS) {
+            findNavController().navigate(R.id.action_mainScreen_to_FreeLessonsScreen)
+        }
     }
 
     private fun handleVideoClick(video: ListItem.VideoItem) {
@@ -74,7 +77,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
             networkStateManager.observeNetworkState().collect { isAvailable ->
                 if (isAvailable) {
                     val list = listOf(
-                        ListItem.CategoryHeader("Бесплатные ролики"),
+                        ListItem.CategoryHeader(CATEGORY_FREE_VIDEOS),
                         ListItem.VideoList(data)
                     )
                     homeAdapter.submitList(list)
@@ -124,5 +127,9 @@ class HomeScreen : Fragment(R.layout.screen_home) {
     }
 
     private fun loadVideos() {
+    }
+
+    companion object {
+        private const val CATEGORY_FREE_VIDEOS = "Бесплатные ролики"
     }
 }

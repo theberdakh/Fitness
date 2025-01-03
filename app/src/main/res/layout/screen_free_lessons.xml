@@ -7,8 +7,10 @@
     android:orientation="vertical">
 
     <Toolbar
+        android:id="@+id/tb_free_lessons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:navigationIcon="@drawable/ic_back_24"
         android:title="@string/free_lessons"/>
 
     <androidx.recyclerview.widget.RecyclerView

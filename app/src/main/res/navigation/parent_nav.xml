@@ -62,6 +62,15 @@
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/from_right"
             />
+
+        <action android:id="@+id/action_mainScreen_to_FreeLessonsScreen"
+            app:destination="@id/freeLessonsScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
+
     </fragment>
 
     <fragment
@@ -219,6 +228,11 @@
         android:id="@+id/lessonScreen"
         android:name="com.theberdakh.fitness.feature.lesson.LessonScreen"
         tools:layout="@layout/screen_lesson"/>
+
+    <fragment
+        android:id="@+id/freeLessonsScreen"
+        android:name="com.theberdakh.fitness.feature.free_lessons.FreeLessonsScreen"
+        tools:layout="@layout/screen_free_lessons"/>
 
 
 
