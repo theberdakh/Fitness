@@ -10,13 +10,27 @@ import com.theberdakh.fitness.databinding.ScreenFreeLessonsBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.core.network.model.NetworkResponse
 import com.theberdakh.fitness.feature.free_lessons.model.FreeLessonItem
+import com.theberdakh.fitness.feature.lesson.LessonScreen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FreeLessonsScreen: Fragment(R.layout.screen_free_lessons) {
     private val viewBinding by viewBinding(ScreenFreeLessonsBinding::bind)
-    private val freeLessonsAdapter = FreeLessonsAdapter()
+    private val freeLessonsAdapter = FreeLessonsAdapter(
+        onVideoClick = { freeLessonItem ->
+            navigateToLesson(freeLessonItem)
+        }
+    )
+
+    private fun navigateToLesson(freeLessonItem: FreeLessonItem.FreeLessonVideoItem) {
+        val arg = Bundle().apply {
+            putString(LessonScreen.ARG_LESSON_TITLE, freeLessonItem.name)
+            putString(LessonScreen.ARG_LESSON_URL, freeLessonItem.url)
+        }
+        findNavController().navigate(R.id.action_freeLessonsScreen_to_LessonScreen, arg)
+    }
+
     private val viewModel: FreeLessonsViewModel by viewModel<FreeLessonsViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -55,5 +55,5 @@ Tasks: 28/10/2021
 - [+] get random lessons from server
 
 Tasks: 3/1/2025 
-- [] add all free videos 
+- [+] add all free videos without pagination 
 - [] add description & checklist for each lesson

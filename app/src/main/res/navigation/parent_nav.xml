@@ -232,7 +232,17 @@
     <fragment
         android:id="@+id/freeLessonsScreen"
         android:name="com.theberdakh.fitness.feature.free_lessons.FreeLessonsScreen"
-        tools:layout="@layout/screen_free_lessons"/>
+        tools:layout="@layout/screen_free_lessons">
+
+        <action android:id="@+id/action_freeLessonsScreen_to_LessonScreen"
+            app:destination="@id/lessonScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
+
+    </fragment>
 
 
 

@@ -7,16 +7,20 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ItemLoadingBinding
 import com.theberdakh.fitness.databinding.ItemVideoHorizontalBinding
 import com.theberdakh.fitness.feature.free_lessons.model.FreeLessonItem
 import com.theberdakh.fitness.feature.home.utils.YouTubeThumbnail
 
-class FreeLessonsAdapter: ListAdapter<FreeLessonItem, FreeLessonsAdapter.FreeLessonViewHolder>(FreeLessonsItemDiffCallback) {
+class FreeLessonsAdapter(
+    private val onVideoClick: (FreeLessonItem.FreeLessonVideoItem) -> Unit
+): ListAdapter<FreeLessonItem, FreeLessonsAdapter.FreeLessonViewHolder>(FreeLessonsItemDiffCallback) {
 
     inner class FreeLessonViewHolder(private val binding: ItemVideoHorizontalBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(item: FreeLessonItem.FreeLessonVideoItem){
+            binding.root.setOnClickListener {
+                onVideoClick(item)
+            }
             binding.tvTitle.text = item.name
             animateLoadAnimation(binding.root)
             YouTubeThumbnail.loadThumbnail(binding.ivThumbnail, item.url)
