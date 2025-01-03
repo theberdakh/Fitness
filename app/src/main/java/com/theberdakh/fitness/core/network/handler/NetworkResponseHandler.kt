@@ -5,6 +5,7 @@ import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.core.network.model.BaseNetworkModel
 import com.theberdakh.fitness.core.network.model.MessageModel
 import com.theberdakh.fitness.core.network.model.NetworkResponse
+import com.theberdakh.fitness.core.network.model.PagingResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -57,4 +58,23 @@ abstract class NetworkResponseHandler {
             emit(NetworkResponse.Error(e.message ?: "Unknown error"))
         }
     }.flowOn(Dispatchers.IO)
+
+    protected fun <T> handlePagingResponse(
+        apiCall: suspend () -> Response<PagingResponse<T>>
+    ) = flow{
+        emit(NetworkResponse.Loading)
+        try {
+            val response = apiCall()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(NetworkResponse.Success(it))
+                }
+            } else {
+                emit(NetworkResponse.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            emit(NetworkResponse.Error(e.message ?: "Unknown error"))
+        }
+    }
+
 }

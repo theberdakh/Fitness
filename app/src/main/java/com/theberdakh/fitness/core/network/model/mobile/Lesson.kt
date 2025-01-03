@@ -1,6 +1,7 @@
 package com.theberdakh.fitness.core.network.model.mobile
 
 import com.google.gson.annotations.SerializedName
+import com.theberdakh.fitness.feature.free_lessons.model.FreeLessonItem
 import com.theberdakh.fitness.feature.home.model.ListItem
 
 data class Lesson(
@@ -16,3 +17,4 @@ data class Lesson(
 )
 
 fun Lesson.toVideoItem() = ListItem.VideoItem(title, youtubeUrl, module = moduleId.toString())
+fun Lesson.toFreeLessonItem() = FreeLessonItem.FreeLessonVideoItem(name = this.title, url = this.youtubeUrl)

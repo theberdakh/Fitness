@@ -2,6 +2,7 @@ package com.theberdakh.fitness.core.viewmodel
 
 import com.theberdakh.fitness.SplashScreenViewModel
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
+import com.theberdakh.fitness.feature.free_lessons.FreeLessonsViewModel
 import com.theberdakh.fitness.feature.home.HomeViewModel
 import com.theberdakh.fitness.feature.subscriptions.SubscriptionScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -13,5 +14,6 @@ object CoreViewModel {
         viewModel { SplashScreenViewModel(preferences = get()) }
         viewModel { SubscriptionScreenViewModel(repository = get()) }
         viewModel { HomeViewModel(repository = get()) }
+        viewModel {FreeLessonsViewModel(repository = get())}
     }
 }

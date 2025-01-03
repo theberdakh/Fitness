@@ -1,7 +1,9 @@
 package com.theberdakh.fitness.core.network.api
 
+import android.database.Cursor
 import com.theberdakh.fitness.core.network.model.BaseNetworkModel
 import com.theberdakh.fitness.core.network.model.MessageModel
+import com.theberdakh.fitness.core.network.model.PagingResponse
 import com.theberdakh.fitness.core.network.model.auth.LoginRequestBody
 import com.theberdakh.fitness.core.network.model.auth.LoginResponse
 import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
@@ -50,5 +52,11 @@ interface FitnessNetworkApi {
 
     @GET("api/v1/mobile/random-free-lessons")
     suspend fun getRandomFreeLessons(): Response<BaseNetworkModel<List<Lesson>>>
+
+    @GET("api/v1/mobile/free-lessons")
+    suspend fun getFreeLessons(
+        @Query("per_page") perPage: Int,
+        @Query("cursor") cursor: String?
+    ): Response<PagingResponse<Lesson>>
 
 }

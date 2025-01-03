@@ -32,4 +32,6 @@ class NetworkFitnessRepository(private val api: FitnessNetworkApi) :
 
     fun getRandomFreeLessons() = handleNetworkResponse { api.getRandomFreeLessons() }
 
+    fun getFreeLessons(perPage: Int, cursor: String?) = handlePagingResponse { api.getFreeLessons(perPage, cursor) }
+
 }
