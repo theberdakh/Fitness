@@ -56,4 +56,4 @@ Tasks: 28/10/2021
 
 Tasks: 3/1/2025 
 - [+] add all free videos without pagination 
-- [] add description & checklist for each lesson
+- [+] add description & checklist for each lesson

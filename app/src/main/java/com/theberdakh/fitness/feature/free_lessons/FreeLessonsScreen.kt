@@ -27,6 +27,7 @@ class FreeLessonsScreen: Fragment(R.layout.screen_free_lessons) {
         val arg = Bundle().apply {
             putString(LessonScreen.ARG_LESSON_TITLE, freeLessonItem.name)
             putString(LessonScreen.ARG_LESSON_URL, freeLessonItem.url)
+            putInt(LessonScreen.ARG_LESSON_ID, freeLessonItem.id)
         }
         findNavController().navigate(R.id.action_freeLessonsScreen_to_LessonScreen, arg)
     }

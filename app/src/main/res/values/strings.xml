@@ -38,4 +38,7 @@
     <string name="retry">Попробуйте еще раз</string>
     <string name="buy">Купить</string>
     <string name="free_lessons">Бесплатные уроки</string>
+    <string name="description">Описание</string>
+    <string name="checklist">Чек-лист</string>
+    <string name="finish">Завершить</string>
 </resources>

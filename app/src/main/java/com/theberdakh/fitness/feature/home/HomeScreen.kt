@@ -42,6 +42,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
         val arg = Bundle().apply {
             putString(LessonScreen.ARG_LESSON_URL, video.url)
             putString(LessonScreen.ARG_LESSON_TITLE, video.name)
+            putInt(LessonScreen.ARG_LESSON_ID, video.id)
         }
         findNavController().navigate(R.id.action_mainScreen_to_LessonScreen, arg)
     }
