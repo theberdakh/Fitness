@@ -23,6 +23,9 @@ class FreeLessonsScreen: Fragment(R.layout.screen_free_lessons) {
         }
     )
 
+
+
+
     private fun navigateToLesson(freeLessonItem: FreeLessonItem.FreeLessonVideoItem) {
         val arg = Bundle().apply {
             putString(LessonScreen.ARG_LESSON_TITLE, freeLessonItem.name)
@@ -39,6 +42,7 @@ class FreeLessonsScreen: Fragment(R.layout.screen_free_lessons) {
         initViews()
         initObservers()
 
+        
 
     }
 

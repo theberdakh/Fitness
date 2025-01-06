@@ -9,6 +9,7 @@ import com.theberdakh.fitness.core.network.model.auth.LoginResponse
 import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
 import com.theberdakh.fitness.core.network.model.mobile.Lesson
 import com.theberdakh.fitness.core.network.model.mobile.Module
+import com.theberdakh.fitness.core.network.model.mobile.Order
 import com.theberdakh.fitness.core.network.model.mobile.Pack
 import com.theberdakh.fitness.core.network.model.mobile.Profile
 import com.theberdakh.fitness.core.network.model.mobile.Target
@@ -62,5 +63,10 @@ interface FitnessNetworkApi {
 
     @GET("api/v1/mobile/lessons/{lessonId}")
     suspend fun getLesson(@Path("lessonId") lessonId: Int): Response<BaseNetworkModel<Lesson>>
+
+    @GET("api/v1/mobile/my/orders")
+    suspend fun getMyOrders(): Response<BaseNetworkModel<List<Order>>>
+
+
 
 }

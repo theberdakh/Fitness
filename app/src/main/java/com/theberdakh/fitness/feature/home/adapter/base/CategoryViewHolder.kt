@@ -1,5 +1,6 @@
 package com.theberdakh.fitness.feature.home.adapter.base
 
+import androidx.core.view.isVisible
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.theberdakh.fitness.databinding.ItemCategoryBinding
 import com.theberdakh.fitness.feature.home.model.ListItem
@@ -10,6 +11,7 @@ class CategoryViewHolder(private val binding: ItemCategoryBinding,
     fun bind(item: ListItem.CategoryHeader) {
         binding.apply {
             tvName.text = item.name
+            iconNext.isVisible = true
             iconNext.setOnClickListener { onViewAllClick(item.name) }
 
             // Apply animation

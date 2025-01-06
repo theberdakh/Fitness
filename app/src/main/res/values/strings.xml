@@ -41,4 +41,10 @@
     <string name="description">Описание</string>
     <string name="checklist">Чек-лист</string>
     <string name="finish">Завершить</string>
+    <string name="modules">Модули</string>
+    <string name="packs">Пакеты</string>
+    <string name="lessons">Уроки</string>
+    <string name="finish_module_message">Внимание: после завершения этого модуля у вас больше не будет доступа к этим урокам. Нажатие «Завершить модуль» означает, что вы согласны с этим правилом.</string>
+    <string name="finish_module">Завершить модуль</string>
+    <string name="dissent">Несогласие</string>
 </resources>

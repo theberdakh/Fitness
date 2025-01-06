@@ -9,6 +9,7 @@ import com.theberdakh.fitness.R
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenMainBinding
 import com.theberdakh.fitness.feature.home.HomeScreen
+import com.theberdakh.fitness.feature.packs.PacksScreen
 import com.theberdakh.fitness.feature.profile.ProfileScreen
 import com.theberdakh.fitness.feature.progress.ProgressScreen
 
@@ -33,6 +34,11 @@ class MainFragment : Fragment(R.layout.screen_main) {
             when (item.itemId) {
                 R.id.action_home -> {
                     replaceFragment(HomeScreen())
+                    true
+                }
+
+                R.id.action_packs -> {
+                    replaceFragment(PacksScreen())
                     true
                 }
 

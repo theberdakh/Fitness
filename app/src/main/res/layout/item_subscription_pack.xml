@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:textAppearance="?textAppearanceTitleLarge"
-            android:text="Pack Name very long and and long and long and long "/>
+            tools:text="Pack Name very long and and long and long and long "/>
 
         <TextView
             android:id="@+id/tv_pack_price"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:textAppearance="?textAppearanceTitleMedium"
-            android:text="1 190 000 suwm"/>
+            tools:text="1 190 000 suwm"/>
 
 
 

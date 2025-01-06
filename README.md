@@ -57,3 +57,13 @@ Tasks: 28/10/2021
 Tasks: 3/1/2025 
 - [+] add all free videos without pagination 
 - [+] add description & checklist for each lesson
+
+Tasks: 4/1/2025
+- [-] add lessons screen to show all modules 
+- [-] add lessons screen to show all lessons in a module
+- [-] add support to show videos in lesson screen
+
+Tasks 5/1/2025
+- [+] my orders screen [subscribed packs]
+- [+] my modules screen 
+- [+] lessons screen
