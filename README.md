@@ -63,7 +63,16 @@ Tasks: 4/1/2025
 - [-] add lessons screen to show all lessons in a module
 - [-] add support to show videos in lesson screen
 
-Tasks 5/1/2025
+Tasks 6/1/2025
 - [+] my orders screen [subscribed packs]
 - [+] my modules screen 
 - [+] lessons screen
+
+Tasks 7/1/2025
+- [] modules unstarted status, lesson numbers 
+- [] lesson lock based on lesson_view_finished (preferably on top of thumbnail)
+- [] show dialog when locked lesson clicked 
+- [] navigate to lesson screen when unlocked lesson clicked
+- [] update text of finish dialog text 
+
+
