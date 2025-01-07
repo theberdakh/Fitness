@@ -69,9 +69,9 @@ Tasks 6/1/2025
 - [+] lessons screen
 
 Tasks 7/1/2025
-- [] modules unstarted status, lesson numbers 
-- [] lesson lock based on lesson_view_finished (preferably on top of thumbnail)
-- [] show dialog when locked lesson clicked 
+- [+] modules unstarted status, lesson numbers 
+- [+] lesson lock based on lesson_view_finished (preferably on top of thumbnail)
+- [+] show dialog when locked lesson clicked 
 - [] navigate to lesson screen when unlocked lesson clicked
 - [] update text of finish dialog text 
 

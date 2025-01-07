@@ -10,14 +10,12 @@ import com.theberdakh.fitness.feature.workouts.WorkoutsScreen
 
 class ProgressViewPagerAdapter(private val fragmentManager: FragmentManager, lifecycle: Lifecycle): FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
-        return 3
+        return 1
     }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> WorkoutsScreen()
-            1 -> CalendarScreen()
-            2 -> BodyScreen()
             else -> throw IllegalArgumentException("Invalid position")
         }
     }

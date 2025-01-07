@@ -15,13 +15,13 @@ class LessonsScreenViewModel(private val repository: NetworkFitnessRepository): 
 
     private val _lessons = MutableStateFlow<NetworkResponse<List<LessonsModel.Lesson>>>(NetworkResponse.Initial)
     val lessons = _lessons.asStateFlow()
-    fun getLessons(moduleId: Int) = viewModelScope.launch {
+    fun getLessons(moduleId: Int, isAvailable: Boolean = false) = viewModelScope.launch {
         repository.getLessons(moduleId).onEach {
             _lessons.value = when(it){
                 is NetworkResponse.Error -> NetworkResponse.Error(it.message)
                 NetworkResponse.Initial -> NetworkResponse.Initial
                 NetworkResponse.Loading -> NetworkResponse.Loading
-                is NetworkResponse.Success -> NetworkResponse.Success(it.data.map { lesson -> LessonsModel.Lesson(lesson.id, lesson.title, lesson.youtubeUrl, lesson.isFree) })
+                is NetworkResponse.Success -> NetworkResponse.Success(it.data.map { lesson -> LessonsModel.Lesson(lesson.id, lesson.title, lesson.youtubeUrl, lesson.isFree ?: false, isAvailable = isAvailable) })
             }
         }.launchIn(viewModelScope)
     }

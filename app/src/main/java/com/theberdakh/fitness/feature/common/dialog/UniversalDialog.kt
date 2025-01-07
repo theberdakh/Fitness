@@ -141,22 +141,25 @@ class UniversalDialog private constructor(
 
             // Secondary Button (if provided)
             secondaryButtonText.let { secondaryText ->
-                addView(TextView(context).apply {
-                    text = secondaryText
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, buttonTextSize)
-                    setTextColor(Color.GRAY)
-                    gravity = Gravity.CENTER
-                    setPadding(0, dpToPx(12), 0, dpToPx(12))
-                    background = context.getSelectableItemBackground()
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    setOnClickListener {
-                        onSecondaryButtonClick?.invoke()
-                        dismiss()
-                    }
-                })
+                if (secondaryText.isNotEmpty()){
+                    addView(TextView(context).apply {
+                        text = secondaryText
+                        setTextSize(TypedValue.COMPLEX_UNIT_SP, buttonTextSize)
+                        setTextColor(Color.GRAY)
+                        gravity = Gravity.CENTER
+                        setPadding(0, dpToPx(12), 0, dpToPx(12))
+                        background = context.getSelectableItemBackground()
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        setOnClickListener {
+                            onSecondaryButtonClick?.invoke()
+                            dismiss()
+                        }
+                    })
+                }
+
             }
         }
     }

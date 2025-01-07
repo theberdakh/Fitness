@@ -1,9 +1,11 @@
 package com.theberdakh.fitness.feature.home.utils
 
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.theberdakh.fitness.R
 
 class YouTubeThumbnail {
 
@@ -22,8 +24,11 @@ class YouTubeThumbnail {
             return match?.groupValues?.get(1) ?: ""
         }
 
-        private fun getThumbnailUrl(videoId: String, quality: ThumbnailQuality = ThumbnailQuality.MEDIUM): String {
-            return when(quality) {
+        private fun getThumbnailUrl(
+            videoId: String,
+            quality: ThumbnailQuality = ThumbnailQuality.MEDIUM
+        ): String {
+            return when (quality) {
                 ThumbnailQuality.DEFAULT -> "https://img.youtube.com/vi/$videoId/default.jpg"
                 ThumbnailQuality.MEDIUM -> "https://img.youtube.com/vi/$videoId/mqdefault.jpg"
                 ThumbnailQuality.HIGH -> "https://img.youtube.com/vi/$videoId/hqdefault.jpg"
@@ -32,13 +37,17 @@ class YouTubeThumbnail {
             }
         }
 
-        fun loadThumbnail(imageView: ImageView, youtubeUrl: String, quality: ThumbnailQuality = ThumbnailQuality.MEDIUM) {
+        fun loadThumbnail(
+            imageView: ImageView,
+            youtubeUrl: String,
+            quality: ThumbnailQuality = ThumbnailQuality.MEDIUM,
+        ) {
             val videoId = extractVideoId(youtubeUrl)
             val thumbnailUrl = getThumbnailUrl(videoId, quality)
             Glide.with(imageView.context)
-                 .load(thumbnailUrl)
+                .load(thumbnailUrl)
                 .apply(RequestOptions().transform(RoundedCorners(16)))
-                 .into(imageView)
+                .into(imageView)
         }
     }
 }

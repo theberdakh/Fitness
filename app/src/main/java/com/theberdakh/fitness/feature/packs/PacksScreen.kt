@@ -11,6 +11,7 @@ import com.theberdakh.fitness.core.network.model.NetworkResponse
 import com.theberdakh.fitness.databinding.ScreenPacksBinding
 import com.theberdakh.fitness.feature.modules.ModulesScreen
 import com.theberdakh.fitness.feature.packs.adapter.PackListAdapter
+import com.theberdakh.fitness.feature.packs.model.PackListItem
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,10 +25,7 @@ class PacksScreen: Fragment(R.layout.screen_packs) {
 
         viewBinding.rvPacks.adapter = adapter
         adapter.setOnPackClickListener { item ->
-            val arg = Bundle().apply {
-                putInt(ModulesScreen.ARG_MODULE_ID, item.id)
-            }
-            findNavController().navigate(R.id.action_mainScreen_to_ModulesScreen, arg)
+            findNavController().navigate(R.id.action_mainScreen_to_ModulesScreen, ModulesScreen.byOrderId(item.orderId))
         }
         initObservers()
 
@@ -40,9 +38,13 @@ class PacksScreen: Fragment(R.layout.screen_packs) {
               is NetworkResponse.Error -> handleError(it.message)
               NetworkResponse.Initial -> handleInitial()
               NetworkResponse.Loading -> handleLoading()
-              is NetworkResponse.Success -> adapter.submitList(it.data)
+              is NetworkResponse.Success -> handleSuccess(it)
           }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun handleSuccess(it: NetworkResponse.Success<List<PackListItem>>) {
+        adapter.submitList(it.data)
     }
 
     private fun handleError(message: String) {

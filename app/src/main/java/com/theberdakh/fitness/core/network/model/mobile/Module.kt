@@ -8,3 +8,15 @@ data class Module(
     @SerializedName("pack_id")
     val packId: Int
 )
+
+data class OrderModule(
+    val id: Int,
+    val title: String,
+    @SerializedName("pack_id")
+    val packId: Int,
+    @SerializedName("is_view_finished")
+    val isViewFinished: Boolean,
+    @SerializedName("is_available")
+    val isAvailable: Boolean,
+    val lessons: List<OrderLesson>
+)

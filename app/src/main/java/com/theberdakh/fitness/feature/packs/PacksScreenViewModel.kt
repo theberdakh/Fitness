@@ -20,11 +20,12 @@ class PacksScreenViewModel(private val repository: NetworkFitnessRepository): Vi
         repository.getMyOrders().onEach {
             _subscriptionPacks.value = when(it){
                 is NetworkResponse.Success -> NetworkResponse.Success(it.data.map { pack -> PackListItem.PackItemUnsubscribed(
-                    id = pack.id,
+                    packId = pack.pack.id,
                     title = pack.pack.title,
                     amount = pack.amount,
                     statusEnum = PackListItem.PackItemUnsubscribed.statusEnum(pack.status),
-                    createdAt = pack.createdAt
+                    createdAt = pack.createdAt,
+                    orderId = pack.id
                 ) })
                 is NetworkResponse.Error -> NetworkResponse.Error(it.message)
                 is NetworkResponse.Loading -> NetworkResponse.Loading

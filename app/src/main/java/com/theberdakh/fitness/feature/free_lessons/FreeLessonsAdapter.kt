@@ -23,7 +23,7 @@ class FreeLessonsAdapter(
             }
             binding.tvTitle.text = item.name
             animateLoadAnimation(binding.root)
-            YouTubeThumbnail.loadThumbnail(binding.ivThumbnail, item.url)
+            YouTubeThumbnail.loadThumbnail(binding.ivThumbnail, item.url, )
 
         }
 

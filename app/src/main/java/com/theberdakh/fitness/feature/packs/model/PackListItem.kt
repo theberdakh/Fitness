@@ -19,11 +19,12 @@ enum class OrderStatus{
 sealed class PackListItem {
     data class PackHeader(val title: String): PackListItem()
     data class PackItemUnsubscribed(
-        val id: Int,
+        val packId: Int,
         val title: String,
         val amount: Float,
         val statusEnum: OrderStatus,
-        val createdAt: String
+        val createdAt: String,
+        val orderId: Int
     ): PackListItem() {
         companion object {
             fun statusEnum(status: String): OrderStatus {
@@ -46,7 +47,7 @@ object PackListItemDiffCallback: DiffUtil.ItemCallback<PackListItem>() {
             oldItem is PackListItem.PackHeader && newItem is PackListItem.PackHeader ->
                 oldItem.title == newItem.title
             oldItem is PackListItem.PackItemUnsubscribed && newItem is PackListItem.PackItemUnsubscribed ->
-                oldItem.id == newItem.id
+                oldItem.packId == newItem.packId
             oldItem is PackListItem.Loading && newItem is PackListItem.Loading -> true
             else -> false
         }

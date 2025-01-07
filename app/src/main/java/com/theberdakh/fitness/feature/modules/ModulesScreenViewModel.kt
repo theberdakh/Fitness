@@ -18,7 +18,25 @@ class ModulesScreenViewModel(private val repository: NetworkFitnessRepository): 
     fun getModules(packageId: Int) = viewModelScope.launch {
         repository.getModules(packageId).onEach {
             _modules.value = when(it){
-                is NetworkResponse.Success -> NetworkResponse.Success(it.data.map { module -> ModulesModel.Module(module.id, module.title) })
+                is NetworkResponse.Success -> NetworkResponse.Success(it.data.map { module -> ModulesModel.Module(
+                    moduleId = module.id,
+                    title = module.title) })
+                is NetworkResponse.Error -> NetworkResponse.Error(it.message)
+                is NetworkResponse.Loading -> NetworkResponse.Loading
+                NetworkResponse.Initial -> NetworkResponse.Initial
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun getModulesByOrderId(orderId: Int) = viewModelScope.launch {
+        repository.getModulesByOrderId(orderId).onEach {
+            _modules.value = when(it){
+                is NetworkResponse.Success -> NetworkResponse.Success(it.data.map { module -> ModulesModel.ModuleExtended(
+                    module.id,
+                    module.title,
+                    module.isAvailable,
+                    module.lessons.size
+                ) })
                 is NetworkResponse.Error -> NetworkResponse.Error(it.message)
                 is NetworkResponse.Loading -> NetworkResponse.Loading
                 NetworkResponse.Initial -> NetworkResponse.Initial

@@ -14,8 +14,19 @@ data class Lesson(
     @SerializedName("youtube_url")
     val youtubeUrl: String,
     @SerializedName("is_free")
-    val isFree: Boolean,
+    val isFree: Boolean?,
     val checklists: List<LessonCheckList>
+)
+
+data class OrderLesson(
+    val id: Int,
+    val title: String,
+    @SerializedName("module_id")
+    val moduleId: Int,
+    @SerializedName("youtube_url")
+    val youtubeUrl: String,
+    @SerializedName("is_free")
+    val isFree: Boolean?
 )
 
 data class LessonCheckList(

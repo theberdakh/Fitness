@@ -12,20 +12,27 @@ class ModulesAdapter: ListAdapter<ModulesModel, ModulesViewHolder>(ModulesModelD
         this.onModuleClick = onModuleClick
     }
 
+    private var onModuleExtendedClick: ((ModulesModel.ModuleExtended) -> Unit)? = null
+    fun setOnModuleExtendedClick(onModuleExtendedClick: ((ModulesModel.ModuleExtended) -> Unit)?){
+        this.onModuleExtendedClick = onModuleExtendedClick
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when(getItem(position)) {
             is ModulesModel.Module -> ModulesModel.VIEW_TYPE_MODULE
+            is ModulesModel.ModuleExtended -> ModulesModel.VIEW_TYPE_MODULE_EXTENDED
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModulesViewHolder {
-        return ModulesViewHolder.create(viewType, parent, onModuleClick)
+        return ModulesViewHolder.create(viewType, parent, onModuleClick, onModuleExtendedClick)
     }
 
     override fun onBindViewHolder(holder: ModulesViewHolder, position: Int) {
         when(getItem(position)){
             is ModulesModel.Module -> (holder as ModulesViewHolder.ModuleItemViewHolder).bind(getItem(position) as ModulesModel.Module)
+            is ModulesModel.ModuleExtended -> (holder as ModulesViewHolder.ModuleExtendedItemViewHolder).bind(getItem(position) as ModulesModel.ModuleExtended)
         }
     }
 

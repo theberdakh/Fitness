@@ -10,6 +10,7 @@ import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
 import com.theberdakh.fitness.core.network.model.mobile.Lesson
 import com.theberdakh.fitness.core.network.model.mobile.Module
 import com.theberdakh.fitness.core.network.model.mobile.Order
+import com.theberdakh.fitness.core.network.model.mobile.OrderModule
 import com.theberdakh.fitness.core.network.model.mobile.Pack
 import com.theberdakh.fitness.core.network.model.mobile.Profile
 import com.theberdakh.fitness.core.network.model.mobile.Target
@@ -48,6 +49,9 @@ interface FitnessNetworkApi {
 
     @GET("api/v1/mobile/modules")
     suspend fun getModules(@Query("pack_id") packId: Int): Response<BaseNetworkModel<List<Module>>>
+
+    @GET("api/v1/mobile/my/modules")
+    suspend fun getModulesByOrderId(@Query("order_id") orderId: Int): Response<BaseNetworkModel<List<OrderModule>>>
 
     @GET("api/v1/mobile/lessons")
     suspend fun getLessons(@Query("module_id") moduleId: Int): Response<BaseNetworkModel<List<Lesson>>>

@@ -10,8 +10,13 @@ class LessonsModelAdapter: ListAdapter<LessonsModel, LessonsModelViewHolder>(Les
         this.onLessonClick = onLessonClick
     }
 
+    private var onLessonUnavailable: ((LessonsModel.Lesson) -> Unit)? = null
+    fun setOnLessonUnavailable(onLessonUnavailable: ((LessonsModel.Lesson) -> Unit)?){
+        this.onLessonUnavailable = onLessonUnavailable
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonsModelViewHolder {
-        return LessonsModelViewHolder.create(viewType, parent, onLessonClick)
+        return LessonsModelViewHolder.create(viewType, parent, onLessonClick, onLessonUnavailable)
     }
 
     override fun onBindViewHolder(holder: LessonsModelViewHolder, position: Int) {

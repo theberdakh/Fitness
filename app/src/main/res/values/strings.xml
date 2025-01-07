@@ -47,4 +47,9 @@
     <string name="finish_module_message">Внимание: после завершения этого модуля у вас больше не будет доступа к этим урокам. Нажатие «Завершить модуль» означает, что вы согласны с этим правилом.</string>
     <string name="finish_module">Завершить модуль</string>
     <string name="dissent">Несогласие</string>
+    <string name="placeholder_lessons">%1$s Уроки</string>
+    <string name="lesson_unavailable">Урок недоступен</string>
+    <string name="message_lesson_unavailable">Чтобы получить доступ к уроку, завершите последний урок</string>
+    <string name="ok">Хорошо</string>
+    <string name="placeholder_current_module">%1$s (Текущий)</string>
 </resources>

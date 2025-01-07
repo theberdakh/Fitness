@@ -19,8 +19,6 @@ class ProgressScreen: Fragment(R.layout.screen_progress) {
         TabLayoutMediator(viewBinding.tablayoutProgress, viewBinding.vpProgress) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.workouts)
-                1 -> getString(R.string.calendar)
-                2 -> getString(R.string.body)
                 else -> throw IllegalArgumentException("TabLayout Mediator invalid position: $position")
             }
         }.attach()

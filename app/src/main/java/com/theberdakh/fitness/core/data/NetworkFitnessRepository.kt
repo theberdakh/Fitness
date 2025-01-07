@@ -38,6 +38,8 @@ class NetworkFitnessRepository(private val api: FitnessNetworkApi) :
 
     fun getMyOrders() = handleNetworkResponse { api.getMyOrders() }
 
+    fun getModulesByOrderId(orderId: Int) = handleNetworkResponse { api.getModulesByOrderId(orderId) }
+
 
 
 }

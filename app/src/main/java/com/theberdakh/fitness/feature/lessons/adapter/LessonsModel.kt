@@ -3,7 +3,7 @@ package com.theberdakh.fitness.feature.lessons.adapter
 import androidx.recyclerview.widget.DiffUtil
 
 sealed class LessonsModel {
-    data class Lesson(val id: Int, val title: String, val youtubeUrl: String, val isFree: Boolean): LessonsModel()
+    data class Lesson(val id: Int, val title: String, val youtubeUrl: String, val isFree: Boolean, val isAvailable: Boolean = false): LessonsModel()
 
     companion object {
         const val VIEW_TYPE_LESSON = 0
