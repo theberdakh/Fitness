@@ -1,5 +1,10 @@
-## Fitness App
+# Fitness App
 This fitness application follows a clean architecture pattern with clear separation of concerns. The project is organized into distinct modules to ensure maintainability, testability, and scalability.
+
+## Screenshots 
+|                 Free lessons Screen                 |                  Lesson Screen                   |                     Home Screen                     |                 About Screen                 |
+|:---------------------------------------------------:|:------------------------------------------------:|:---------------------------------------------------:|:--------------------------------------------:|
+| ![Free lessons](/docs/screenshots/screenshot-1.png) | ![Exercises](/docs/screenshots/screenshot-1.png) | ![Free lessons](/docs/screenshots/screenshot-3.png) | ![About](/docs/screenshots/screenshot-4.png) |
 
 ## About Repository
 | Description                  | Badge                                                                                           | 
