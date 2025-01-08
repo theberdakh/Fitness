@@ -1,38 +1,22 @@
 ## Fitness App
-
-Figma design link: https://www.figma.com/board/KFQJ2Za0yr0NpKFVhEpuAt/Fitness-app?node-id=0-1&p=f
-Postman collection link: https://aralhubteam.postman.co/workspace/1d62bd13-5d81-4d75-8da9-6070cebe2d73/folder/39477068-a865022b-1830-44cf-ae2f-631235dfc1e0
-
-## Overview
 This fitness application follows a clean architecture pattern with clear separation of concerns. The project is organized into distinct modules to ensure maintainability, testability, and scalability.
 
-## Project Structure
-The core module contains essential application components:
-/log: Logging functionality and utilities
-/navigation: Navigation management and routing
-/preferences: Application preferences and settings management
+## About Repository
+| Description                  | Badge                                                                                           | 
+|:-----------------------------|:------------------------------------------------------------------------------------------------|
+| Size                         | ![Size](https://img.shields.io/github/repo-size/theberdakh/kotlin-practice)                     | 
+| Last commit                  | ![Last commit](https://img.shields.io/github/last-commit/theberdakh/kotlin-practice)            | 
+| Total commits                | ![Total commits](https://img.shields.io/github/commit-activity/t/theberdakh/kotlin-practice)    |
+| Total commits on Main branch | ![Main branch](https://img.shields.io/github/commit-activity/t/theberdakh/kotlin-practice/Main) | 
+| Licence                      | ![MIT License](https://img.shields.io/badge/License-MIT-green.svg)                              | 
 
-#### Authentication Module (/feature/auth)
-Authentication flow is implemented with the following components:
-Screens:
-- AddAgeGenderScreen: User age and gender input
-- AddGoalScreen: Fitness goals selection
-- AddHeightScreen: Height measurement input
-- AddNameScreen: User name registration
-- AddPhoneNumberScreen: Phone number collection
-- AddWeightScreen: Weight measurement input
-- EnterSMSCodeScreen: SMS verification
-- LogoScreen: Application branding screen
+## About Project
+| Resource | Link                                                                                                                                          | 
+|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------|
+| Figma    | [Figma](https://www.figma.com/board/KFQJ2Za0yr0NpKFVhEpuAt/Fitness-app?node-id=0-1&p=f)                                                       | 
+| Postman  | [Postman](https://aralhubteam.postman.co/workspace/1d62bd13-5d81-4d75-8da9-6070cebe2d73/folder/39477068-a865022b-1830-44cf-ae2f-631235dfc1e0) |
 
-The auth module is further divided into:
-/adapter: Contains adapters for external service integration
-/domain: Business logic and domain models
-
-### UI Module (/ui)
-Contains shared UI components and resources used across the application.
-App Module (/app)
-The main application module containing:
-- Application class instance and DI initialization
+## Personal task log by date 
 
 Tasks: 25/10/2021 
 - [x]  feat(auth): Add verification logic for user-entered codes
