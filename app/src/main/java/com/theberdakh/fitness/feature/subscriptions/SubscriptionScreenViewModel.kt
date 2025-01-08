@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theberdakh.fitness.core.data.NetworkFitnessRepository
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.domain.converter.toSubscriptionPackItem
 import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.mobile.toDomain
 import com.theberdakh.fitness.feature.subscriptions.model.SubscriptionPackItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +26,7 @@ class SubscriptionScreenViewModel(private val repository: NetworkFitnessReposito
                 is NetworkResponse.Error -> NetworkResponse.Error(it.message)
                 NetworkResponse.Initial -> NetworkResponse.Initial
                 NetworkResponse.Loading -> NetworkResponse.Loading
-                is NetworkResponse.Success -> NetworkResponse.Success(it.data.map { subscription -> subscription.toDomain() })
+                is NetworkResponse.Success -> NetworkResponse.Success(it.data.map { subscription -> subscription.toSubscriptionPackItem() })
             }
         }.launchIn(viewModelScope)
     }

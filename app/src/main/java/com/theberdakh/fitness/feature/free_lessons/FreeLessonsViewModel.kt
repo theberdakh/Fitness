@@ -3,8 +3,8 @@ package com.theberdakh.fitness.feature.free_lessons
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theberdakh.fitness.core.data.NetworkFitnessRepository
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.mobile.toFreeLessonItem
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.domain.converter.toFreeLessonItem
 import com.theberdakh.fitness.feature.free_lessons.model.FreeLessonItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

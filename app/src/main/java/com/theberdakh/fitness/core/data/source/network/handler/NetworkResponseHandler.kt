@@ -1,11 +1,11 @@
-package com.theberdakh.fitness.core.network.handler
+package com.theberdakh.fitness.core.data.source.network.handler
 
 import android.util.Log
+import com.theberdakh.fitness.core.data.source.network.model.BaseNetworkModel
+import com.theberdakh.fitness.core.data.source.network.model.MessageModel
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.PagingResponse
 import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.core.network.model.BaseNetworkModel
-import com.theberdakh.fitness.core.network.model.MessageModel
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.PagingResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

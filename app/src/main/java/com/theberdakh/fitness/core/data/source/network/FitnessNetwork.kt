@@ -1,14 +1,13 @@
-package com.theberdakh.fitness.core.network
+package com.theberdakh.fitness.core.data.source.network
 
 import com.google.gson.GsonBuilder
-import com.theberdakh.fitness.core.network.api.FitnessNetworkApi
+import com.theberdakh.fitness.core.data.source.network.api.FitnessNetworkApi
 import com.theberdakh.fitness.core.preferences.FitnessPreferences
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 private const val LOGGING_INTERCEPTOR = "LOGGING_INTERCEPTOR"
 private const val QUERY_INTERCEPTOR = "QUERY_INTERCEPTOR"
 
-object CoreNetwork {
+object FitnessNetwork {
 
     val module = module {
 

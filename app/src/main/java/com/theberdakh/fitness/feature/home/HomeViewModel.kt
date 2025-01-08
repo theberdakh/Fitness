@@ -3,9 +3,8 @@ package com.theberdakh.fitness.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theberdakh.fitness.core.data.NetworkFitnessRepository
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.mobile.Lesson
-import com.theberdakh.fitness.core.network.model.mobile.toVideoItem
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.domain.converter.toVideoItem
 import com.theberdakh.fitness.feature.home.model.ListItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

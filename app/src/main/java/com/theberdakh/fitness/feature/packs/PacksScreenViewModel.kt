@@ -3,7 +3,7 @@ package com.theberdakh.fitness.feature.packs
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theberdakh.fitness.core.data.NetworkFitnessRepository
-import com.theberdakh.fitness.core.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.feature.packs.model.PackListItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

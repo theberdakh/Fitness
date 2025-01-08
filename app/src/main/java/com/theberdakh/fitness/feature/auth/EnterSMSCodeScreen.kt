@@ -9,9 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginRequest
+import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.auth.LoginResponse
 import com.theberdakh.fitness.databinding.ScreenEnterSmsCodeBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -43,7 +44,7 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun handleSuccess(data: LoginResponse) {
+    private fun handleSuccess(data: NetworkLoginResponse) {
         Log.i(TAG, "handleSuccess: $data")
         viewBinding.btnContinue.stopLoading()
         findNavController().navigate(R.id.action_enterSMSCodeScreen_to_addNameScreen)

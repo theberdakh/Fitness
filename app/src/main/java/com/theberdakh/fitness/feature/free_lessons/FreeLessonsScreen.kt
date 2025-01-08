@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenFreeLessonsBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.theberdakh.fitness.core.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.feature.free_lessons.model.FreeLessonItem
 import com.theberdakh.fitness.feature.lesson.LessonScreen
 import kotlinx.coroutines.flow.launchIn

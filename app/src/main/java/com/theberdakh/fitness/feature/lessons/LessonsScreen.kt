@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.databinding.ScreenLessonsBinding
 import com.theberdakh.fitness.feature.common.dialog.UniversalDialog
 import com.theberdakh.fitness.feature.lessons.adapter.LessonsModelAdapter

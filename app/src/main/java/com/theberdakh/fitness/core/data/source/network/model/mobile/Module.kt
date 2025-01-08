@@ -1,4 +1,4 @@
-package com.theberdakh.fitness.core.network.model.mobile
+package com.theberdakh.fitness.core.data.source.network.model.mobile
 
 import com.google.gson.annotations.SerializedName
 

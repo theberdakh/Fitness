@@ -1,20 +1,20 @@
 package com.theberdakh.fitness.core.data
 
-import com.theberdakh.fitness.core.network.api.FitnessNetworkApi
-import com.theberdakh.fitness.core.network.handler.NetworkResponseHandler
-import com.theberdakh.fitness.core.network.model.MessageModel
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.auth.LoginRequestBody
-import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
-import com.theberdakh.fitness.core.network.model.mobile.Profile
-import com.theberdakh.fitness.core.network.model.mobile.UpdateNameRequestBody
+import com.theberdakh.fitness.core.data.source.network.api.FitnessNetworkApi
+import com.theberdakh.fitness.core.data.source.network.handler.NetworkResponseHandler
+import com.theberdakh.fitness.core.data.source.network.model.MessageModel
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginRequest
+import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkSendCodeRequest
+import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkUpdateNameRequest
+
 
 class NetworkFitnessRepository(private val api: FitnessNetworkApi) :
     NetworkResponseHandler() {
 
-    fun sendCode(body: SendCodeRequestBody) = handleMessage<NetworkResponse<MessageModel>> { api.sendCode(body) }
+    fun sendCode(body: NetworkSendCodeRequest) = handleMessage<NetworkResponse<MessageModel>> { api.sendCode(body) }
 
-    fun login(body: LoginRequestBody) = handleNetworkResponse { api.login(body) }
+    fun login(body: NetworkLoginRequest) = handleNetworkResponse { api.login(body) }
 
     fun logout() = handleNetworkResponse { api.logout() }
 
@@ -22,7 +22,7 @@ class NetworkFitnessRepository(private val api: FitnessNetworkApi) :
 
     fun getProfile() = handleNetworkResponse { api.getProfile() }
 
-    fun updateName(name: String) = handleNetworkResponse { api.updateName(UpdateNameRequestBody(name)) }
+    fun updateName(name: String) = handleNetworkResponse { api.updateName(NetworkUpdateNameRequest(name)) }
 
     fun getSubscriptionPacks() = handleNetworkResponse { api.getSubscriptionPacks() }
 
