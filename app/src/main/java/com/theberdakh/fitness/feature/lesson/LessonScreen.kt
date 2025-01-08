@@ -11,9 +11,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.theberdakh.fitness.R
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.mobile.Lesson
 import com.theberdakh.fitness.databinding.ScreenLessonBinding
 import com.theberdakh.fitness.feature.lesson.adapter.LessonViewPagerAdapter
 import com.theberdakh.fitness.feature.lesson.checklist.LessonChecklistScreen
@@ -51,7 +51,7 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun handleSuccess(lesson: Lesson) {
+    private fun handleSuccess(lesson: NetworkLesson) {
         initViewPager(lesson)
     }
 
@@ -78,7 +78,7 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
         }
     }
 
-    private fun initViewPager(lesson: Lesson) {
+    private fun initViewPager(lesson: NetworkLesson) {
         Log.i(TAG, "initViewPager: $lesson")
         viewBinding.vpLesson.adapter = LessonViewPagerAdapter(
             requireActivity().supportFragmentManager,

@@ -2,7 +2,7 @@ package com.theberdakh.fitness.app
 
 import android.app.Application
 import com.theberdakh.fitness.core.data.CoreData
-import com.theberdakh.fitness.core.network.CoreNetwork
+import com.theberdakh.fitness.core.data.source.network.FitnessNetwork
 import com.theberdakh.fitness.core.preferences.CorePrefs
 import com.theberdakh.fitness.core.viewmodel.CoreViewModel
 import com.theberdakh.fitness.feature.common.Common
@@ -18,7 +18,7 @@ class FitnessApp: Application() {
         startKoin{
             androidLogger()
             androidContext(this@FitnessApp)
-            modules(listOf(CorePrefs.module, CoreNetwork.module, CoreData.module, CoreViewModel.module, Common.module))
+            modules(listOf(CorePrefs.module, FitnessNetwork.module, CoreData.module, CoreViewModel.module, Common.module))
         }
     }
 }

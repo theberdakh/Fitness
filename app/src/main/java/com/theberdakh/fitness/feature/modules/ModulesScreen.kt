@@ -1,7 +1,6 @@
 package com.theberdakh.fitness.feature.modules
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -9,8 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.core.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.databinding.ScreenModulesBinding
 import com.theberdakh.fitness.feature.lessons.LessonsScreen
 import com.theberdakh.fitness.feature.modules.adapter.ModulesAdapter
@@ -23,14 +21,12 @@ class ModulesScreen: Fragment(R.layout.screen_modules) {
     private val viewBinding by viewBinding(ScreenModulesBinding::bind)
     private val viewModel by viewModel<ModulesScreenViewModel>()
     private val adapter = ModulesAdapter()
-    private var packId = 0
-    private var orderId = 0
+    private var moduleId = ARG_MODULE_ID_DEFAULT
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        initArgs()
         initViews()
+        initArgs()
         initObservers()
 
     }
@@ -41,31 +37,22 @@ class ModulesScreen: Fragment(R.layout.screen_modules) {
         }
         viewBinding.rvModules.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         viewBinding.rvModules.adapter = adapter
-
-
-
-        adapter.setOnModuleExtendedClick { module ->
-            Log.i(TAG, "initViews: ${module.isAvailable}")
-            findNavController().navigate(R.id.action_modulesScreen_to_LessonsScreen, LessonsScreen.byModuleId(moduleId = module.moduleId, isAvailable = module.isAvailable))
+        adapter.setOnModuleClick { module ->
+            val arg= Bundle().apply {
+                putInt(LessonsScreen.ARG_MODULE_ID, module.moduleId)
+            }
+            findNavController().navigate(R.id.action_modulesScreen_to_LessonsScreen, arg)
         }
     }
 
     private fun initArgs() {
-        packId = arguments?.getInt(ARG_PACK_ID) ?: 0
-        Log.i(TAG, "initArgs: $packId")
-        orderId = arguments?.getInt(ARG_ORDER_ID) ?: 0
+        moduleId = arguments?.getInt(ARG_MODULE_ID) ?: ARG_MODULE_ID_DEFAULT
     }
 
     private fun initObservers() {
-        if (packId != 0) {
-            Log.i(TAG, "initObservers: $packId")
-            viewModel.getModules(packageId = packId)
+        if (moduleId != ARG_MODULE_ID_DEFAULT) {
+            viewModel.getModules(moduleId)
         }
-
-        if (orderId != 0) {
-            viewModel.getModulesByOrderId(orderId = orderId)
-        }
-
         viewModel.modules.onEach {
             when(it){
                 is NetworkResponse.Error -> handleError(it.message)
@@ -93,19 +80,7 @@ class ModulesScreen: Fragment(R.layout.screen_modules) {
     }
 
     companion object{
-        private const val ARG_PACK_ID = "module_id"
-        private const val ARG_ORDER_ID = "order_id"
-
-        fun byPackId(moduleId: Int = 0): Bundle {
-           return Bundle().apply {
-                putInt(ARG_PACK_ID, moduleId)
-            }
-        }
-
-        fun byOrderId(orderId: Int = 0): Bundle {
-            return Bundle().apply {
-                putInt(ARG_ORDER_ID, orderId)
-            }
-        }
+        private const val ARG_MODULE_ID_DEFAULT = -1
+        const val ARG_MODULE_ID = "module_id"
     }
 }

@@ -9,9 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import com.theberdakh.fitness.R
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.mobile.Profile
 import com.theberdakh.fitness.databinding.ScreenAddNameBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -45,7 +45,7 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
         viewBinding.btnContinue.stopLoading()
     }
 
-    private fun handleSuccess(data: Profile) {
+    private fun handleSuccess(data: NetworkProfile) {
         viewBinding.btnContinue.stopLoading()
         findNavController().navigate(R.id.action_addNameScreen_to_addGoalScreen)
         viewModel.resetUpdateNameState()

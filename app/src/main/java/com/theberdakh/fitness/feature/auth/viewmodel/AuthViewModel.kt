@@ -3,16 +3,17 @@ package com.theberdakh.fitness.feature.auth.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theberdakh.fitness.core.data.NetworkFitnessRepository
-import com.theberdakh.fitness.core.network.model.MessageModel
-import com.theberdakh.fitness.core.network.model.NetworkResponse
-import com.theberdakh.fitness.core.network.model.auth.LoginRequestBody
-import com.theberdakh.fitness.core.network.model.auth.LoginResponse
-import com.theberdakh.fitness.core.network.model.auth.SendCodeRequestBody
-import com.theberdakh.fitness.core.network.model.mobile.Profile
-import com.theberdakh.fitness.core.network.model.mobile.toDomain
+import com.theberdakh.fitness.core.data.source.network.model.MessageModel
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginRequest
+import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginResponse
+import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkSendCodeRequest
+import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkProfile
+import com.theberdakh.fitness.core.domain.converter.toDomain
 import com.theberdakh.fitness.core.preferences.FitnessPreferences
 import com.theberdakh.fitness.feature.auth.model.GoalPoster
 import com.theberdakh.fitness.feature.common.network.NetworkStateManager
+import com.theberdakh.fitness.feature.profile.model.ProfileItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -30,7 +31,7 @@ class AuthViewModel(
 
     fun sendCode(phone: String) = viewModelScope.launch {
         _sendCodeState.value = NetworkResponse.Loading
-        repository.sendCode(SendCodeRequestBody(phone)).onEach {
+        repository.sendCode(NetworkSendCodeRequest(phone)).onEach {
             _sendCodeState.value = when(it){
                 is NetworkResponse.Error -> NetworkResponse.Error(it.message)
                 NetworkResponse.Initial -> NetworkResponse.Initial
@@ -44,11 +45,11 @@ class AuthViewModel(
         _sendCodeState.value = NetworkResponse.Initial
     }
 
-    private val _loginState = MutableStateFlow<NetworkResponse<LoginResponse>>(NetworkResponse.Initial)
+    private val _loginState = MutableStateFlow<NetworkResponse<NetworkLoginResponse>>(NetworkResponse.Initial)
     val loginState = _loginState.asStateFlow()
     fun login(phone: String, code: String) = viewModelScope.launch {
         _loginState.value = NetworkResponse.Loading
-        repository.login(LoginRequestBody(phone = phone, verificationCode = code)).onEach {
+        repository.login(NetworkLoginRequest(phone = phone, verificationCode = code)).onEach {
             _loginState.value = when(it){
                 is NetworkResponse.Error -> NetworkResponse.Error(it.message)
                 is NetworkResponse.Success -> {
@@ -64,7 +65,7 @@ class AuthViewModel(
         }.launchIn(viewModelScope)
     }
 
-    private fun saveDataToPreferences(data: LoginResponse): Boolean {
+    private fun saveDataToPreferences(data: NetworkLoginResponse): Boolean {
         data.accessToken?.let { token ->
             preferences.accessToken = token
         }
@@ -81,7 +82,7 @@ class AuthViewModel(
         return true
     }
 
-    private val _updateNameState = MutableStateFlow<NetworkResponse<Profile>>(NetworkResponse.Initial)
+    private val _updateNameState = MutableStateFlow<NetworkResponse<NetworkProfile>>(NetworkResponse.Initial)
     val updateNameState = _updateNameState.asStateFlow()
 
     fun updateName(name: String) = viewModelScope.launch {
@@ -118,16 +119,18 @@ class AuthViewModel(
         }.launchIn(viewModelScope)
     }
 
-    private val _getProfileState = MutableStateFlow<NetworkResponse<Profile>>(NetworkResponse.Initial)
+    private val _getProfileState = MutableStateFlow<NetworkResponse<NetworkProfile>>(NetworkResponse.Initial)
     val getProfileState = _getProfileState.asStateFlow()
     fun getProfile() = viewModelScope.launch {
         networkStateManager.observeNetworkState().collect{ isConnected ->
             if (!isConnected) {
-                _getProfileState.value = NetworkResponse.Success(Profile(
+                _getProfileState.value = NetworkResponse.Success(
+                    NetworkProfile(
                     name = preferences.userName,
                     phone = preferences.userPhone,
                     targetId = preferences.userTargetId
-                ))
+                )
+                )
             } else {
                 repository.getProfile().onEach {
                     _getProfileState.value = when(it) {
@@ -148,7 +151,7 @@ class AuthViewModel(
 
     }
 
-    private fun saveProfileToPreferences(data: Profile): Boolean {
+    private fun saveProfileToPreferences(data: NetworkProfile): Boolean {
         data.name.let { preferences.userName = it }
         data.phone.let { preferences.userPhone = it }
         data.targetId?.let { preferences.userTargetId = it }

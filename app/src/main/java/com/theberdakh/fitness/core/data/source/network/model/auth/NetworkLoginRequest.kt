@@ -1,23 +1,22 @@
-package com.theberdakh.fitness.core.network.model.auth
+package com.theberdakh.fitness.core.data.source.network.model.auth
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginRequestBody(
+data class NetworkLoginRequest(
     val phone: String,
     @SerializedName("verification_code")
     val verificationCode: String
 )
 
-data class LoginResponse(
-    val user: LoginResponseUser?,
+data class NetworkLoginResponse(
+    val user: NetworkLoginUserDto?,
     @SerializedName("access_token")
     val accessToken: String?,
     @SerializedName("token_type")
-    val tokenType: String?,
-
+    val tokenType: String?
 )
 
-data class LoginResponseUser(
+data class NetworkLoginUserDto(
     val id: Int?,
     val name: String?,
     val phone: String?,

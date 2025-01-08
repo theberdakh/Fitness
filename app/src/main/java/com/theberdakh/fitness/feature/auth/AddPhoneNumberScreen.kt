@@ -10,8 +10,8 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
+import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.core.network.model.NetworkResponse
 import com.theberdakh.fitness.databinding.ScreenAddPhoneNumberBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import kotlinx.coroutines.flow.launchIn
