@@ -10,11 +10,11 @@ This fitness application follows a clean architecture pattern with clear separat
 | Total commits on Main branch | ![Main branch](https://img.shields.io/github/commit-activity/t/theberdakh/kotlin-practice/Main) | 
 | Licence                      | ![MIT License](https://img.shields.io/badge/License-MIT-green.svg)                              | 
 
-## About Project
-| Resource | Link                                                                                                                                          | 
-|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| Figma    | [Figma](https://www.figma.com/board/KFQJ2Za0yr0NpKFVhEpuAt/Fitness-app?node-id=0-1&p=f)                                                       | 
-| Postman  | [Postman](https://aralhubteam.postman.co/workspace/1d62bd13-5d81-4d75-8da9-6070cebe2d73/folder/39477068-a865022b-1830-44cf-ae2f-631235dfc1e0) |
+## Official resources for reference
+| Resource              | Link                                                                                                                                          | 
+|:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
+| User interface design | [Figma](https://www.figma.com/board/KFQJ2Za0yr0NpKFVhEpuAt/Fitness-app?node-id=0-1&p=f)                                                       | 
+| Remote database       | [Postman](https://aralhubteam.postman.co/workspace/1d62bd13-5d81-4d75-8da9-6070cebe2d73/folder/39477068-a865022b-1830-44cf-ae2f-631235dfc1e0) |
 
 ## Personal task log by date 
 
