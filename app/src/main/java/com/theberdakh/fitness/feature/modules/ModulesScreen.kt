@@ -82,5 +82,13 @@ class ModulesScreen: Fragment(R.layout.screen_modules) {
     companion object{
         private const val ARG_MODULE_ID_DEFAULT = -1
         const val ARG_MODULE_ID = "module_id"
+        private const val ARG_ORDER_ID = "order_id"
+        private const val ARG_ORDER_ID_DEFAULT = 0
+
+        fun byOrderId(orderId: Int = ARG_ORDER_ID_DEFAULT): Bundle {
+            return Bundle().apply {
+                putInt(ARG_MODULE_ID, orderId)
+            }
+        }
     }
 }

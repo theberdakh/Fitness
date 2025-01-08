@@ -35,44 +35,47 @@ The main application module containing:
 - Application class instance and DI initialization
 
 Tasks: 25/10/2021 
-- [+]  feat(auth): Add verification logic for user-entered codes
-- [+]  feat(auth): Implement user logout functionality
-- [-]  fix(auth): Redirect to login page on 401 error
-- [-]  feat(videos): Set up fake videos repository for testing
-- [-]  feat(videos): Implement video playback functionality
+- [x]  feat(auth): Add verification logic for user-entered codes
+- [x]  feat(auth): Implement user logout functionality
+- [ ]  fix(auth): Redirect to login page on 401 error
+- [ ]  feat(videos): Set up fake videos repository for testing
+- [ ]  feat(videos): Implement video playback functionality
 
 Tasks: 26/10/2021
-- [+]  add support YouTube video thumbnails in home video list
-- [+]  add support for video playback in lesson screen
-- [+]  add support for video playback in full screen mode
+- [x]  add support YouTube video thumbnails in home video list
+- [ ]  add support for video playback in lesson screen
+- [ ]  add support for video playback in full screen mode
 
 Tasks: 27/10/2021
-- [+] add support for network error handling
+- [x] add support for network error handling
 
 Tasks: 28/10/2021
-- [+] get packs from server
-- [-] get modules from server
-- [+] get random lessons from server
+- [x] get packs from server
+- [ ] get modules from server
+- [x] get random lessons from server
 
 Tasks: 3/1/2025 
-- [+] add all free videos without pagination 
-- [+] add description & checklist for each lesson
+- [x] add all free videos without pagination 
+- [x] add description & checklist for each lesson
 
 Tasks: 4/1/2025
-- [-] add lessons screen to show all modules 
-- [-] add lessons screen to show all lessons in a module
-- [-] add support to show videos in lesson screen
+- [ ] add lessons screen to show all modules 
+- [ ] add lessons screen to show all lessons in a module
+- [ ] add support to show videos in lesson screen
 
 Tasks 6/1/2025
-- [+] my orders screen [subscribed packs]
-- [+] my modules screen 
-- [+] lessons screen
+- [x] my orders screen [subscribed packs]
+- [x] my modules screen 
+- [x] lessons screen
 
 Tasks 7/1/2025
-- [+] modules unstarted status, lesson numbers 
-- [+] lesson lock based on lesson_view_finished (preferably on top of thumbnail)
-- [+] show dialog when locked lesson clicked 
+- [x] modules unstarted status, lesson numbers 
+- [x] lesson lock based on lesson_view_finished (preferably on top of thumbnail)
+- [x] show dialog when locked lesson clicked 
 - [] navigate to lesson screen when unlocked lesson clicked
 - [] update text of finish dialog text 
+
+Tasks 8/1/2025
+- [] 
 
 

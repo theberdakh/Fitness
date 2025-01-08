@@ -9,7 +9,7 @@ data class Module(
     val packId: Int
 )
 
-data class OrderModule(
+data class NetworkOrderModule(
     val id: Int,
     val title: String,
     @SerializedName("pack_id")
@@ -18,5 +18,14 @@ data class OrderModule(
     val isViewFinished: Boolean,
     @SerializedName("is_available")
     val isAvailable: Boolean,
-    val lessons: List<OrderLesson>
+    val lessons: List<NetworkLessonDto>
+)
+
+data class NetworkLessonDto(
+    val id: Int,
+    val title: String,
+    @SerializedName("module_id")
+    val moduleId: Int,
+    @SerializedName("is_free")
+    val isFree: Boolean?,
 )
