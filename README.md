@@ -29,52 +29,5 @@ For example, to send arguments from ScreenA to ScreenB, you should use ScreenB's
 findNavController().navigate(R.id.action_screenA_to_screenB, ScreenB.args("arg1", "arg2"))
 ```
 
-## Personal task log by date 
-
-Tasks: 25/10/2021 
-- [x]  feat(auth): Add verification logic for user-entered codes
-- [x]  feat(auth): Implement user logout functionality
-- [ ]  fix(auth): Redirect to login page on 401 error
-- [ ]  feat(videos): Set up fake videos repository for testing
-- [ ]  feat(videos): Implement video playback functionality
-
-Tasks: 26/10/2021
-- [x]  add support YouTube video thumbnails in home video list
-- [ ]  add support for video playback in lesson screen
-- [ ]  add support for video playback in full screen mode
-
-Tasks: 27/10/2021
-- [x] add support for network error handling
-
-Tasks: 28/10/2021
-- [x] get packs from server
-- [ ] get modules from server
-- [x] get random lessons from server
-
-Tasks: 3/1/2025 
-- [x] add all free videos without pagination 
-- [x] add description & checklist for each lesson
-
-Tasks: 4/1/2025
-- [ ] add lessons screen to show all modules 
-- [ ] add lessons screen to show all lessons in a module
-- [ ] add support to show videos in lesson screen
-
-Tasks 6/1/2025
-- [x] my orders screen [subscribed packs]
-- [x] my modules screen 
-- [x] lessons screen
-
-Tasks 7/1/2025
-- [x] modules unstarted status, lesson numbers 
-- [x] lesson lock based on lesson_view_finished (preferably on top of thumbnail)
-- [x] show dialog when locked lesson clicked 
-- [] navigate to lesson screen when unlocked lesson clicked
-- [] update text of finish dialog text 
-
-Tasks 8/1/2025
-- [] start documenting code
-- [] extract data layer
-- [] extract domain layer
 
 
