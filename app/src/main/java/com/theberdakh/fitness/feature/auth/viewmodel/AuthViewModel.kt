@@ -2,77 +2,148 @@ package com.theberdakh.fitness.feature.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.data.NetworkFitnessRepository
-import com.theberdakh.fitness.core.data.source.network.model.MessageModel
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
+import com.theberdakh.fitness.core.data.source.FitnessRepository
+import com.theberdakh.fitness.core.data.source.NetworkResult
+import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkMessage
 import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkProfile
+import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkUpdateNameRequest
 import com.theberdakh.fitness.core.domain.converter.toDomain
 import com.theberdakh.fitness.core.preferences.FitnessPreferences
 import com.theberdakh.fitness.feature.auth.model.GoalPoster
 import com.theberdakh.fitness.feature.common.network.NetworkStateManager
-import com.theberdakh.fitness.feature.profile.model.ProfileItem
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 
 class AuthViewModel(
-    private val repository: NetworkFitnessRepository,
+    private val repository: FitnessRepository,
     private val preferences: FitnessPreferences,
     private val networkStateManager: NetworkStateManager
 ) : ViewModel() {
 
-    private val _sendCodeState = MutableStateFlow<NetworkResponse<MessageModel>>(NetworkResponse.Initial)
-    val sendCodeState = _sendCodeState.asStateFlow()
+    fun sendCode(code: String) = sendCodeUiState(code, repository).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = SendCodeUiState.Loading
+    )
 
-    fun sendCode(phone: String) = viewModelScope.launch {
-        _sendCodeState.value = NetworkResponse.Loading
-        repository.sendCode(NetworkSendCodeRequest(phone)).onEach {
-            _sendCodeState.value = when(it){
-                is NetworkResponse.Error -> NetworkResponse.Error(it.message)
-                NetworkResponse.Initial -> NetworkResponse.Initial
-                NetworkResponse.Loading ->  NetworkResponse.Loading
-                is NetworkResponse.Success -> NetworkResponse.Success(it.data)
-            }
-        }.launchIn(viewModelScope)
-    }
+    fun login(phone: String, code: String) =
+        loginState(phone, code, repository, preferences).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = LoginUiState.Loading
+        )
 
-    fun resetSendCodeState() {
-        _sendCodeState.value = NetworkResponse.Initial
-    }
+    fun updateName(name: String) = updateNameUiState(name, repository).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = UpdateNameUiState.Loading
+    )
 
-    private val _loginState = MutableStateFlow<NetworkResponse<NetworkLoginResponse>>(NetworkResponse.Initial)
-    val loginState = _loginState.asStateFlow()
-    fun login(phone: String, code: String) = viewModelScope.launch {
-        _loginState.value = NetworkResponse.Loading
-        repository.login(NetworkLoginRequest(phone = phone, verificationCode = code)).onEach {
-            _loginState.value = when(it){
-                is NetworkResponse.Error -> NetworkResponse.Error(it.message)
-                is NetworkResponse.Success -> {
-                    if (saveDataToPreferences(it.data)) {
-                        NetworkResponse.Success(it.data)
-                    } else {
-                        NetworkResponse.Loading
-                    }
-                }
-                NetworkResponse.Loading -> NetworkResponse.Loading
-                NetworkResponse.Initial -> NetworkResponse.Initial
-            }
-        }.launchIn(viewModelScope)
-    }
+    val targetsUiState = getTargetsUiState(repository, preferences).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = GetTargetsUiState.Loading
+    )
 
-    private fun saveDataToPreferences(data: NetworkLoginResponse): Boolean {
-        data.accessToken?.let { token ->
-            preferences.accessToken = token
+    val getProfileUiState = getProfileUiState(repository, preferences).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = GetProfileUiState.Loading
+    )
+
+    val logOutUiState = logOutUiState(repository, preferences).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = LogOutUiState.Loading
+    )
+}
+
+private fun logOutUiState(repository: FitnessRepository, preferences: FitnessPreferences) = flow {
+    emit(LogOutUiState.Loading)
+    when (val result = repository.logout()) {
+        is NetworkResult.Error -> emit(LogOutUiState.Error)
+        is NetworkResult.Success -> {
+            preferences.clear()
+            emit(LogOutUiState.Success(result.data))
         }
-        data.tokenType?.let { tokenType ->
-            preferences.tokenType = tokenType
-        }
+    }
+}
 
+sealed interface LogOutUiState {
+    data class Success(val data: String) : LogOutUiState
+    data object Error : LogOutUiState
+    data object Loading : LogOutUiState
+}
+
+private fun getProfileUiState(repository: FitnessRepository, preferences: FitnessPreferences) = flow {
+
+    fun saveProfileToPreferences(data: NetworkProfile): Boolean {
+        data.name.let { preferences.userName = it }
+        data.phone.let { preferences.userPhone = it }
+        data.targetId?.let { preferences.userTargetId = it }
+        return true
+    }
+
+    when (val result = repository.getProfile()) {
+        is NetworkResult.Error -> emit(GetProfileUiState.Error)
+        is NetworkResult.Success -> {
+            preferences.isUserLoggedIn = true
+            saveProfileToPreferences(result.data)
+            emit(GetProfileUiState.Success(result.data))
+        }
+    }
+}
+
+sealed interface GetProfileUiState {
+    data class Success(val data: NetworkProfile) : GetProfileUiState
+    data object Error : GetProfileUiState
+    data object Loading : GetProfileUiState
+}
+
+private fun getTargetsUiState(repository: FitnessRepository, preferences: FitnessPreferences) = flow {
+    when (val result = repository.getTargets()) {
+        is NetworkResult.Error -> emit(GetTargetsUiState.Error)
+        is NetworkResult.Success -> {
+            preferences.isUserLoggedIn = true
+            emit(GetTargetsUiState.Success(result.data.map { it.toDomain() }))
+        }
+    }
+}
+
+sealed interface GetTargetsUiState {
+    data class Success(val data: List<GoalPoster>) : GetTargetsUiState
+    data object Error : GetTargetsUiState
+    data object Loading : GetTargetsUiState
+}
+
+private fun updateNameUiState(name: String, repository: FitnessRepository) = flow {
+    when (val result = repository.updateName(NetworkUpdateNameRequest(name))) {
+        is NetworkResult.Error -> emit(UpdateNameUiState.Error)
+        is NetworkResult.Success -> emit(UpdateNameUiState.Success(result.data))
+    }
+}
+
+sealed interface UpdateNameUiState {
+    data class Success(val data: NetworkProfile) : UpdateNameUiState
+    data object Error : UpdateNameUiState
+    data object Loading : UpdateNameUiState
+}
+
+private fun loginState(
+    phone: String,
+    code: String,
+    repository: FitnessRepository,
+    preferences: FitnessPreferences
+) = flow {
+
+    fun saveDataToPreferences(data: NetworkLoginResponse): Boolean {
+        data.accessToken?.let { token -> preferences.accessToken = token }
+        data.tokenType?.let { tokenType -> preferences.tokenType = tokenType }
         data.user?.let { user ->
             user.id?.let { id -> preferences.userId = id }
             user.name?.let { name -> preferences.userName = name }
@@ -81,95 +152,37 @@ class AuthViewModel(
         }
         return true
     }
-
-    private val _updateNameState = MutableStateFlow<NetworkResponse<NetworkProfile>>(NetworkResponse.Initial)
-    val updateNameState = _updateNameState.asStateFlow()
-
-    fun updateName(name: String) = viewModelScope.launch {
-        _updateNameState.value = NetworkResponse.Loading
-        repository.updateName(name).onEach {
-           _updateNameState.value =  when (it) {
-               is NetworkResponse.Error -> NetworkResponse.Error(it.message)
-               NetworkResponse.Initial -> NetworkResponse.Initial
-               NetworkResponse.Loading -> NetworkResponse.Loading
-               is NetworkResponse.Success -> NetworkResponse.Success(it.data)
-           }
-        }.launchIn(viewModelScope)
-    }
-
-    fun resetUpdateNameState() {
-        _updateNameState.value = NetworkResponse.Initial
-    }
-
-    private val _getTargetsState = MutableStateFlow<NetworkResponse<List<GoalPoster>>>(NetworkResponse.Initial)
-    val getTargetsState = _getTargetsState.asStateFlow()
-
-    fun getTargets() = viewModelScope.launch {
-        _getTargetsState.value = NetworkResponse.Loading
-        repository.getTargets().onEach { targets ->
-            _getTargetsState.value = when (targets) {
-                is NetworkResponse.Error ->  NetworkResponse.Error(targets.message)
-                NetworkResponse.Loading -> NetworkResponse.Loading
-                is NetworkResponse.Success -> {
-                    preferences.isUserLoggedIn = true
-                    NetworkResponse.Success(targets.data.map { it.toDomain() })
-                }
-                NetworkResponse.Initial -> NetworkResponse.Initial
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    private val _getProfileState = MutableStateFlow<NetworkResponse<NetworkProfile>>(NetworkResponse.Initial)
-    val getProfileState = _getProfileState.asStateFlow()
-    fun getProfile() = viewModelScope.launch {
-        networkStateManager.observeNetworkState().collect{ isConnected ->
-            if (!isConnected) {
-                _getProfileState.value = NetworkResponse.Success(
-                    NetworkProfile(
-                    name = preferences.userName,
-                    phone = preferences.userPhone,
-                    targetId = preferences.userTargetId
-                )
-                )
+    emit(LoginUiState.Loading)
+    when (val result =
+        repository.login(NetworkLoginRequest(phone = phone, verificationCode = code))) {
+        is NetworkResult.Error -> emit(LoginUiState.Error)
+        is NetworkResult.Success -> {
+            if (saveDataToPreferences(data = result.data)) {
+                emit(LoginUiState.Success(result.data))
             } else {
-                repository.getProfile().onEach {
-                    _getProfileState.value = when(it) {
-                        is NetworkResponse.Error -> NetworkResponse.Error(it.message)
-                        NetworkResponse.Loading -> NetworkResponse.Loading
-                        is NetworkResponse.Success -> {
-                            if (saveProfileToPreferences(it.data)) {
-                                NetworkResponse.Success(it.data)
-                            } else {
-                                NetworkResponse.Loading
-                            }
-                        }
-                        NetworkResponse.Initial -> NetworkResponse.Initial
-                    }
-                }.launchIn(viewModelScope)
+                emit(LoginUiState.Loading)
             }
         }
+    }
+}
 
+sealed interface LoginUiState {
+    data class Success(val data: NetworkLoginResponse) : LoginUiState
+    data object Error : LoginUiState
+    data object Loading : LoginUiState
+}
+
+private fun sendCodeUiState(code: String, repository: FitnessRepository): Flow<SendCodeUiState> =
+    flow {
+        emit(SendCodeUiState.Loading)
+        when (val result = repository.sendCode(NetworkSendCodeRequest(""))) {
+            is NetworkResult.Error -> emit(SendCodeUiState.Error)
+            is NetworkResult.Success -> emit(SendCodeUiState.Success(result.data))
+        }
     }
 
-    private fun saveProfileToPreferences(data: NetworkProfile): Boolean {
-        data.name.let { preferences.userName = it }
-        data.phone.let { preferences.userPhone = it }
-        data.targetId?.let { preferences.userTargetId = it }
-        return true
-    }
-
-
-    fun logout() = viewModelScope.launch {
-        repository.logout().onEach {
-            when(it) {
-                is NetworkResponse.Error -> NetworkResponse.Error(it.message)
-                NetworkResponse.Loading -> NetworkResponse.Loading
-                is NetworkResponse.Success -> {
-                    preferences.clear()
-                    NetworkResponse.Success(it.data)
-                }
-                NetworkResponse.Initial -> NetworkResponse.Initial
-            }
-        }.launchIn(viewModelScope)
-    }
+sealed interface SendCodeUiState {
+    data class Success(val data: NetworkMessage) : SendCodeUiState
+    data object Error : SendCodeUiState
+    data object Loading : SendCodeUiState
 }

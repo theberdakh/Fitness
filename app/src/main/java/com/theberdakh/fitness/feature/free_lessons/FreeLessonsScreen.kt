@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenFreeLessonsBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.feature.free_lessons.model.FreeLessonItem
 import com.theberdakh.fitness.feature.lesson.LessonScreen
 import kotlinx.coroutines.flow.launchIn
@@ -22,8 +21,6 @@ class FreeLessonsScreen: Fragment(R.layout.screen_free_lessons) {
             navigateToLesson(freeLessonItem)
         }
     )
-
-
 
 
     private fun navigateToLesson(freeLessonItem: FreeLessonItem.FreeLessonVideoItem) {
@@ -47,13 +44,11 @@ class FreeLessonsScreen: Fragment(R.layout.screen_free_lessons) {
     }
 
     private fun initObservers() {
-        viewModel.getAllFreeLessons()
-        viewModel.freeVideosState.onEach {
+        viewModel.getAllFreeLessonsUiState.onEach {
             when(it){
-                is NetworkResponse.Error ->  handleError()
-                NetworkResponse.Initial -> handleInitial()
-                NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data)
+                FreeLessonsUiState.Error -> handleError()
+                FreeLessonsUiState.Loading -> handleLoading()
+                is FreeLessonsUiState.Success -> handleSuccess(it.data)
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

@@ -2,7 +2,7 @@ package com.theberdakh.fitness.core.data.source.network.model.mobile
 
 import com.google.gson.annotations.SerializedName
 
-data class Module(
+data class NetworkModule(
     val id: Int,
     val title: String,
     @SerializedName("pack_id")

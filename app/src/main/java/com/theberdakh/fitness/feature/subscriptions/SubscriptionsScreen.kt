@@ -8,7 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenSubscriptionBinding
 import com.theberdakh.fitness.feature.subscriptions.adapter.SubscriptionPackItemAdapter
@@ -38,15 +37,14 @@ class SubscriptionsScreen: Fragment(R.layout.screen_subscription) {
     }
 
     private fun initObservers() {
-        viewModel.getSubscriptionPacks()
-        viewModel.subscriptionPackState.onEach {
+        viewModel.subscriptionPacksUiState.onEach {
             when(it){
-                is NetworkResponse.Error -> handleError()
-                NetworkResponse.Initial -> handleInitial()
-                NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data)
+                SubscriptionUiState.Error -> handleError()
+                SubscriptionUiState.Loading -> handleLoading()
+                is SubscriptionUiState.Success -> handleSuccess(it.subscriptionPacks)
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
     }
 
     private fun handleError() {

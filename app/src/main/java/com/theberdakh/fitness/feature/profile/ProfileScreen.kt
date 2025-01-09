@@ -7,10 +7,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.databinding.ScreenProfileBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
+import com.theberdakh.fitness.feature.auth.viewmodel.GetProfileUiState
+import com.theberdakh.fitness.feature.auth.viewmodel.LogOutUiState
 import com.theberdakh.fitness.feature.common.dialog.UniversalDialog
 import com.theberdakh.fitness.feature.profile.adapter.ProfileAdapter
 import com.theberdakh.fitness.feature.profile.model.ProfileItem
@@ -33,13 +34,11 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
     }
 
     private fun getProfile() {
-        viewModel.getProfile()
-        viewModel.getProfileState.onEach {
-            when (it) {
-                is NetworkResponse.Error -> handleError(it.message)
-                NetworkResponse.Initial -> handleInitial()
-                NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data)
+        viewModel.getProfileUiState.onEach {
+            when(it){
+                GetProfileUiState.Error -> handleError("Error")
+                GetProfileUiState.Loading -> handleLoading()
+                is GetProfileUiState.Success -> handleSuccess(it.data)
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
@@ -89,8 +88,14 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
                             .setTitle(getString(R.string.exit))
                             .setMessage(getString(R.string.message_are_your_sure_to_leave))
                             .setPrimaryButton(getString(R.string.exit)) {
-                                viewModel.logout()
-                                findNavController().navigate(R.id.action_mainScreen_to_LogoScreen)
+                                viewModel.logOutUiState.onEach {
+                                    when(it){
+                                        LogOutUiState.Error -> handleError("Log out error")
+                                        LogOutUiState.Loading -> handleLoading()
+                                        is LogOutUiState.Success ->  findNavController().navigate(R.id.action_mainScreen_to_LogoScreen)
+                                    }
+                                }
+
                             }
                             .setSecondaryButton(getString(R.string.stay))
                             .build().show()

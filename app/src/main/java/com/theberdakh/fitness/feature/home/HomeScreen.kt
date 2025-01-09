@@ -9,16 +9,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenHomeBinding
 import com.theberdakh.fitness.feature.common.network.NetworkStateManager
 import com.theberdakh.fitness.feature.home.adapter.HomeAdapter
 import com.theberdakh.fitness.feature.home.model.ListItem
 import com.theberdakh.fitness.feature.lesson.LessonScreen
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -62,15 +58,16 @@ class HomeScreen : Fragment(R.layout.screen_home) {
     }
 
     private fun initObservers() {
-        homeViewModel.getRandomFreeLessons()
-        homeViewModel.freeLessons.onEach {
-            when (it) {
-                is NetworkResponse.Error -> handleError(it.message)
-                NetworkResponse.Initial -> handleInitial()
-                NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data)
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.homeUiState.collect{ state ->
+                when(state){
+                    HomeUiState.Error -> Log.e(TAG, "initObservers: error", )
+                    HomeUiState.Loading -> Log.i(TAG, "initObservers: loading")
+                    is HomeUiState.Success -> handleSuccess(state.data)
+                }
             }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
+
     }
 
     private fun handleSuccess(data: List<ListItem.VideoItem>) {

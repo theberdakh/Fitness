@@ -11,7 +11,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenLessonBinding
@@ -40,15 +39,13 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
     }
 
     private fun initObservers() {
-        viewModel.getLesson(lessonId)
-        viewModel.lesson.onEach {
+        viewModel.getLessonUiState(lessonId).onEach {
             when(it){
-                is NetworkResponse.Error -> handleError(it.message)
-                NetworkResponse.Initial -> handleInitial()
-                NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data)
+                LessonUiState.Error -> handleError("Error")
+                LessonUiState.Loading -> handleLoading()
+                is LessonUiState.Success -> handleSuccess(it.data)
             }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
     }
 
     private fun handleSuccess(lesson: NetworkLesson) {

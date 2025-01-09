@@ -7,11 +7,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.databinding.ScreenPacksBinding
 import com.theberdakh.fitness.feature.modules.ModulesScreen
 import com.theberdakh.fitness.feature.packs.adapter.PackListAdapter
 import com.theberdakh.fitness.feature.packs.model.PackListItem
+import com.theberdakh.fitness.feature.subscriptions.model.SubscriptionPackItem
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,19 +32,17 @@ class PacksScreen: Fragment(R.layout.screen_packs) {
     }
 
     private fun initObservers() {
-        viewModel.getSubscribedPacks()
-        viewModel.subscriptionPacks.onEach {
+        viewModel.subscriptionPacksUiState.onEach {
           when(it){
-              is NetworkResponse.Error -> handleError(it.message)
-              NetworkResponse.Initial -> handleInitial()
-              NetworkResponse.Loading -> handleLoading()
-              is NetworkResponse.Success -> handleSuccess(it)
+              SubscriptionUiState.Error -> handleError("Error")
+              SubscriptionUiState.Loading ->  handleLoading()
+              is SubscriptionUiState.Success -> handleSuccess(it.subscriptionPacks)
           }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun handleSuccess(it: NetworkResponse.Success<List<PackListItem>>) {
-        adapter.submitList(it.data)
+    private fun handleSuccess(packs: List<PackListItem>) {
+        adapter.submitList(packs)
     }
 
     private fun handleError(message: String) {

@@ -5,17 +5,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
-import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenEnterSmsCodeBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
-import kotlinx.coroutines.flow.launchIn
+import com.theberdakh.fitness.feature.auth.viewmodel.LoginUiState
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,20 +26,9 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
 
         initArgs()
         initViews()
-        initObservers()
 
     }
 
-    private fun initObservers() {
-        viewModel.loginState.onEach {
-            when (it) {
-                is NetworkResponse.Error -> handleError(it.message)
-                NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data)
-                NetworkResponse.Initial -> handleNull()
-            }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
-    }
 
     private fun handleSuccess(data: NetworkLoginResponse) {
         Log.i(TAG, "handleSuccess: $data")
@@ -82,7 +68,13 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
     }
 
     private fun sendRequest(code: String) {
-        viewModel.login(phone = phoneNumber, code = code)
+        viewModel.login(phone = phoneNumber, code = code).onEach {
+            when(it){
+                LoginUiState.Error -> handleError("Error")
+                LoginUiState.Loading -> handleLoading()
+                is LoginUiState.Success -> handleSuccess(it.data)
+            }
+        }
     }
 
     private fun initArgs() {

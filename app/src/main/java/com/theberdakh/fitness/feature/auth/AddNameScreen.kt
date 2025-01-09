@@ -9,11 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import com.theberdakh.fitness.R
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenAddNameBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
+import com.theberdakh.fitness.feature.auth.viewmodel.UpdateNameUiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,29 +26,12 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
-        initObservers()
 
-    }
-
-    private fun initObservers() {
-        viewModel.updateNameState.onEach {
-            when(it){
-                is NetworkResponse.Error -> handleError(it.message)
-                NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data)
-                NetworkResponse.Initial -> handleNull()
-            }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
-    }
-
-    private fun handleNull() {
-        viewBinding.btnContinue.stopLoading()
     }
 
     private fun handleSuccess(data: NetworkProfile) {
         viewBinding.btnContinue.stopLoading()
         findNavController().navigate(R.id.action_addNameScreen_to_addGoalScreen)
-        viewModel.resetUpdateNameState()
     }
 
     private fun handleLoading() {
@@ -75,6 +58,12 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
 
     private fun sendRequest() {
         val inputText = viewBinding.etName.text.toString()
-        viewModel.updateName(inputText)
+        viewModel.updateName(inputText).onEach {
+            when(it){
+                UpdateNameUiState.Error -> handleError("Error")
+                UpdateNameUiState.Loading -> handleLoading()
+                is UpdateNameUiState.Success -> handleSuccess(it.data)
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 }

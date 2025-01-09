@@ -1,7 +1,7 @@
 package com.theberdakh.fitness.core.data.source.network
 
 import com.google.gson.GsonBuilder
-import com.theberdakh.fitness.core.data.source.network.api.FitnessNetworkApi
+import com.theberdakh.fitness.core.data.source.network.retrofit.FitnessNetworkApi
 import com.theberdakh.fitness.core.preferences.FitnessPreferences
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -16,9 +16,7 @@ private const val LOGGING_INTERCEPTOR = "LOGGING_INTERCEPTOR"
 private const val QUERY_INTERCEPTOR = "QUERY_INTERCEPTOR"
 
 object FitnessNetwork {
-
     val module = module {
-
         factory<Converter.Factory> {
             val gson = GsonBuilder()
                 .setLenient()

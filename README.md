@@ -65,6 +65,8 @@ Tasks 7/1/2025
 - [] update text of finish dialog text 
 
 Tasks 8/1/2025
-- [] 
+- [] start documenting code
+- [] extract data layer
+- [] extract domain layer
 
 

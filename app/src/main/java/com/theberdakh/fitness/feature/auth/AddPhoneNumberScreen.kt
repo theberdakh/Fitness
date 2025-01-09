@@ -6,14 +6,13 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.data.source.network.model.NetworkResponse
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenAddPhoneNumberBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
+import com.theberdakh.fitness.feature.auth.viewmodel.SendCodeUiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,7 +26,6 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
-        initObservers()
 
         viewBinding.btnContinue.setOnClickListener {
             Log.i(TAG, "onViewCreated: btnContinue clicked")
@@ -35,27 +33,12 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
         }
     }
 
-    private fun initObservers() {
-        viewModel.sendCodeState.onEach {
-            when(it) {
-                is NetworkResponse.Error -> handleError(it.message)
-                NetworkResponse.Loading -> handleLoading()
-                is NetworkResponse.Success -> handleSuccess(it.data.toString())
-                NetworkResponse.Initial -> {handleNull()}
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun handleNull() {
-        Log.i(TAG, "handleNull")
-    }
 
     private fun handleSuccess(data: String) {
         Log.i(TAG, "handleSuccess: $data")
         viewBinding.btnContinue.stopLoading()
         val arg = Bundle().apply { putString(EnterSMSCodeScreen.ARG_PHONE_NUMBER, phoneNumber) }
         findNavController().navigate(R.id.action_addPhoneNumberScreen_to_enterSMSCodeScreen, arg)
-        viewModel.resetSendCodeState()
     }
 
     private fun handleLoading() {
@@ -74,7 +57,13 @@ class AddPhoneNumberScreen: Fragment(R.layout.screen_add_phone_number) {
         val inputText = viewBinding.etPhoneNumber.text.toString()
         if (isValidPhoneNumber(inputText)){
             phoneNumber = "$PHONE_NUMBER_PREFIX$inputText"
-            viewModel.sendCode(phoneNumber)
+            viewModel.sendCode(phoneNumber).onEach {
+                when(it){
+                    SendCodeUiState.Error -> handleError("Error")
+                    SendCodeUiState.Loading -> handleLoading()
+                    is SendCodeUiState.Success -> handleSuccess(it.data.message)
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
         } else {
             viewBinding.tilPhoneNumber.error = getString(R.string.error_invalid_phone_number)
         }
