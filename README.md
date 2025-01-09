@@ -24,7 +24,7 @@ This fitness application follows a clean architecture pattern with clear separat
 ## How to
 ### Send arguments between fragments
 This project does not use Google's safe args plugin. Instead, it uses a custom implementation to send arguments between fragments.
-For example, to send arguments from ScreenA to ScreenB, you should use ScreenB's companion object function of ScreenB.args() which contains all the arguments ScreenB needs. Code: 
+For example, to send arguments from ScreenA to ScreenB, you should use ScreenB's companion object function of ScreenB.args() which contains all the arguments ScreenB needs: 
 ```kotlin
 findNavController().navigate(R.id.action_screenA_to_screenB, ScreenB.args("arg1", "arg2"))
 ```
