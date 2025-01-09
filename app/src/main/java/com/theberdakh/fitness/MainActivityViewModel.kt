@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SplashScreenViewModel(private val preferences: FitnessPreferences): ViewModel() {
+class MainActivityViewModel(private val preferences: FitnessPreferences): ViewModel() {
     private val _isLoading = MutableStateFlow(true);
     val isLoading = _isLoading.asStateFlow();
     val isLoggedIn = preferences.isUserLoggedIn

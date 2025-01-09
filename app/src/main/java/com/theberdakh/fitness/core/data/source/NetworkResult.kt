@@ -1,17 +1,21 @@
 package com.theberdakh.fitness.core.data.source
 
+import kotlinx.serialization.Serializable
+
 
 sealed class NetworkResult<out T> {
-    data class Success<T>(val data: T) : NetworkResult<T>()
-    data class Error(val exception: Throwable) : NetworkResult<Nothing>()
+    data class Success<out T>(val data: T) : NetworkResult<T>()
+    data class Error(val message: String, val exception: Throwable? = null) : NetworkResult<Nothing>()
 }
 
 /**
- * Simple wrapper to make request and wrap to NetworkResult
+ * Error model of server's response error to display error message to user in UI
+ *
  * */
-suspend fun <T> makeRequest(apiCall: suspend () -> T): NetworkResult<T> = try {
-    apiCall()
-    NetworkResult.Success(apiCall())
-} catch (e: Exception) {
-    NetworkResult.Error(e)
-}
+@Serializable
+data class NetworkServerError(
+    val message: String,
+    val errors: Map<String, List<String>>
+)
+
+

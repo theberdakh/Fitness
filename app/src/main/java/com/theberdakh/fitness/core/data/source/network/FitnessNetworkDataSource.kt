@@ -1,5 +1,6 @@
 package com.theberdakh.fitness.core.data.source.network
 
+import com.theberdakh.fitness.core.data.source.NetworkResult
 import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkMessage
 import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.core.data.source.network.model.auth.NetworkLoginResponse
@@ -16,31 +17,31 @@ import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkUpdat
 /*Inspired from https://github.com/android/nowinandroid/blob/main/core/network/src/main/kotlin/com/google/samples/apps/nowinandroid/core/network/NiaNetworkDataSource.kt */
 interface FitnessNetworkDataSource {
 
-    suspend fun sendCode(request: NetworkSendCodeRequest): NetworkMessage
+    suspend fun sendCode(request: NetworkSendCodeRequest): NetworkResult<NetworkMessage>
 
-    suspend fun login(request: NetworkLoginRequest): NetworkLoginResponse
+    suspend fun login(request: NetworkLoginRequest): NetworkResult<NetworkLoginResponse>
 
-    suspend fun logout(): String
+    suspend fun logout(): NetworkResult<String>
 
-    suspend fun getTargets(): List<NetworkTarget>
+    suspend fun getTargets(): NetworkResult<List<NetworkTarget>>
 
-    suspend fun getProfile(): NetworkProfile
+    suspend fun getProfile(): NetworkResult<NetworkProfile>
 
-    suspend fun updateName(request: NetworkUpdateNameRequest): NetworkProfile
+    suspend fun updateName(request: NetworkUpdateNameRequest): NetworkResult<NetworkProfile>
 
-    suspend fun getSubscriptionPacks(): List<NetworkPack>
+    suspend fun getSubscriptionPacks(): NetworkResult<List<NetworkPack>>
 
-    suspend fun getModules(packId: Int): List<NetworkModule>
+    suspend fun getModules(packId: Int): NetworkResult<List<NetworkModule>>
 
-    suspend fun getLessons(moduleId: Int): List<NetworkLesson>
+    suspend fun getLessons(moduleId: Int): NetworkResult<List<NetworkLesson>>
 
-    suspend fun getRandomFreeLessons(): List<NetworkLesson>
+    suspend fun getRandomFreeLessons(): NetworkResult<List<NetworkLesson>>
 
-    suspend fun getFreeLessons(perPage: Int, cursor: String?): List<NetworkLesson>
+    suspend fun getFreeLessons(perPage: Int, cursor: String?): NetworkResult<List<NetworkLesson>>
 
-    suspend fun getLesson(lessonId: Int): NetworkLesson
+    suspend fun getLesson(lessonId: Int): NetworkResult<NetworkLesson>
 
-    suspend fun getMyOrders(): List<NetworkOrder>
+    suspend fun getMyOrders(): NetworkResult<List<NetworkOrder>>
 
-    suspend fun getModulesByOrderId(orderId: Int): List<NetworkOrderModule>
+    suspend fun getModulesByOrderId(orderId: Int): NetworkResult<List<NetworkOrderModule>>
 }

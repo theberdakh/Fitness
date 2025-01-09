@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android )
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.1.0'
 }
 
 android {
@@ -50,6 +51,7 @@ dependencies {
 
     implementation(libs.calendar.view)
 
+    implementation(libs.jetbrains.kotlinx.serialization.json)
     implementation libs.converter.gson
     implementation libs.okhttp
     implementation libs.retrofit

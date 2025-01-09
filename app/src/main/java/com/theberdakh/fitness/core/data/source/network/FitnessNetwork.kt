@@ -19,15 +19,13 @@ object FitnessNetwork {
     val module = module {
         factory<Converter.Factory> {
             val gson = GsonBuilder()
-                .setLenient()
-                .create()
-
+                .setLenient().create()
             GsonConverterFactory.create(gson)
         }
 
         factory<Interceptor>(named(LOGGING_INTERCEPTOR)){
             HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.HEADERS
             }
         }
 

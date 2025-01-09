@@ -22,10 +22,9 @@ import kotlinx.coroutines.flow.stateIn
 class AuthViewModel(
     private val repository: FitnessRepository,
     private val preferences: FitnessPreferences,
-    private val networkStateManager: NetworkStateManager
 ) : ViewModel() {
 
-    fun sendCode(code: String) = sendCodeUiState(code, repository).stateIn(
+    fun sendCode(phoneNumber: String) = sendCodeUiState(phoneNumber, repository).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = SendCodeUiState.Loading
@@ -158,7 +157,7 @@ private fun loginState(
         is NetworkResult.Error -> emit(LoginUiState.Error)
         is NetworkResult.Success -> {
             if (saveDataToPreferences(data = result.data)) {
-                emit(LoginUiState.Success(result.data))
+                emit(LoginUiState.Success)
             } else {
                 emit(LoginUiState.Loading)
             }
@@ -167,22 +166,22 @@ private fun loginState(
 }
 
 sealed interface LoginUiState {
-    data class Success(val data: NetworkLoginResponse) : LoginUiState
+    data object Success : LoginUiState
     data object Error : LoginUiState
     data object Loading : LoginUiState
 }
 
-private fun sendCodeUiState(code: String, repository: FitnessRepository): Flow<SendCodeUiState> =
+private fun sendCodeUiState(phoneNumber: String, repository: FitnessRepository): Flow<SendCodeUiState> =
     flow {
         emit(SendCodeUiState.Loading)
-        when (val result = repository.sendCode(NetworkSendCodeRequest(""))) {
-            is NetworkResult.Error -> emit(SendCodeUiState.Error)
+        when (val result = repository.sendCode(NetworkSendCodeRequest(phoneNumber))) {
+            is NetworkResult.Error -> emit(SendCodeUiState.Error(result.message))
             is NetworkResult.Success -> emit(SendCodeUiState.Success(result.data))
         }
     }
 
 sealed interface SendCodeUiState {
     data class Success(val data: NetworkMessage) : SendCodeUiState
-    data object Error : SendCodeUiState
+    data class Error(val error: String) : SendCodeUiState
     data object Loading : SendCodeUiState
 }

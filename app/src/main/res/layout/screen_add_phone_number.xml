@@ -34,7 +34,7 @@
         android:id="@+id/til_phone_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:prefixText="+998"
+        app:prefixText="998"
         android:layout_marginVertical="24dp"
         app:layout_constraintTop_toBottomOf="@id/tv_phone_number"
         app:layout_constraintStart_toStartOf="parent"
