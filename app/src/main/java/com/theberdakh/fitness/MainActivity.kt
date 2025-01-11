@@ -9,7 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
-import com.theberdakh.fitness.core.data.util.NetworkMonitor
+import com.theberdakh.fitness.data.util.NetworkMonitor
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -59,11 +61,13 @@ class HomeScreen : Fragment(R.layout.screen_home) {
 
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.homeUiState.collect{ state ->
-                when(state){
-                    HomeUiState.Error -> Log.e(TAG, "initObservers: error", )
-                    HomeUiState.Loading -> Log.i(TAG, "initObservers: loading")
-                    is HomeUiState.Success -> handleSuccess(state.data)
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                homeViewModel.homeUiState.collect{ state ->
+                    when(state){
+                        HomeUiState.Error -> Log.e(TAG, "initObservers: error", )
+                        HomeUiState.Loading -> Log.i(TAG, "initObservers: loading")
+                        is HomeUiState.Success -> handleSuccess(state.data)
+                    }
                 }
             }
         }

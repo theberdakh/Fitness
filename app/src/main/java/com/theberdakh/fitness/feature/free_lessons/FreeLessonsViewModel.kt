@@ -2,18 +2,14 @@ package com.theberdakh.fitness.feature.free_lessons
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.data.source.FitnessRepository
-import com.theberdakh.fitness.core.data.source.NetworkResult
-import com.theberdakh.fitness.core.domain.converter.toFreeLessonItem
+import com.theberdakh.fitness.domain.Result
+import com.theberdakh.fitness.domain.FitnessRepository
+import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.converter.toFreeLessonItems
 import com.theberdakh.fitness.feature.free_lessons.model.FreeLessonItem
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 class FreeLessonsViewModel(private val repository: FitnessRepository) : ViewModel() {
 
@@ -28,8 +24,9 @@ fun freeLessonsState(repository: FitnessRepository, perPage: Int = 10, cursor: S
     flow {
         emit(FreeLessonsUiState.Loading)
         when (val result = repository.getFreeLessons(perPage, cursor)) {
-            is NetworkResult.Error -> emit(FreeLessonsUiState.Error)
-            is NetworkResult.Success -> emit(FreeLessonsUiState.Success(result.data.map { it.toFreeLessonItem() }))
+            is Result.Error -> emit(FreeLessonsUiState.Error)
+            Result.Loading -> emit(FreeLessonsUiState.Loading)
+            is Result.Success -> emit(FreeLessonsUiState.Success(result.data.map { it.toDomain() }.toFreeLessonItems()))
         }
     }
 

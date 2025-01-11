@@ -2,8 +2,10 @@ package com.theberdakh.fitness.feature.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.data.source.FitnessRepository
-import com.theberdakh.fitness.core.data.source.NetworkResult
+import com.theberdakh.fitness.domain.Result
+import com.theberdakh.fitness.domain.FitnessRepository
+import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.converter.toExtendedModuleItems
 import com.theberdakh.fitness.feature.modules.adapter.model.ModulesModel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
@@ -26,15 +28,11 @@ class ModulesScreenViewModel(private val repository: FitnessRepository) : ViewMo
 
 private fun getModulesByOrderIdUiState(repository: FitnessRepository, orderId: Int) = flow {
     when(val result = repository.getModulesByOrderId(orderId)){
-        is NetworkResult.Error -> emit(ModulesByOrderIdState.Error)
-        is NetworkResult.Success -> emit(ModulesByOrderIdState.Success(result.data.map { module ->
-            ModulesModel.ModuleExtended(
-                moduleId = module.id,
-                title = module.title,
-                isAvailable = module.isAvailable,
-                totalLessons = module.lessons.size
-            )
-        }))
+        is Result.Error -> emit(ModulesByOrderIdState.Error)
+        Result.Loading -> emit(ModulesByOrderIdState.Loading)
+        is Result.Success -> {
+            emit(result.data.map { it.toDomain() }.toExtendedModuleItems())
+        }
     }
 }
 
@@ -46,13 +44,9 @@ sealed interface ModulesByOrderIdState{
 
 private fun getModulesUiState(repository: FitnessRepository, packageId: Int) = flow {
     when (val result = repository.getModules(packageId)) {
-        is NetworkResult.Error -> emit(ModulesUiState.Error)
-        is NetworkResult.Success -> emit(ModulesUiState.Success(result.data.map { module ->
-            ModulesModel.Module(
-                moduleId = module.id,
-                title = module.title
-            )
-        }))
+        is Result.Error -> emit(ModulesUiState.Error)
+        Result.Loading -> emit(ModulesUiState.Loading)
+        is Result.Success -> { emit(result.data.map { it.toDomain() }.toExtendedModuleItems()) }
     }
 }
 

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/mainScreen"
-        android:name="com.theberdakh.fitness.core.navigation.MainFragment"
+        android:name="com.theberdakh.fitness.feature.main.MainScreen"
         android:label="MainFragment"
         tools:layout="@layout/screen_main" >
 

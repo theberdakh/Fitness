@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.theberdakh.fitness.R
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkProfile
+import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenAddNameBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
@@ -40,9 +41,7 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
 
     private fun handleError(message: String) {
         viewBinding.btnContinue.stopLoading()
-        Log.d(TAG, "handleError: $message")
-        Toast.makeText(requireContext(), getString(R.string.error_something_went_wrong), Toast.LENGTH_SHORT).show()
-
+        viewBinding.tilName.error = message
     }
 
     private fun initViews() {
@@ -50,6 +49,7 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
             findNavController().popBackStack()
         }
 
+        viewBinding.etName.addTextChangedListener { viewBinding.tilName.error = null }
         viewBinding.btnContinue.setText(getString(R.string.continuee))
         viewBinding.btnContinue.setOnClickListener {
             sendRequest()
@@ -60,7 +60,7 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
         val inputText = viewBinding.etName.text.toString()
         viewModel.updateName(inputText).onEach {
             when(it){
-                UpdateNameUiState.Error -> handleError("Error")
+                is UpdateNameUiState.Error -> handleError(it.errorMessage)
                 UpdateNameUiState.Loading -> handleLoading()
                 is UpdateNameUiState.Success -> handleSuccess(it.data)
             }

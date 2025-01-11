@@ -15,24 +15,21 @@ import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenAddPhoneNumberBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import com.theberdakh.fitness.feature.auth.viewmodel.SendCodeUiState
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddPhoneNumberScreen : Fragment(R.layout.screen_add_phone_number) {
     private val viewBinding by viewBinding(ScreenAddPhoneNumberBinding::bind)
     private val viewModel: AuthViewModel by viewModel()
-    private var phoneNumber = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     }
 
-    private fun handleSuccess() {
+    private fun handleSuccess(phone: String) {
         viewBinding.btnContinue.stopLoading()
-        findNavController().navigate(R.id.action_addPhoneNumberScreen_to_enterSMSCodeScreen, EnterSMSCodeScreen.args(phoneNumber))
+        findNavController().navigate(R.id.action_addPhoneNumberScreen_to_enterSMSCodeScreen, EnterSMSCodeScreen.args(phone))
     }
 
     private fun handleLoading() {
@@ -44,14 +41,14 @@ class AddPhoneNumberScreen : Fragment(R.layout.screen_add_phone_number) {
         viewBinding.btnContinue.stopLoading()
     }
 
-    private fun sendRequest(phoneNumber: String, countryCode: String) {
+    private fun sendRequest(phone: String) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.sendCode(phoneNumber = "$countryCode$phoneNumber").collect {
+                viewModel.sendCode(phone = phone).collect {
                     when (it) {
                         is SendCodeUiState.Error -> handleError(it.error)
                         SendCodeUiState.Loading -> handleLoading()
-                        is SendCodeUiState.Success -> handleSuccess()
+                        is SendCodeUiState.Success -> handleSuccess(phone)
                     }
                 }
             }
@@ -63,9 +60,9 @@ class AddPhoneNumberScreen : Fragment(R.layout.screen_add_phone_number) {
         viewBinding.btnContinue.setText(getString(R.string.continuee))
         viewBinding.etPhoneNumber.addTextChangedListener { viewBinding.tilPhoneNumber.error = null }
         viewBinding.btnContinue.setOnClickListener {
-            val phoneNumber = viewBinding.etPhoneNumber.text.toString()
-            val countryCode = viewBinding.tilPhoneNumber.prefixText.toString()
-            sendRequest(phoneNumber, countryCode)
+            val phone = "${viewBinding.tilPhoneNumber.prefixText.toString()}${viewBinding.etPhoneNumber.text.toString()}"
+            Log.i(TAG, "initViews: $phone")
+            sendRequest(phone)
         }
     }
 }

@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.theberdakh.fitness.databinding.ItemGoalBinding
-import com.theberdakh.fitness.feature.auth.model.GoalPoster
 
 class GoalPosterAdapter: ListAdapter<GoalPoster, GoalPosterAdapter.ViewHolder>(GoalPosterDiffCallback) {
 

@@ -15,8 +15,8 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
         fun create(
             viewType: Int,
             parent: ViewGroup,
-            onModuleClickListener: ((ModulesModel.Module) -> Unit)? = null,
-            onModuleExtendedClickListener: ((ModulesModel.ModuleExtended) -> Unit)? = null
+            onModuleClickListener: ((ModulesModel.ModuleItem) -> Unit)? = null,
+            onModuleExtendedClickListener: ((ModulesModel.ModuleItemExtended) -> Unit)? = null
         ): ModulesViewHolder {
             return when (viewType) {
                 ModulesModel.VIEW_TYPE_MODULE -> ModuleItemViewHolder.from(
@@ -36,9 +36,9 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
 
     class ModuleExtendedItemViewHolder private constructor(
         private val binding: ItemModuleExtendedBinding,
-        private val onModuleClickListener: ((ModulesModel.ModuleExtended) -> Unit)? = null
+        private val onModuleClickListener: ((ModulesModel.ModuleItemExtended) -> Unit)? = null
     ): ModulesViewHolder(binding.root) {
-        fun bind(module: ModulesModel.ModuleExtended) {
+        fun bind(module: ModulesModel.ModuleItemExtended) {
             with(binding) {
                 tvName.text = if (module.isAvailable) binding.root.context.getString(
                     R.string.placeholder_current_module,
@@ -54,7 +54,7 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
         companion object {
             fun from(
                 parent: ViewGroup,
-                onModuleClickListener: ((ModulesModel.ModuleExtended) -> Unit)? = null
+                onModuleClickListener: ((ModulesModel.ModuleItemExtended) -> Unit)? = null
             ): ModuleExtendedItemViewHolder {
                 val binding = ItemModuleExtendedBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -68,9 +68,9 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
 
     class ModuleItemViewHolder private constructor(
         private val binding: ItemModuleBinding,
-        private val onModuleClickListener: ((ModulesModel.Module) -> Unit)? = null
+        private val onModuleClickListener: ((ModulesModel.ModuleItem) -> Unit)? = null
     ) : ModulesViewHolder(binding.root) {
-        fun bind(module: ModulesModel.Module) {
+        fun bind(module: ModulesModel.ModuleItem) {
             with(binding) {
                 tvName.text = module.title
                 root.setOnClickListener {
@@ -82,7 +82,7 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
         companion object {
             fun from(
                 parent: ViewGroup,
-                onModuleClickListener: ((ModulesModel.Module) -> Unit)? = null
+                onModuleClickListener: ((ModulesModel.ModuleItem) -> Unit)? = null
             ): ModuleItemViewHolder {
                 val binding = ItemModuleBinding.inflate(
                     LayoutInflater.from(parent.context),

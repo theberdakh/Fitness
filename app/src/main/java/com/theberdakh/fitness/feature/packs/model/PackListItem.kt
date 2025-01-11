@@ -2,36 +2,15 @@ package com.theberdakh.fitness.feature.packs.model
 
 import androidx.recyclerview.widget.DiffUtil
 
-enum class OrderStatus{
-    SUCCESS, FINISHED, NEW, UNKNOWN;
-    companion object {
-        fun fromString(value: String): OrderStatus {
-            return when(value){
-                "success" -> SUCCESS
-                "finished" -> FINISHED
-                "new" -> NEW
-                else -> UNKNOWN
-            }
-        }
-    }
-}
-
 sealed class PackListItem {
     data class PackHeader(val title: String): PackListItem()
     data class PackItemUnsubscribed(
         val packId: Int,
         val title: String,
-        val amount: Float,
-        val statusEnum: OrderStatus,
+        val amount: String,
         val createdAt: String,
         val orderId: Int
-    ): PackListItem() {
-        companion object {
-            fun statusEnum(status: String): OrderStatus {
-                return OrderStatus.fromString(status)
-            }
-        }
-    }
+    ): PackListItem()
     data object Loading: PackListItem()
 
     companion object {

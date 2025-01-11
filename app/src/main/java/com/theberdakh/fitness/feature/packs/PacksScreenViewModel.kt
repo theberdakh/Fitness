@@ -1,13 +1,14 @@
 package com.theberdakh.fitness.feature.packs
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.data.source.FitnessRepository
-import com.theberdakh.fitness.core.data.source.NetworkResult
-import com.theberdakh.fitness.core.domain.converter.toPackListItem
-import com.theberdakh.fitness.core.domain.converter.toSubscriptionPackItem
+import com.theberdakh.fitness.core.log.LogEx.TAG
+import com.theberdakh.fitness.domain.Result
+import com.theberdakh.fitness.domain.FitnessRepository
+import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.converter.toPackListItems
 import com.theberdakh.fitness.feature.packs.model.PackListItem
-import com.theberdakh.fitness.feature.subscriptions.model.SubscriptionPackItem
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
@@ -23,11 +24,10 @@ class PacksScreenViewModel(private val repository: FitnessRepository) : ViewMode
 
 private fun subscriptionPackState(repository: FitnessRepository) = flow {
     when (val result = repository.getMyOrders()) {
-        is NetworkResult.Error -> emit(SubscriptionUiState.Error)
-        is NetworkResult.Success -> {
-            emit(SubscriptionUiState.Success(result.data.map { order ->
-                order.toPackListItem()
-            }))
+        is Result.Error -> emit(SubscriptionUiState.Error)
+        Result.Loading -> emit(SubscriptionUiState.Loading)
+        is Result.Success -> {
+            emit(SubscriptionUiState.Success(result.data.map { it.toDomain() }.toPackListItems()))
         }
     }
 }

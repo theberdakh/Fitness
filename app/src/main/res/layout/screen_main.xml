@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context="core.navigation.MainFragment">
+    tools:context=".feature.main.MainScreen">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nested_nav_host_fragment"

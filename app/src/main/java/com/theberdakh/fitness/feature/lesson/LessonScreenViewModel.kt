@@ -2,9 +2,9 @@ package com.theberdakh.fitness.feature.lesson
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.data.source.FitnessRepository
-import com.theberdakh.fitness.core.data.source.NetworkResult
-import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkLesson
+import com.theberdakh.fitness.domain.Result
+import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
+import com.theberdakh.fitness.domain.FitnessRepository
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
@@ -19,8 +19,9 @@ class LessonScreenViewModel(private val repository: FitnessRepository) : ViewMod
 
 private fun lessonState(repository: FitnessRepository, lessonId: Int) = flow {
     when (val result = repository.getLesson(lessonId)) {
-        is NetworkResult.Error -> emit(LessonUiState.Error)
-        is NetworkResult.Success -> emit(LessonUiState.Success(result.data))
+        is Result.Error -> emit(LessonUiState.Error)
+        Result.Loading -> emit(LessonUiState.Loading)
+        is Result.Success -> emit(LessonUiState.Success(result.data))
     }
 }
 

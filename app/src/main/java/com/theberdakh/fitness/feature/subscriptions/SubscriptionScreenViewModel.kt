@@ -2,18 +2,14 @@ package com.theberdakh.fitness.feature.subscriptions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.data.source.FitnessRepository
-import com.theberdakh.fitness.core.data.source.NetworkResult
-import com.theberdakh.fitness.core.domain.converter.toSubscriptionPackItem
+import com.theberdakh.fitness.domain.Result
+import com.theberdakh.fitness.domain.FitnessRepository
+import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.converter.toSubscriptionPackItems
 import com.theberdakh.fitness.feature.subscriptions.model.SubscriptionPackItem
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 class SubscriptionScreenViewModel(private val repository: FitnessRepository) : ViewModel() {
 
@@ -29,10 +25,9 @@ class SubscriptionScreenViewModel(private val repository: FitnessRepository) : V
 private fun subscriptionPackState(repository: FitnessRepository) = flow {
     emit(SubscriptionUiState.Loading)
     when (val result = repository.getSubscriptionPacks()) {
-        is NetworkResult.Error -> emit(SubscriptionUiState.Error)
-        is NetworkResult.Success -> {
-            emit(SubscriptionUiState.Success(result.data.map { subscription -> subscription.toSubscriptionPackItem() }))
-        }
+        is Result.Error -> emit(SubscriptionUiState.Error)
+        Result.Loading -> emit(SubscriptionUiState.Loading)
+        is Result.Success -> emit(SubscriptionUiState.Success(result.data.map { it.toDomain() }.toSubscriptionPackItems()))
     }
 }
 

@@ -2,7 +2,7 @@ package com.theberdakh.fitness
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.preferences.FitnessPreferences
+import com.theberdakh.fitness.data.preferences.FitnessPreferences
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

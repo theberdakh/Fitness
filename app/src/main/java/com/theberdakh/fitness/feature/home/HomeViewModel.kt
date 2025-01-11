@@ -2,9 +2,10 @@ package com.theberdakh.fitness.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.data.source.FitnessRepository
-import com.theberdakh.fitness.core.data.source.NetworkResult
-import com.theberdakh.fitness.core.domain.converter.toVideoItem
+import com.theberdakh.fitness.domain.Result
+import com.theberdakh.fitness.domain.FitnessRepository
+import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.converter.toVideoItems
 import com.theberdakh.fitness.feature.home.model.ListItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,8 +25,9 @@ class HomeViewModel(repository: FitnessRepository) : ViewModel() {
 private fun homeUiState(repository: FitnessRepository): Flow<HomeUiState> = flow {
     emit(HomeUiState.Loading)
     when (val result = repository.getRandomFreeLessons()) {
-        is NetworkResult.Error -> emit(HomeUiState.Error)
-        is NetworkResult.Success -> emit(HomeUiState.Success(result.data.map { it.toVideoItem() }))
+        is Result.Error -> emit(HomeUiState.Error)
+        Result.Loading -> emit(HomeUiState.Loading)
+        is Result.Success -> emit(HomeUiState.Success(result.data.map { it.toDomain() }.toVideoItems()))
     }
 }
 

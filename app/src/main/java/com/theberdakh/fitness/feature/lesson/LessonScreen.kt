@@ -11,7 +11,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.data.source.network.model.mobile.NetworkLesson
+import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenLessonBinding
 import com.theberdakh.fitness.feature.lesson.adapter.LessonViewPagerAdapter
