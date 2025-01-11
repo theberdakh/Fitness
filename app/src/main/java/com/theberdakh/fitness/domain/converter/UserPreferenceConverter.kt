@@ -2,6 +2,7 @@ package com.theberdakh.fitness.domain.converter
 
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.preferences.LocalUserPreference
+import com.theberdakh.fitness.data.preferences.LocalUserSession
 import com.theberdakh.fitness.domain.model.UserPreference
 
 

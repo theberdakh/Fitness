@@ -27,7 +27,7 @@ private fun homeUiState(repository: FitnessRepository): Flow<HomeUiState> = flow
     when (val result = repository.getRandomFreeLessons()) {
         is Result.Error -> emit(HomeUiState.Error)
         Result.Loading -> emit(HomeUiState.Loading)
-        is Result.Success -> emit(HomeUiState.Success(result.data.map { it.toDomain() }.toVideoItems()))
+        is Result.Success -> emit(HomeUiState.Success(result.data.toVideoItems()))
     }
 }
 

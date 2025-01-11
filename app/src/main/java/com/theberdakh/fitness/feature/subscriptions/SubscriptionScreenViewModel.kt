@@ -27,7 +27,7 @@ private fun subscriptionPackState(repository: FitnessRepository) = flow {
     when (val result = repository.getSubscriptionPacks()) {
         is Result.Error -> emit(SubscriptionUiState.Error)
         Result.Loading -> emit(SubscriptionUiState.Loading)
-        is Result.Success -> emit(SubscriptionUiState.Success(result.data.map { it.toDomain() }.toSubscriptionPackItems()))
+        is Result.Success -> emit(SubscriptionUiState.Success(result.data.toSubscriptionPackItems()))
     }
 }
 

@@ -2,19 +2,14 @@ package com.theberdakh.fitness.feature.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.domain.Result
-import com.theberdakh.fitness.data.network.NetworkMessage
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
-import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
-import com.theberdakh.fitness.data.preferences.FitnessPreferences
-import com.theberdakh.fitness.data.preferences.LocalUserSession
+import com.theberdakh.fitness.data.preferences.LocalUserPreference
 import com.theberdakh.fitness.domain.FitnessRepository
-import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.Result
 import com.theberdakh.fitness.domain.converter.toGoalPosters
 import com.theberdakh.fitness.domain.converter.toLocalUserPreference
-import com.theberdakh.fitness.domain.model.UserPreference
 import com.theberdakh.fitness.feature.auth.adapter.GoalPoster
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,8 +17,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
 class AuthViewModel(
-    private val repository: FitnessRepository,
-    private val preferences: FitnessPreferences,
+    private val repository: FitnessRepository
 ) : ViewModel() {
 
     fun sendCode(phone: String) = sendCodeUiState(phone, repository).stateIn(
@@ -33,7 +27,7 @@ class AuthViewModel(
     )
 
     fun login(phone: String, code: String) =
-        loginState(phone, code, repository, preferences).stateIn(
+        loginState(phone, code, repository).stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = LoginUiState.Loading
@@ -51,28 +45,25 @@ class AuthViewModel(
         initialValue = GetTargetsUiState.Loading
     )
 
-    val getProfileUiState = getProfileUiState(repository, preferences).stateIn(
+    val getProfileUiState = getProfileUiState(repository).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = GetProfileUiState.Loading
     )
 
-    val logOutUiState = logOutUiState(repository, preferences).stateIn(
+    val logOutUiState = logOutUiState(repository).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = LogOutUiState.Loading
     )
 }
 
-private fun logOutUiState(repository: FitnessRepository, preferences: FitnessPreferences) = flow {
+private fun logOutUiState(repository: FitnessRepository) = flow {
     emit(LogOutUiState.Loading)
     when (val result = repository.logout()) {
         is Result.Error -> emit(LogOutUiState.Error)
         Result.Loading -> emit(LogOutUiState.Loading)
-        is Result.Success -> {
-            preferences.clear()
-            emit(LogOutUiState.Success(result.data))
-        }
+        is Result.Success -> emit(LogOutUiState.Success(result.data))
     }
 }
 
@@ -82,38 +73,31 @@ sealed interface LogOutUiState {
     data object Loading : LogOutUiState
 }
 
-private fun getProfileUiState(repository: FitnessRepository, preferences: FitnessPreferences) =
+private fun getProfileUiState(repository: FitnessRepository) =
     flow {
         when (val result = repository.getProfile()) {
             is Result.Error -> emit(GetProfileUiState.Error)
             Result.Loading -> emit(GetProfileUiState.Loading)
             is Result.Success -> {
-                preferences.saveUserData(
-                    preferences.getUserData().toDomain().copy(
-                        name = result.data.name,
-                        phone = result.data.phone,
-                        goalId = result.data.targetId ?: UserPreference.NO_GOAL_ID
-                    ).toLocalUserPreference()
-                )
-
-                preferences.getUserData()
-                emit(GetProfileUiState.Success(result.data))
+                emit(GetProfileUiState.Success(result.data.toLocalUserPreference()))
             }
         }
     }
 
 sealed interface GetProfileUiState {
-    data class Success(val data: NetworkProfile) : GetProfileUiState
+    data class Success(val data: LocalUserPreference) : GetProfileUiState
     data object Error : GetProfileUiState
     data object Loading : GetProfileUiState
 }
 
 private fun getGoalsUiState(repository: FitnessRepository) =
     flow {
-        when (val result = repository.getTargets()) {
+        when (val result = repository.getGoals()) {
             is Result.Error -> emit(GetTargetsUiState.Error)
             Result.Loading -> emit(GetTargetsUiState.Loading)
-            is Result.Success -> { emit(GetTargetsUiState.Success(result.data.map { it.toDomain() }.toGoalPosters())) }
+            is Result.Success -> {
+                emit(GetTargetsUiState.Success(result.data.toGoalPosters()))
+            }
         }
     }
 
@@ -128,13 +112,13 @@ private fun updateNameUiState(name: String, repository: FitnessRepository) = flo
         is Result.Error -> emit(UpdateNameUiState.Error(result.message))
         Result.Loading -> emit(UpdateNameUiState.Loading)
         is Result.Success -> {
-            emit(UpdateNameUiState.Success(result.data))
+            emit(UpdateNameUiState.Success)
         }
     }
 }
 
 sealed interface UpdateNameUiState {
-    data class Success(val data: NetworkProfile) : UpdateNameUiState
+    data object Success : UpdateNameUiState
     data class Error(val errorMessage: String) : UpdateNameUiState
     data object Loading : UpdateNameUiState
 }
@@ -142,8 +126,7 @@ sealed interface UpdateNameUiState {
 private fun loginState(
     phone: String,
     code: String,
-    repository: FitnessRepository,
-    preferences: FitnessPreferences
+    repository: FitnessRepository
 ) = flow {
     emit(LoginUiState.Loading)
     when (val result =
@@ -151,14 +134,6 @@ private fun loginState(
         is Result.Error -> emit(LoginUiState.Error(result.message))
         Result.Loading -> emit(LoginUiState.Loading)
         is Result.Success -> {
-            preferences.saveUserData(result.data.toDomain().toLocalUserPreference())
-            preferences.saveUserSession(
-                LocalUserSession(
-                    accessToken = result.data.accessToken,
-                    tokenType = result.data.tokenType,
-                    isLoggedIn = true
-                )
-            )
             emit(LoginUiState.Success)
         }
     }
@@ -186,7 +161,7 @@ private fun sendCodeUiState(
     }
 
 sealed interface SendCodeUiState {
-    data class Success(val data: NetworkMessage) : SendCodeUiState
+    data class Success(val data: String) : SendCodeUiState
     data class Error(val error: String) : SendCodeUiState
     data object Loading : SendCodeUiState
 }

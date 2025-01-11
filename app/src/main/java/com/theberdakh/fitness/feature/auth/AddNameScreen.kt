@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.core.log.LogEx.TAG
+import com.theberdakh.fitness.data.preferences.LocalUserPreference
 import com.theberdakh.fitness.databinding.ScreenAddNameBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import com.theberdakh.fitness.feature.auth.viewmodel.UpdateNameUiState
@@ -30,7 +31,7 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
 
     }
 
-    private fun handleSuccess(data: NetworkProfile) {
+    private fun handleSuccess() {
         viewBinding.btnContinue.stopLoading()
         findNavController().navigate(R.id.action_addNameScreen_to_addGoalScreen)
     }
@@ -62,7 +63,7 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
             when(it){
                 is UpdateNameUiState.Error -> handleError(it.errorMessage)
                 UpdateNameUiState.Loading -> handleLoading()
-                is UpdateNameUiState.Success -> handleSuccess(it.data)
+                is UpdateNameUiState.Success -> handleSuccess()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

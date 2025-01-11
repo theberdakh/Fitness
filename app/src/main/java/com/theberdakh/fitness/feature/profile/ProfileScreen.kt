@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
+import com.theberdakh.fitness.data.preferences.LocalUserPreference
 import com.theberdakh.fitness.databinding.ScreenProfileBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import com.theberdakh.fitness.feature.auth.viewmodel.GetProfileUiState
@@ -43,7 +44,7 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun handleSuccess(data: NetworkProfile) {
+    private fun handleSuccess(data: LocalUserPreference) {
         viewBinding.tbProfile.title = data.name
         viewBinding.tbProfile.subtitle = data.phone
     }

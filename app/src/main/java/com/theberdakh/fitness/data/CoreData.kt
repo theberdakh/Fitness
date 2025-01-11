@@ -12,7 +12,7 @@ import org.koin.dsl.module
 object CoreData {
     val module = module {
         single<FitnessNetworkDataSource>{ RetrofitFitnessNetwork(get()) }
-        single<FitnessRepository> { FitnessRepositoryImpl(networkDataSource = get()) }
+        single<FitnessRepository> { FitnessRepositoryImpl(networkDataSource = get(), preferences = get()) }
         single<NetworkMonitor> { ConnectivityManagerNetworkMonitor(context = androidContext(), ioDispatcher = Dispatchers.IO) }
     }
 }

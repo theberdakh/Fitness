@@ -26,7 +26,7 @@ private fun getLessonsUiState(repository: FitnessRepository, moduleId: Int, avai
         when (val result = repository.getLessons(moduleId)) {
             is Result.Error -> emit(LessonsUiState.Error)
             Result.Loading -> emit(LessonsUiState.Loading)
-            is Result.Success -> emit(LessonsUiState.Success(result.data.map { it.toDomain() }.toLessonsModelLesson(isAvailable = available)))
+            is Result.Success -> emit(LessonsUiState.Success(result.data.toLessonsModelLesson(isAvailable = available)))
         }
     }
 

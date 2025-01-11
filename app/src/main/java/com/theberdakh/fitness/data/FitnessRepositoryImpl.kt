@@ -1,40 +1,51 @@
 package com.theberdakh.fitness.data
 
-import android.util.Log
-import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.data.network.FitnessNetworkDataSource
-import com.theberdakh.fitness.data.network.NetworkMessage
 import com.theberdakh.fitness.data.network.NetworkResult
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
-import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
-import com.theberdakh.fitness.data.network.model.mobile.NetworkModule
-import com.theberdakh.fitness.data.network.model.mobile.NetworkOrder
-import com.theberdakh.fitness.data.network.model.mobile.NetworkOrderModule
-import com.theberdakh.fitness.data.network.model.mobile.NetworkPack
-import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
-import com.theberdakh.fitness.data.network.model.mobile.NetworkTarget
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
+import com.theberdakh.fitness.data.preferences.FitnessPreferences
+import com.theberdakh.fitness.data.preferences.LocalUserSession
 import com.theberdakh.fitness.domain.FitnessRepository
 import com.theberdakh.fitness.domain.Result
+import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.model.Goal
+import com.theberdakh.fitness.domain.model.Lesson
+import com.theberdakh.fitness.domain.model.Module
+import com.theberdakh.fitness.domain.model.SubscriptionOrder
+import com.theberdakh.fitness.domain.model.SubscriptionPack
+import com.theberdakh.fitness.domain.model.UserPreference
+import com.theberdakh.fitness.domain.model.toDomain
 
-class FitnessRepositoryImpl(private val networkDataSource: FitnessNetworkDataSource) :
-    FitnessRepository {
+class FitnessRepositoryImpl(
+    private val networkDataSource: FitnessNetworkDataSource,
+    private val preferences: FitnessPreferences
+) : FitnessRepository {
 
-    override suspend fun sendCode(request: NetworkSendCodeRequest): Result<NetworkMessage> {
+    override suspend fun sendCode(request: NetworkSendCodeRequest): Result<String> {
         networkDataSource.sendCode(request).let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.message)
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun login(request: NetworkLoginRequest): Result<NetworkLoginResponse> {
+    override suspend fun login(request: NetworkLoginRequest): Result<UserPreference> {
         networkDataSource.login(request).let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> {
+                    preferences.saveUserSession(
+                        LocalUserSession(
+                            accessToken = it.data.accessToken,
+                            tokenType = it.data.tokenType,
+                            isLoggedIn = true
+                        )
+                    )
+                    Result.Success(it.data.toDomain())
+                }
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
@@ -43,79 +54,92 @@ class FitnessRepositoryImpl(private val networkDataSource: FitnessNetworkDataSou
     override suspend fun logout(): Result<String> {
         networkDataSource.logout().let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> {
+                    preferences.clear()
+                    Result.Success(it.data)
+                }
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun getTargets(): Result<List<NetworkTarget>> {
+    override suspend fun getGoals(): Result<List<Goal>> {
         networkDataSource.getTargets().let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.map { target -> target.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun getProfile(): Result<NetworkProfile> {
+    override suspend fun getProfile(): Result<UserPreference> {
         networkDataSource.getProfile().let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> {
+                    preferences.saveUserData(
+                        preferences.getUserData().copy(
+                            name = it.data.name,
+                            phone = it.data.phone,
+                            userGoalId = it.data.targetId ?: UserPreference.NO_GOAL_ID
+                        )
+                    )
+                    Result.Success(preferences.getUserData().toDomain())
+                }
+
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun updateName(request: NetworkUpdateNameRequest): Result<NetworkProfile> {
+    override suspend fun updateName(request: NetworkUpdateNameRequest): Result<UserPreference> {
         networkDataSource.updateName(request).let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.toDomain())
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun getSubscriptionPacks(): Result<List<NetworkPack>> {
+    override suspend fun getSubscriptionPacks(): Result<List<SubscriptionPack>> {
         networkDataSource.getSubscriptionPacks().let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.map { pack -> pack.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun getModules(packId: Int): Result<List<NetworkModule>> {
+    override suspend fun getModules(packId: Int): Result<List<Module>> {
         networkDataSource.getModules(packId).let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.map { module -> module.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun getModulesByOrderId(orderId: Int): Result<List<NetworkOrderModule>> {
+    override suspend fun getModulesByOrderId(orderId: Int): Result<List<Module>> {
         networkDataSource.getModulesByOrderId(orderId).let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.map { module -> module.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun getLessons(moduleId: Int): Result<List<NetworkLesson>> {
+    override suspend fun getLessons(moduleId: Int): Result<List<Lesson>> {
         networkDataSource.getLessons(moduleId).let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.map { lesson -> lesson.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }
 
-    override suspend fun getRandomFreeLessons(): Result<List<NetworkLesson>> {
+    override suspend fun getRandomFreeLessons(): Result<List<Lesson>> {
         networkDataSource.getRandomFreeLessons().let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.map { lesson -> lesson.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
@@ -124,10 +148,10 @@ class FitnessRepositoryImpl(private val networkDataSource: FitnessNetworkDataSou
     override suspend fun getFreeLessons(
         perPage: Int,
         cursor: String?
-    ): Result<List<NetworkLesson>> {
+    ): Result<List<Lesson>> {
         networkDataSource.getFreeLessons(perPage, cursor).let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data)
+                is NetworkResult.Success -> Result.Success(it.data.map { lesson -> lesson.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
@@ -142,15 +166,11 @@ class FitnessRepositoryImpl(private val networkDataSource: FitnessNetworkDataSou
         }
     }
 
-    override suspend fun getMyOrders(): Result<List<NetworkOrder>> {
+    override suspend fun getMyOrders(): Result<List<SubscriptionOrder>> {
         networkDataSource.getMyOrders().let {
             return when (it) {
-                is NetworkResult.Success -> {
-                    Result.Success(it.data)
-                }
-                is NetworkResult.Error -> {
-                    Result.Error(it.message)
-                }
+                is NetworkResult.Success -> Result.Success(it.data.map { order -> order.toDomain() })
+                is NetworkResult.Error -> Result.Error(it.message)
             }
         }
     }

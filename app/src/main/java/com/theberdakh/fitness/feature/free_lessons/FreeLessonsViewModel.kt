@@ -26,7 +26,7 @@ fun freeLessonsState(repository: FitnessRepository, perPage: Int = 10, cursor: S
         when (val result = repository.getFreeLessons(perPage, cursor)) {
             is Result.Error -> emit(FreeLessonsUiState.Error)
             Result.Loading -> emit(FreeLessonsUiState.Loading)
-            is Result.Success -> emit(FreeLessonsUiState.Success(result.data.map { it.toDomain() }.toFreeLessonItems()))
+            is Result.Success -> emit(FreeLessonsUiState.Success(result.data.toFreeLessonItems()))
         }
     }
 

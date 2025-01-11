@@ -1,45 +1,45 @@
 package com.theberdakh.fitness.domain
 
-import com.theberdakh.fitness.data.network.NetworkMessage
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
-import com.theberdakh.fitness.data.network.model.mobile.NetworkModule
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
-import com.theberdakh.fitness.data.network.model.mobile.NetworkOrder
-import com.theberdakh.fitness.data.network.model.mobile.NetworkOrderModule
-import com.theberdakh.fitness.data.network.model.mobile.NetworkPack
 import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
-import com.theberdakh.fitness.data.network.model.mobile.NetworkTarget
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
+import com.theberdakh.fitness.domain.model.Goal
+import com.theberdakh.fitness.domain.model.Lesson
+import com.theberdakh.fitness.domain.model.Module
+import com.theberdakh.fitness.domain.model.SubscriptionOrder
+import com.theberdakh.fitness.domain.model.SubscriptionPack
+import com.theberdakh.fitness.domain.model.UserPreference
 
 interface FitnessRepository {
 
-    suspend fun sendCode(request: NetworkSendCodeRequest): Result<NetworkMessage>
+    suspend fun sendCode(request: NetworkSendCodeRequest): Result<String>
 
-    suspend fun login(request: NetworkLoginRequest): Result<NetworkLoginResponse>
+    suspend fun login(request: NetworkLoginRequest): Result<UserPreference>
 
     suspend fun logout(): Result<String>
 
-    suspend fun getTargets(): Result<List<NetworkTarget>>
+    suspend fun getGoals(): Result<List<Goal>>
 
-    suspend fun getProfile(): Result<NetworkProfile>
+    suspend fun getProfile(): Result<UserPreference>
 
-    suspend fun updateName(request: NetworkUpdateNameRequest): Result<NetworkProfile>
+    suspend fun updateName(request: NetworkUpdateNameRequest): Result<UserPreference>
 
-    suspend fun getSubscriptionPacks(): Result<List<NetworkPack>>
+    suspend fun getSubscriptionPacks(): Result<List<SubscriptionPack>>
 
-    suspend fun getModules(packId: Int): Result<List<NetworkModule>>
+    suspend fun getModules(packId: Int): Result<List<Module>>
 
-    suspend fun getModulesByOrderId(orderId: Int): Result<List<NetworkOrderModule>>
+    suspend fun getModulesByOrderId(orderId: Int): Result<List<Module>>
 
-    suspend fun getLessons(moduleId: Int): Result<List<NetworkLesson>>
+    suspend fun getLessons(moduleId: Int): Result<List<Lesson>>
 
-    suspend fun getRandomFreeLessons(): Result<List<NetworkLesson>>
+    suspend fun getRandomFreeLessons(): Result<List<Lesson>>
 
-    suspend fun getFreeLessons(perPage: Int, cursor: String?): Result<List<NetworkLesson>>
+    suspend fun getFreeLessons(perPage: Int, cursor: String?): Result<List<Lesson>>
 
     suspend fun getLesson(lessonId: Int): Result<NetworkLesson>
 
-    suspend fun getMyOrders(): Result<List<NetworkOrder>>
+    suspend fun getMyOrders(): Result<List<SubscriptionOrder>>
 }

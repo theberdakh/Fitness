@@ -27,7 +27,7 @@ private fun subscriptionPackState(repository: FitnessRepository) = flow {
         is Result.Error -> emit(SubscriptionUiState.Error)
         Result.Loading -> emit(SubscriptionUiState.Loading)
         is Result.Success -> {
-            emit(SubscriptionUiState.Success(result.data.map { it.toDomain() }.toPackListItems()))
+            emit(SubscriptionUiState.Success(result.data.toPackListItems()))
         }
     }
 }

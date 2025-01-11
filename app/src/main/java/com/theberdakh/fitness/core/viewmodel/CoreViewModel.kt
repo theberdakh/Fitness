@@ -14,7 +14,7 @@ import org.koin.dsl.module
 
 object CoreViewModel {
     val module = module {
-        viewModel { AuthViewModel(repository = get(), preferences = get()) }
+        viewModel { AuthViewModel(repository = get()) }
         viewModel { MainActivityViewModel(preferences = get()) }
         viewModel { SubscriptionScreenViewModel(repository = get()) }
         viewModel { HomeViewModel(repository = get()) }

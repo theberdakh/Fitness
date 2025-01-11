@@ -31,7 +31,7 @@ private fun getModulesByOrderIdUiState(repository: FitnessRepository, orderId: I
         is Result.Error -> emit(ModulesByOrderIdState.Error)
         Result.Loading -> emit(ModulesByOrderIdState.Loading)
         is Result.Success -> {
-            emit(result.data.map { it.toDomain() }.toExtendedModuleItems())
+            emit(result.data.toExtendedModuleItems())
         }
     }
 }
@@ -46,7 +46,7 @@ private fun getModulesUiState(repository: FitnessRepository, packageId: Int) = f
     when (val result = repository.getModules(packageId)) {
         is Result.Error -> emit(ModulesUiState.Error)
         Result.Loading -> emit(ModulesUiState.Loading)
-        is Result.Success -> { emit(result.data.map { it.toDomain() }.toExtendedModuleItems()) }
+        is Result.Success -> { emit(result.data.toExtendedModuleItems()) }
     }
 }
 
