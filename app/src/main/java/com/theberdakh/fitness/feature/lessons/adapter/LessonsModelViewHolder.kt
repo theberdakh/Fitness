@@ -14,7 +14,6 @@ sealed class LessonsModelViewHolder private constructor(view: View) :
     class LessonViewHolder private constructor(
         private val binding: ItemVideoHorizontalBinding,
         private val onLessonClick: ((LessonsModel.Lesson) -> Unit)?,
-        private val onLessonUnavailable: ((LessonsModel.Lesson) -> Unit)? = null
     ) : LessonsModelViewHolder(binding.root) {
         fun bind(lesson: LessonsModel.Lesson) {
             binding.tvTitle.text = lesson.title
@@ -29,11 +28,7 @@ sealed class LessonsModelViewHolder private constructor(view: View) :
             }
 
             binding.root.setOnClickListener {
-                if (lesson.isAvailable) {
-                    onLessonClick?.invoke(lesson)
-                } else {
-                   onLessonUnavailable?.invoke(lesson)
-                }
+                onLessonClick?.invoke(lesson)
             }
         }
 
@@ -41,11 +36,10 @@ sealed class LessonsModelViewHolder private constructor(view: View) :
             fun from(
                 parent: ViewGroup,
                 onLessonClick: ((LessonsModel.Lesson) -> Unit)?,
-                onLessonUnavailable: ((LessonsModel.Lesson) -> Unit)?
             ): LessonViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemVideoHorizontalBinding.inflate(layoutInflater, parent, false)
-                return LessonViewHolder(binding, onLessonClick, onLessonUnavailable)
+                return LessonViewHolder(binding, onLessonClick)
             }
         }
     }
@@ -55,10 +49,9 @@ sealed class LessonsModelViewHolder private constructor(view: View) :
             viewType: Int,
             viewGroup: ViewGroup,
             onLessonClick: ((LessonsModel.Lesson) -> Unit)?,
-            onLessonUnavailable: ((LessonsModel.Lesson) -> Unit)?
         ): LessonsModelViewHolder {
             return when (viewType) {
-                LessonsModel.VIEW_TYPE_LESSON -> LessonViewHolder.from(viewGroup, onLessonClick, onLessonUnavailable)
+                LessonsModel.VIEW_TYPE_LESSON -> LessonViewHolder.from(viewGroup, onLessonClick)
                 else -> throw IllegalArgumentException("Unknown view type")
             }
         }

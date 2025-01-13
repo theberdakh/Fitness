@@ -255,7 +255,18 @@
     <fragment
         android:id="@+id/lessonsScreen"
         android:name="com.theberdakh.fitness.feature.lessons.LessonsScreen"
-        tools:layout="@layout/screen_lessons"/>
+        tools:layout="@layout/screen_lessons">
+
+        <action
+            android:id="@+id/action_lessonsScreen_to_LessonScreen"
+            app:destination="@id/lessonScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            />
+
+    </fragment>
 
     <fragment
         android:id="@+id/modulesScreen"

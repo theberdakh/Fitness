@@ -96,7 +96,6 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
                                         is LogOutUiState.Success ->  findNavController().navigate(R.id.action_mainScreen_to_LogoScreen)
                                     }
                                 }
-
                             }
                             .setSecondaryButton(getString(R.string.stay))
                             .build().show()

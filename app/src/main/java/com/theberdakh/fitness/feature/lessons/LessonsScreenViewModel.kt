@@ -18,7 +18,6 @@ class LessonsScreenViewModel(private val repository: FitnessRepository) : ViewMo
             started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5_000),
             initialValue = LessonsUiState.Loading
         )
-
 }
 
 private fun getLessonsUiState(repository: FitnessRepository, moduleId: Int, available: Boolean) =

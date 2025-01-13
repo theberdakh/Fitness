@@ -11,9 +11,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenLessonsBinding
 import com.theberdakh.fitness.feature.common.dialog.UniversalDialog
+import com.theberdakh.fitness.feature.lesson.LessonScreen
 import com.theberdakh.fitness.feature.lessons.adapter.LessonsModelAdapter
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,7 +25,6 @@ class LessonsScreen : Fragment(R.layout.screen_lessons) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             moduleId = it.getInt(ARG_MODULE_ID, ARG_MODULE_ID_DEFAULT)
             isAvailable = it.getBoolean(ARG_IS_AVAILABLE, ARG_IS_AVAILABLE_DEFAULT)
@@ -35,21 +33,22 @@ class LessonsScreen : Fragment(R.layout.screen_lessons) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initViews()
         initObservers()
-
     }
 
     private fun initObservers() {
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 if (moduleId != ARG_MODULE_ID_DEFAULT) {
                     viewModel.getLessons(moduleId, isAvailable).collect{
                         when (it) {
-                            LessonsUiState.Error -> handleError("Error")
-                            LessonsUiState.Loading -> handleLoading()
+                            LessonsUiState.Error -> {
+                                //TODO: handle error
+                            }
+                            LessonsUiState.Loading -> {
+                                //TODO: show loading
+                            }
                             is LessonsUiState.Success -> {
                                 adapter.submitList(it.data)
                             }
@@ -60,21 +59,15 @@ class LessonsScreen : Fragment(R.layout.screen_lessons) {
         }
     }
 
-    private fun handleLoading() {
-
-    }
-
-    private fun handleError(message: String) {
-
-    }
-
     private fun initViews() {
+        setUpToolbar()
+        setUpRecyclerView()
+    }
+
+    private fun setUpToolbar() {
         viewBinding.tbLessons.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-
-        viewBinding.rvLessons.adapter = adapter
-
         if (isAvailable) {
             viewBinding.tbLessons.inflateMenu(R.menu.menu_finish_module)
             viewBinding.tbLessons.setOnMenuItemClickListener {
@@ -95,6 +88,21 @@ class LessonsScreen : Fragment(R.layout.screen_lessons) {
 
                     else -> false
                 }
+            }
+        }
+    }
+
+    private fun setUpRecyclerView() {
+        viewBinding.rvLessons.adapter = adapter
+        adapter.setOnLessonClick { lesson ->
+            if (lesson.isAvailable){
+                findNavController().navigate(R.id.action_lessonsScreen_to_LessonScreen, LessonScreen.byLesson(lessonId = lesson.id, lessonTitle = lesson.title, lessonUrl = lesson.youtubeUrl))
+            } else {
+                UniversalDialog.Builder(requireContext())
+                    .setTitle(getString(R.string.lesson_unavailable))
+                    .setMessage(getString(R.string.message_lesson_unavailable))
+                    .setPrimaryButton(getString(R.string.ok))
+                    .build().show()
             }
         }
     }

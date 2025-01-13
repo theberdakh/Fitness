@@ -4,6 +4,9 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -15,6 +18,7 @@ import com.theberdakh.fitness.feature.lesson.adapter.LessonViewPagerAdapter
 import com.theberdakh.fitness.feature.lesson.checklist.LessonChecklistScreen
 import com.theberdakh.fitness.feature.lesson.description.LessonDescriptionScreen
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LessonScreen : Fragment(R.layout.screen_lesson) {
@@ -39,18 +43,23 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
     }
 
     private fun initObservers() {
-        viewModel.getLessonUiState(lessonId).onEach {
-            when (it) {
-                LessonUiState.Error -> {
-                    //TODO: handle error
-                }
-                LessonUiState.Loading -> {
-                    //TODO: show loading
-                }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.getLessonUiState(lessonId).collect {
+                    when (it) {
+                        LessonUiState.Error -> {
+                            //TODO: handle error
+                        }
+                        LessonUiState.Loading -> {
+                            //TODO: show loading
+                        }
 
-                is LessonUiState.Success -> initViewPager(lesson = it.data)
+                        is LessonUiState.Success -> initViewPager(lesson = it.data)
+                    }
+                }
             }
         }
+
     }
 
     private fun initViews() {
