@@ -24,12 +24,7 @@ class FreeLessonsScreen: Fragment(R.layout.screen_free_lessons) {
 
 
     private fun navigateToLesson(freeLessonItem: FreeLessonItem.FreeLessonVideoItem) {
-        val arg = Bundle().apply {
-            putString(LessonScreen.ARG_LESSON_TITLE, freeLessonItem.name)
-            putString(LessonScreen.ARG_LESSON_URL, freeLessonItem.url)
-            putInt(LessonScreen.ARG_LESSON_ID, freeLessonItem.id)
-        }
-        findNavController().navigate(R.id.action_freeLessonsScreen_to_LessonScreen, arg)
+        findNavController().navigate(R.id.action_freeLessonsScreen_to_LessonScreen, LessonScreen.byLesson(lessonId = freeLessonItem.id, lessonTitle = freeLessonItem.name, lessonUrl = freeLessonItem.url))
     }
 
     private val viewModel: FreeLessonsViewModel by viewModel<FreeLessonsViewModel>()

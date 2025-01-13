@@ -37,12 +37,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
     }
 
     private fun handleVideoClick(video: ListItem.VideoItem) {
-        val arg = Bundle().apply {
-            putString(LessonScreen.ARG_LESSON_URL, video.url)
-            putString(LessonScreen.ARG_LESSON_TITLE, video.name)
-            putInt(LessonScreen.ARG_LESSON_ID, video.id)
-        }
-        findNavController().navigate(R.id.action_mainScreen_to_LessonScreen, arg)
+        findNavController().navigate(R.id.action_mainScreen_to_LessonScreen, LessonScreen.byLesson(lessonId = video.id, lessonTitle = video.name, lessonUrl = video.url))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

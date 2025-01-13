@@ -2,73 +2,72 @@ package com.theberdakh.fitness.feature.lesson
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
-import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenLessonBinding
 import com.theberdakh.fitness.feature.lesson.adapter.LessonViewPagerAdapter
 import com.theberdakh.fitness.feature.lesson.checklist.LessonChecklistScreen
 import com.theberdakh.fitness.feature.lesson.description.LessonDescriptionScreen
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class LessonScreen : Fragment(R.layout.screen_lesson) {
     private val viewBinding by viewBinding(ScreenLessonBinding::bind)
     private val viewModel by viewModel<LessonScreenViewModel>()
-    private var videoId: String = ""
+    private var videoUrl: String = ""
     private var videoTitle: String = ""
     private var lessonId: Int = -1
+    private val iframePlayerOptions = IFramePlayerOptions.Builder()
+        .controls(0) // Hides the player controls
+        .build()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initArgs()
+        arguments?.apply {
+            videoUrl = getString(ARG_LESSON_URL) ?: ""
+            videoTitle = getString(ARG_LESSON_TITLE) ?: ""
+            lessonId = getInt(ARG_LESSON_ID)
+        }
         initViews()
         initObservers()
-
     }
 
     private fun initObservers() {
         viewModel.getLessonUiState(lessonId).onEach {
-            when(it){
-                LessonUiState.Error -> handleError("Error")
-                LessonUiState.Loading -> handleLoading()
-                is LessonUiState.Success -> handleSuccess(it.data)
+            when (it) {
+                LessonUiState.Error -> {
+                    //TODO: handle error
+                }
+                LessonUiState.Loading -> {
+                    //TODO: show loading
+                }
+
+                is LessonUiState.Success -> initViewPager(lesson = it.data)
             }
         }
     }
 
-    private fun handleSuccess(lesson: NetworkLesson) {
-        initViewPager(lesson)
-    }
-
-    private fun handleLoading() {
-
-    }
-
-    private fun handleInitial() {
-
-    }
-
-    private fun handleError(message: String) {
-
-    }
-
-
     private fun initViews() {
+        viewBinding.tbLesson.title = videoTitle
         lifecycle.addObserver(viewBinding.youtubePlayerView)
-        viewBinding.youtubePlayerView.addYouTubePlayerListener(YouTubePlayerListener(viewBinding.youtubePlayerView, videoId))
-        viewBinding.youtubePlayerView.initialize(YouTubePlayerListener(viewBinding.youtubePlayerView, videoId), playerOptions = iframePlayerOptions)
+        viewBinding.youtubePlayerView.addYouTubePlayerListener(
+            YouTubePlayerListener(
+                viewBinding.youtubePlayerView,
+                videoUrl
+            )
+        )
+        viewBinding.youtubePlayerView.initialize(
+            YouTubePlayerListener(
+                viewBinding.youtubePlayerView,
+                videoUrl
+            ), playerOptions = iframePlayerOptions
+        )
 
         viewBinding.tbLesson.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -76,7 +75,6 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
     }
 
     private fun initViewPager(lesson: NetworkLesson) {
-        Log.i(TAG, "initViewPager: $lesson")
         viewBinding.vpLesson.adapter = LessonViewPagerAdapter(
             requireActivity().supportFragmentManager,
             lifecycle,
@@ -94,59 +92,27 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
         }.attach()
     }
 
-
-    private fun initArgs() {
-        val arg = arguments?.getString(ARG_LESSON_URL)
-        val arg2 = arguments?.getString(ARG_LESSON_TITLE)
-        arg?.let {
-            videoId = extractYouTubeVideoId(it) ?: ""
-        }
-        arg2?.let {
-            videoTitle = it
-            viewBinding.tbLesson.title = videoTitle
-        }
-        lessonId = arguments?.getInt(ARG_LESSON_ID) ?: -1
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            viewBinding.youtubePlayerView.matchParent();
+            viewBinding.youtubePlayerView.matchParent()
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            viewBinding.youtubePlayerView.wrapContent();
+            viewBinding.youtubePlayerView.wrapContent()
         }
     }
-
-    private val iframePlayerOptions = IFramePlayerOptions.Builder()
-        .controls(0) // Hides the player controls
-        .build()
-
 
     companion object {
-        const val ARG_LESSON_TITLE = "lesson_title"
-        const val ARG_LESSON_URL = "lesson_url"
-        const val ARG_LESSON_ID = "lesson_id"
-    }
+        private const val ARG_LESSON_TITLE = "lesson_title"
+        private const val ARG_LESSON_URL = "lesson_url"
+        private const val ARG_LESSON_ID = "lesson_id"
 
-    private fun extractYouTubeVideoId(youtubeUrl: String): String? {
-        val patterns = listOf(
-            "youtube\\.com/watch\\?v=([^&]+)",           // Standard watch URL
-            "youtube\\.com/watch/\\?v=([^&]+)",          // Alternate watch URL
-            "youtu\\.be/([^?]+)",                        // Shortened URL
-            "youtube\\.com/embed/([^?]+)",               // Embed URL
-            "youtube\\.com/v/([^?]+)",                   // Old embed URL
-            "youtube\\.com/shorts/([^?]+)"               // YouTube Shorts URL
-        )
-
-        for (pattern in patterns) {
-            val regex = pattern.toRegex()
-            val matchResult = regex.find(youtubeUrl)
-            if (matchResult != null && matchResult.groupValues.size > 1) {
-                return matchResult.groupValues[1]
+        fun byLesson(lessonId: Int, lessonTitle: String, lessonUrl: String): Bundle {
+            return Bundle().apply {
+                putInt(ARG_LESSON_ID, lessonId)
+                putString(ARG_LESSON_TITLE, lessonTitle)
+                putString(ARG_LESSON_URL, lessonUrl)
             }
         }
-
-        return null
     }
 
 }
