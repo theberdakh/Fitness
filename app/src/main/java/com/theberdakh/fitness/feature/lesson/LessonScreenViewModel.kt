@@ -18,9 +18,9 @@ class LessonScreenViewModel(private val repository: FitnessRepository) : ViewMod
 }
 
 private fun lessonState(repository: FitnessRepository, lessonId: Int) = flow {
+    emit(LessonUiState.Loading)
     when (val result = repository.getLesson(lessonId)) {
         is Result.Error -> emit(LessonUiState.Error)
-        Result.Loading -> emit(LessonUiState.Loading)
         is Result.Success -> emit(LessonUiState.Success(result.data))
     }
 }

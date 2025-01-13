@@ -1,12 +1,9 @@
 package com.theberdakh.fitness.feature.packs
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.domain.Result
 import com.theberdakh.fitness.domain.FitnessRepository
-import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.Result
 import com.theberdakh.fitness.domain.converter.toPackListItems
 import com.theberdakh.fitness.feature.packs.model.PackListItem
 import kotlinx.coroutines.flow.flow
@@ -23,9 +20,9 @@ class PacksScreenViewModel(private val repository: FitnessRepository) : ViewMode
 }
 
 private fun subscriptionPackState(repository: FitnessRepository) = flow {
+    emit(SubscriptionUiState.Loading)
     when (val result = repository.getMyOrders()) {
         is Result.Error -> emit(SubscriptionUiState.Error)
-        Result.Loading -> emit(SubscriptionUiState.Loading)
         is Result.Success -> {
             emit(SubscriptionUiState.Success(result.data.toPackListItems()))
         }

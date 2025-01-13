@@ -1,21 +1,19 @@
 package com.theberdakh.fitness.feature.modules
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenModulesBinding
 import com.theberdakh.fitness.feature.lessons.LessonsScreen
 import com.theberdakh.fitness.feature.modules.adapter.ModulesAdapter
-import com.theberdakh.fitness.feature.modules.adapter.model.ModulesModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ModulesScreen: Fragment(R.layout.screen_modules) {
@@ -24,19 +22,23 @@ class ModulesScreen: Fragment(R.layout.screen_modules) {
     private val adapter = ModulesAdapter()
     private var orderId = ARG_ORDER_ID_DEFAULT
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        orderId = arguments?.getInt(ARG_ORDER_ID) ?: ARG_ORDER_ID_DEFAULT
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initArgs()
         initViews()
         initObservers()
-
     }
 
     private fun initViews() {
-        viewBinding.tbModules.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
+        viewBinding.tbModules.setNavigationOnClickListener { findNavController().popBackStack() }
+        setUpRecyclerView()
+    }
+
+    private fun setUpRecyclerView() {
         viewBinding.rvModules.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         viewBinding.rvModules.adapter = adapter
         adapter.setOnModuleExtendedClick { module ->
@@ -44,34 +46,26 @@ class ModulesScreen: Fragment(R.layout.screen_modules) {
         }
     }
 
-    private fun initArgs() {
-        orderId = arguments?.getInt(ARG_ORDER_ID) ?: ARG_ORDER_ID_DEFAULT
-    }
-
     private fun initObservers() {
         if (orderId != ARG_ORDER_ID_DEFAULT) {
-            viewModel.getModulesByOrderId(orderId).onEach {
-                when(it){
-                    ModulesByOrderIdState.Error -> handleError("Error")
-                    ModulesByOrderIdState.Loading -> handleLoading()
-                    is ModulesByOrderIdState.Success -> handleSuccess(it.data)
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    viewModel.getModulesByOrderId(orderId).collect { modulesByOrderIdState ->
+                        when(modulesByOrderIdState){
+                            ModulesByOrderIdState.Error -> {
+                                // TODO: handle error
+                            }
+                            ModulesByOrderIdState.Loading -> {
+                                // TODO: show loading
+                            }
+                            is ModulesByOrderIdState.Success -> {
+                                adapter.submitList(modulesByOrderIdState.data)
+                            }
+                        }
+                    }
                 }
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+            }
         }
-    }
-
-    private fun handleSuccess(data: List<ModulesModel>) {
-        Log.i(TAG, "handleSuccess: $data")
-        adapter.submitList(data)
-    }
-
-    private fun handleLoading() {
-
-    }
-
-
-    private fun handleError(message: String) {
-
     }
 
     companion object{

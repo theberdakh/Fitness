@@ -62,7 +62,6 @@ private fun logOutUiState(repository: FitnessRepository) = flow {
     emit(LogOutUiState.Loading)
     when (val result = repository.logout()) {
         is Result.Error -> emit(LogOutUiState.Error)
-        Result.Loading -> emit(LogOutUiState.Loading)
         is Result.Success -> emit(LogOutUiState.Success(result.data))
     }
 }
@@ -75,9 +74,9 @@ sealed interface LogOutUiState {
 
 private fun getProfileUiState(repository: FitnessRepository) =
     flow {
+        emit(GetProfileUiState.Loading)
         when (val result = repository.getProfile()) {
             is Result.Error -> emit(GetProfileUiState.Error)
-            Result.Loading -> emit(GetProfileUiState.Loading)
             is Result.Success -> {
                 emit(GetProfileUiState.Success(result.data.toLocalUserPreference()))
             }
@@ -92,9 +91,9 @@ sealed interface GetProfileUiState {
 
 private fun getGoalsUiState(repository: FitnessRepository) =
     flow {
+        emit(GetTargetsUiState.Loading)
         when (val result = repository.getGoals()) {
             is Result.Error -> emit(GetTargetsUiState.Error)
-            Result.Loading -> emit(GetTargetsUiState.Loading)
             is Result.Success -> {
                 emit(GetTargetsUiState.Success(result.data.toGoalPosters()))
             }
@@ -108,9 +107,9 @@ sealed interface GetTargetsUiState {
 }
 
 private fun updateNameUiState(name: String, repository: FitnessRepository) = flow {
+    emit(UpdateNameUiState.Loading)
     when (val result = repository.updateName(NetworkUpdateNameRequest(name))) {
         is Result.Error -> emit(UpdateNameUiState.Error(result.message))
-        Result.Loading -> emit(UpdateNameUiState.Loading)
         is Result.Success -> {
             emit(UpdateNameUiState.Success)
         }
@@ -132,7 +131,6 @@ private fun loginState(
     when (val result =
         repository.login(NetworkLoginRequest(phone = phone, verificationCode = code))) {
         is Result.Error -> emit(LoginUiState.Error(result.message))
-        Result.Loading -> emit(LoginUiState.Loading)
         is Result.Success -> {
             emit(LoginUiState.Success)
         }
@@ -153,7 +151,6 @@ private fun sendCodeUiState(
         emit(SendCodeUiState.Loading)
         when (val result = repository.sendCode(NetworkSendCodeRequest(phoneNumber))) {
             is Result.Error -> emit(SendCodeUiState.Error(result.message))
-            Result.Loading -> emit(SendCodeUiState.Loading)
             is Result.Success -> {
                 emit(SendCodeUiState.Success(result.data))
             }

@@ -23,9 +23,9 @@ class LessonsScreenViewModel(private val repository: FitnessRepository) : ViewMo
 
 private fun getLessonsUiState(repository: FitnessRepository, moduleId: Int, available: Boolean) =
     flow {
+        emit(LessonsUiState.Loading)
         when (val result = repository.getLessons(moduleId)) {
             is Result.Error -> emit(LessonsUiState.Error)
-            Result.Loading -> emit(LessonsUiState.Loading)
             is Result.Success -> emit(LessonsUiState.Success(result.data.toLessonsModelLesson(isAvailable = available)))
         }
     }

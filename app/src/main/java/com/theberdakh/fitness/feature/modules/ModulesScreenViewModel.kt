@@ -2,9 +2,8 @@ package com.theberdakh.fitness.feature.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.theberdakh.fitness.domain.Result
 import com.theberdakh.fitness.domain.FitnessRepository
-import com.theberdakh.fitness.domain.converter.toDomain
+import com.theberdakh.fitness.domain.Result
 import com.theberdakh.fitness.domain.converter.toExtendedModuleItems
 import com.theberdakh.fitness.feature.modules.adapter.model.ModulesModel
 import kotlinx.coroutines.flow.flow
@@ -23,15 +22,16 @@ class ModulesScreenViewModel(private val repository: FitnessRepository) : ViewMo
         started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5_000),
         initialValue = ModulesByOrderIdState.Loading
     )
-
 }
 
 private fun getModulesByOrderIdUiState(repository: FitnessRepository, orderId: Int) = flow {
+    emit(ModulesByOrderIdState.Loading)
     when(val result = repository.getModulesByOrderId(orderId)){
-        is Result.Error -> emit(ModulesByOrderIdState.Error)
-        Result.Loading -> emit(ModulesByOrderIdState.Loading)
+        is Result.Error -> {
+            emit(ModulesByOrderIdState.Error)
+        }
         is Result.Success -> {
-            emit(result.data.toExtendedModuleItems())
+            emit(ModulesByOrderIdState.Success(result.data.toExtendedModuleItems()))
         }
     }
 }
@@ -43,9 +43,9 @@ sealed interface ModulesByOrderIdState{
 }
 
 private fun getModulesUiState(repository: FitnessRepository, packageId: Int) = flow {
+    emit(ModulesUiState.Loading)
     when (val result = repository.getModules(packageId)) {
         is Result.Error -> emit(ModulesUiState.Error)
-        Result.Loading -> emit(ModulesUiState.Loading)
         is Result.Success -> { emit(result.data.toExtendedModuleItems()) }
     }
 }
