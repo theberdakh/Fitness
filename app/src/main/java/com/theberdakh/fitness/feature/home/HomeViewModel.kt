@@ -24,13 +24,13 @@ class HomeViewModel(repository: FitnessRepository) : ViewModel() {
 private fun homeUiState(repository: FitnessRepository): Flow<HomeUiState> = flow {
     emit(HomeUiState.Loading)
     when (val result = repository.getRandomFreeLessons()) {
-        is Result.Error -> emit(HomeUiState.Error)
+        is Result.Error -> emit(HomeUiState.Error(result.message))
         is Result.Success -> emit(HomeUiState.Success(result.data.toVideoItems()))
     }
 }
 
 sealed interface HomeUiState {
     data class Success(val data: List<ListItem.VideoItem>) : HomeUiState
-    data object Error : HomeUiState
+    data class Error(val message: String) : HomeUiState
     data object Loading : HomeUiState
 }

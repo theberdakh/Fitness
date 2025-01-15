@@ -1,6 +1,5 @@
 package com.theberdakh.fitness.feature.auth
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,12 +14,8 @@ import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenEnterSmsCodeBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import com.theberdakh.fitness.feature.auth.viewmodel.LoginUiState
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.component.getScopeName
-import kotlin.math.log
 
 class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
     private val viewModel: AuthViewModel by viewModel()
@@ -71,7 +66,7 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
                 Log.i(TAG, "sendRequest: $_phoneNumber")
                 viewModel.login(phone = _phoneNumber, code = code).collect {
                     when (it) {
-                        is LoginUiState.Error -> handleError(it.msg)
+                        is LoginUiState.Error -> handleError(it.message)
                         LoginUiState.Loading -> handleLoading()
                         LoginUiState.Success -> handleSuccess()
                     }

@@ -1,18 +1,13 @@
 package com.theberdakh.fitness.feature.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.theberdakh.fitness.R
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
-import com.theberdakh.fitness.core.log.LogEx.TAG
-import com.theberdakh.fitness.data.preferences.LocalUserPreference
 import com.theberdakh.fitness.databinding.ScreenAddNameBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import com.theberdakh.fitness.feature.auth.viewmodel.UpdateNameUiState
@@ -61,7 +56,7 @@ class AddNameScreen: Fragment(R.layout.screen_add_name) {
         val inputText = viewBinding.etName.text.toString()
         viewModel.updateName(inputText).onEach {
             when(it){
-                is UpdateNameUiState.Error -> handleError(it.errorMessage)
+                is UpdateNameUiState.Error -> handleError(it.message)
                 UpdateNameUiState.Loading -> handleLoading()
                 is UpdateNameUiState.Success -> handleSuccess()
             }

@@ -2,10 +2,11 @@ package com.theberdakh.fitness.data.network.retrofit
 
 
 import android.util.Log
+import com.google.gson.annotations.SerializedName
+import com.theberdakh.fitness.data.network.FitnessNetworkDataSource
 import com.theberdakh.fitness.data.network.NetworkMessage
 import com.theberdakh.fitness.data.network.NetworkResult
 import com.theberdakh.fitness.data.network.NetworkServerError
-import com.theberdakh.fitness.data.network.FitnessNetworkDataSource
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
@@ -95,6 +96,32 @@ interface FitnessNetworkApi {
     suspend fun getModulesByOrderId(@Query("order_id") orderId: Int): Response<ServerResponse<List<NetworkOrderModule>>>
 }
 
+/**
+ * Paging model */
+class PaginationList<T>(
+    val message: String,
+    val data: List<T>,
+    val links: PagingLinks,
+    val meta: PagingMeta
+)
+
+data class PagingMeta(
+    val path: String,
+    @SerializedName("per_page")
+    val perPage: Int,
+    @SerializedName("next_cursor")
+    val nextCursor: String?,
+    @SerializedName("prev_cursor")
+    val prevCursor: String?
+)
+
+data class PagingLinks(
+    val first: String?,
+    val last: String?,
+    val prev: String?,
+    val next: String?
+)
+
 /** Some responses contain message with data*/
 data class ServerResponse<T>(
     val message: String,
@@ -165,18 +192,23 @@ class RetrofitFitnessNetwork(private val api: FitnessNetworkApi) : FitnessNetwor
     override suspend fun updateName(request: NetworkUpdateNameRequest) =
         makeRequest { api.updateName(request) }
 
-    override suspend fun getSubscriptionPacks() = makeRequest { api.getSubscriptionPacks() }.unwrap()
+    override suspend fun getSubscriptionPacks() =
+        makeRequest { api.getSubscriptionPacks() }.unwrap()
 
     override suspend fun getModules(packId: Int) = makeRequest { api.getModules(packId) }.unwrap()
 
-    override suspend fun getLessons(moduleId: Int) = makeRequest { api.getLessons(moduleId) }.unwrap()
+    override suspend fun getLessons(moduleId: Int) =
+        makeRequest { api.getLessons(moduleId) }.unwrap()
 
-    override suspend fun getRandomFreeLessons() = makeRequest { api.getRandomFreeLessons() }.unwrap()
+    override suspend fun getRandomFreeLessons() =
+        makeRequest { api.getRandomFreeLessons() }.unwrap()
 
     override suspend fun getFreeLessons(
         perPage: Int,
         cursor: String?
-    ) = makeRequest { api.getFreeLessons(perPage, cursor) }.unwrap()
+    ): NetworkResult<List<NetworkLesson>> {
+        return makeRequest { api.getFreeLessons(perPage, cursor) }.unwrap()
+    }
 
     override suspend fun getLesson(lessonId: Int) = makeRequest { api.getLesson(lessonId) }.unwrap()
 

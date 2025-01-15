@@ -10,57 +10,43 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenSubscriptionBinding
+import com.theberdakh.fitness.feature.common.error.ErrorDelegate
 import com.theberdakh.fitness.feature.subscriptions.adapter.SubscriptionPackItemAdapter
-import com.theberdakh.fitness.feature.subscriptions.model.SubscriptionPackItem
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SubscriptionsScreen: Fragment(R.layout.screen_subscription) {
+class SubscriptionsScreen : Fragment(R.layout.screen_subscription) {
     private val subscriptionsAdapter = SubscriptionPackItemAdapter()
     private val viewModel by viewModel<SubscriptionScreenViewModel>()
     private val viewBinding by viewBinding(ScreenSubscriptionBinding::bind)
+    private val errorDelegate: ErrorDelegate by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         initViews()
         initObservers()
-        viewBinding.tbSubscriptions.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-
     }
 
     private fun initViews() {
+        viewBinding.tbSubscriptions.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
         viewBinding.rvSubscription.adapter = subscriptionsAdapter
     }
 
     private fun initObservers() {
         viewModel.subscriptionPacksUiState.onEach {
-            when(it){
-                SubscriptionUiState.Error -> handleError()
+            when (it) {
+                is SubscriptionUiState.Error -> errorDelegate.errorToast(it.message)
                 SubscriptionUiState.Loading -> handleLoading()
-                is SubscriptionUiState.Success -> handleSuccess(it.subscriptionPacks)
+                is SubscriptionUiState.Success -> subscriptionsAdapter.submitList(it.subscriptionPacks)
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
-
-    }
-
-    private fun handleError() {
-        Log.i(TAG, "handleSuccess:error ")
-    }
-
-    private fun handleInitial() {
-        Log.i(TAG, "handleSuccess: initial ")
     }
 
     private fun handleLoading() {
         Log.i(TAG, "handleSuccess:loading ")
-    }
-
-    private fun handleSuccess(subscriptionPackItems: List<SubscriptionPackItem>) {
-        Log.i(TAG, "handleSuccess:$subscriptionPackItems ")
-        subscriptionsAdapter.submitList(subscriptionPackItems)
     }
 }

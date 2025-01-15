@@ -47,7 +47,7 @@ class LessonScreen : Fragment(R.layout.screen_lesson) {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.getLessonUiState(lessonId).collect {
                     when (it) {
-                        LessonUiState.Error -> {
+                        is LessonUiState.Error -> {
                             //TODO: handle error
                         }
                         LessonUiState.Loading -> {

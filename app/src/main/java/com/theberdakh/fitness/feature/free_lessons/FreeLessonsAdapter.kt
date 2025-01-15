@@ -1,5 +1,6 @@
 package com.theberdakh.fitness.feature.free_lessons
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +15,17 @@ import com.theberdakh.fitness.feature.home.utils.YouTubeThumbnail
 
 class FreeLessonsAdapter(
     private val onVideoClick: (FreeLessonItem.FreeLessonVideoItem) -> Unit
-): ListAdapter<FreeLessonItem, FreeLessonsAdapter.FreeLessonViewHolder>(FreeLessonsItemDiffCallback) {
+) : ListAdapter<FreeLessonItem, FreeLessonsAdapter.FreeLessonViewHolder>(FreeLessonsItemDiffCallback) {
 
-    inner class FreeLessonViewHolder(private val binding: ItemVideoHorizontalBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(item: FreeLessonItem.FreeLessonVideoItem){
+    inner class FreeLessonViewHolder(private val binding: ItemVideoHorizontalBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: FreeLessonItem.FreeLessonVideoItem) {
             binding.root.setOnClickListener {
                 onVideoClick(item)
             }
             binding.tvTitle.text = item.name
             animateLoadAnimation(binding.root)
-            YouTubeThumbnail.loadThumbnail(binding.ivThumbnail, item.url, )
+            YouTubeThumbnail.loadThumbnail(binding.ivThumbnail, item.url)
 
         }
 
@@ -37,24 +39,30 @@ class FreeLessonsAdapter(
         }
     }
 
-    inner class LoadingViewHolder(binding: ItemLoadingBinding): RecyclerView.ViewHolder(binding.root)
+    inner class LoadingViewHolder(binding: ItemLoadingBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FreeLessonViewHolder {
-        return FreeLessonViewHolder(ItemVideoHorizontalBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return FreeLessonViewHolder(
+            ItemVideoHorizontalBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: FreeLessonViewHolder, position: Int) {
-        when(val item = getItem(position)){
+        when (val item = getItem(position)) {
             is FreeLessonItem.FreeLessonVideoItem -> holder.bind(item)
-            FreeLessonItem.LoadingItem -> {
-
-            }
+            FreeLessonItem.LoadingItem -> {}
+            null -> Log.i("Free Lessons Adapter", "onBindViewHolder: item is null")
         }
     }
 
 }
 
-object FreeLessonsItemDiffCallback: DiffUtil.ItemCallback<FreeLessonItem>(){
+object FreeLessonsItemDiffCallback : DiffUtil.ItemCallback<FreeLessonItem>() {
     override fun areItemsTheSame(oldItem: FreeLessonItem, newItem: FreeLessonItem): Boolean {
         return oldItem == newItem
     }

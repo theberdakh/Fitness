@@ -22,7 +22,7 @@ class SubscriptionScreenViewModel(repository: FitnessRepository) : ViewModel() {
 private fun subscriptionPackState(repository: FitnessRepository) = flow {
     emit(SubscriptionUiState.Loading)
     when (val result = repository.getSubscriptionPacks()) {
-        is Result.Error -> emit(SubscriptionUiState.Error)
+        is Result.Error -> emit(SubscriptionUiState.Error(result.message))
         is Result.Success -> emit(SubscriptionUiState.Success(result.data.toSubscriptionPackItems()))
     }
 }
@@ -30,5 +30,5 @@ private fun subscriptionPackState(repository: FitnessRepository) = flow {
 sealed interface SubscriptionUiState {
     data object Loading : SubscriptionUiState
     data class Success(val subscriptionPacks: List<SubscriptionPackItem>) : SubscriptionUiState
-    data object Error : SubscriptionUiState
+    data class Error(val message: String) : SubscriptionUiState
 }

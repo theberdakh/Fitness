@@ -46,6 +46,7 @@ class FitnessRepositoryImpl(
                     )
                     Result.Success(it.data.toDomain())
                 }
+
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
@@ -58,6 +59,7 @@ class FitnessRepositoryImpl(
                     preferences.clear()
                     Result.Success(it.data)
                 }
+
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
@@ -149,10 +151,15 @@ class FitnessRepositoryImpl(
         perPage: Int,
         cursor: String?
     ): Result<List<Lesson>> {
+
         networkDataSource.getFreeLessons(perPage, cursor).let {
             return when (it) {
-                is NetworkResult.Success -> Result.Success(it.data.map { lesson -> lesson.toDomain() })
-                is NetworkResult.Error -> Result.Error(it.message)
+                is NetworkResult.Success -> {
+                    Result.Success(it.data.map { lesson -> lesson.toDomain() })
+                }
+                is NetworkResult.Error -> {
+                    Result.Error(it.message)
+                }
             }
         }
     }

@@ -13,6 +13,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ScreenHomeBinding
+import com.theberdakh.fitness.feature.common.error.ErrorDelegate
 import com.theberdakh.fitness.feature.common.network.NetworkStateManager
 import com.theberdakh.fitness.feature.home.adapter.HomeAdapter
 import com.theberdakh.fitness.feature.home.model.ListItem
@@ -24,6 +25,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
     private val viewBinding by viewBinding(ScreenHomeBinding::bind)
     private val networkStateManager: NetworkStateManager by inject()
     private val homeViewModel: HomeViewModel by inject()
+    private val errorDelegate: ErrorDelegate by inject()
 
     private val homeAdapter = HomeAdapter(
         onVideoClick = { videoItem -> handleVideoClick(videoItem) },
@@ -42,11 +44,9 @@ class HomeScreen : Fragment(R.layout.screen_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+ 
         setUpViews()
         initObservers()
-
-
     }
 
     private fun setUpViews() {
@@ -59,7 +59,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 homeViewModel.homeUiState.collect{ state ->
                     when(state){
-                        HomeUiState.Error -> Log.e(TAG, "initObservers: error", )
+                        is HomeUiState.Error -> errorDelegate.errorToast(state.message)
                         HomeUiState.Loading -> Log.i(TAG, "initObservers: loading")
                         is HomeUiState.Success -> handleSuccess(state.data)
                     }

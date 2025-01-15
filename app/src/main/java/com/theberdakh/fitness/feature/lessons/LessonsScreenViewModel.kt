@@ -24,7 +24,7 @@ private fun getLessonsUiState(repository: FitnessRepository, moduleId: Int, avai
     flow {
         emit(LessonsUiState.Loading)
         when (val result = repository.getLessons(moduleId)) {
-            is Result.Error -> emit(LessonsUiState.Error)
+            is Result.Error -> emit(LessonsUiState.Error(result.message))
             is Result.Success -> emit(LessonsUiState.Success(result.data.toLessonsModelLesson(isAvailable = available)))
         }
     }
@@ -32,5 +32,5 @@ private fun getLessonsUiState(repository: FitnessRepository, moduleId: Int, avai
 sealed interface LessonsUiState {
     data class Success(val data: List<LessonsModel.Lesson>) : LessonsUiState
     data object Loading : LessonsUiState
-    data object Error : LessonsUiState
+    data class Error(val message: String) : LessonsUiState
 }

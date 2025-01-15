@@ -16,9 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
-class AuthViewModel(
-    private val repository: FitnessRepository
-) : ViewModel() {
+class AuthViewModel(private val repository: FitnessRepository) : ViewModel() {
 
     fun sendCode(phone: String) = sendCodeUiState(phone, repository).stateIn(
         scope = viewModelScope,
@@ -118,7 +116,7 @@ private fun updateNameUiState(name: String, repository: FitnessRepository) = flo
 
 sealed interface UpdateNameUiState {
     data object Success : UpdateNameUiState
-    data class Error(val errorMessage: String) : UpdateNameUiState
+    data class Error(val message: String) : UpdateNameUiState
     data object Loading : UpdateNameUiState
 }
 
@@ -139,7 +137,7 @@ private fun loginState(
 
 sealed interface LoginUiState {
     data object Success : LoginUiState
-    data class Error(val msg: String) : LoginUiState
+    data class Error(val message: String) : LoginUiState
     data object Loading : LoginUiState
 }
 

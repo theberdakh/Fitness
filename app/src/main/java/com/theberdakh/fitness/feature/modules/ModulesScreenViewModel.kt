@@ -45,7 +45,7 @@ sealed interface ModulesByOrderIdState{
 private fun getModulesUiState(repository: FitnessRepository, packageId: Int) = flow {
     emit(ModulesUiState.Loading)
     when (val result = repository.getModules(packageId)) {
-        is Result.Error -> emit(ModulesUiState.Error)
+        is Result.Error -> emit(ModulesUiState.Error(result.message))
         is Result.Success -> { emit(result.data.toExtendedModuleItems()) }
     }
 }
@@ -53,5 +53,5 @@ private fun getModulesUiState(repository: FitnessRepository, packageId: Int) = f
 sealed interface ModulesUiState {
     data class Success(val data: List<ModulesModel>) : ModulesUiState
     data object Loading : ModulesUiState
-    data object Error : ModulesUiState
+    data class Error(val message: String) : ModulesUiState
 }

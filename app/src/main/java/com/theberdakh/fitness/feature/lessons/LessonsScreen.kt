@@ -11,9 +11,11 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenLessonsBinding
 import com.theberdakh.fitness.feature.common.dialog.UniversalDialog
+import com.theberdakh.fitness.feature.common.error.ErrorDelegate
 import com.theberdakh.fitness.feature.lesson.LessonScreen
 import com.theberdakh.fitness.feature.lessons.adapter.LessonsModelAdapter
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LessonsScreen : Fragment(R.layout.screen_lessons) {
@@ -22,6 +24,7 @@ class LessonsScreen : Fragment(R.layout.screen_lessons) {
     private val viewModel by viewModel<LessonsScreenViewModel>()
     private var moduleId = ARG_MODULE_ID_DEFAULT
     private var isAvailable = ARG_IS_AVAILABLE_DEFAULT
+    private val errorDelegate by inject<ErrorDelegate>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +46,7 @@ class LessonsScreen : Fragment(R.layout.screen_lessons) {
                 if (moduleId != ARG_MODULE_ID_DEFAULT) {
                     viewModel.getLessons(moduleId, isAvailable).collect{
                         when (it) {
-                            LessonsUiState.Error -> {
-                                //TODO: handle error
-                            }
+                            is LessonsUiState.Error -> errorDelegate.errorToast(it.message)
                             LessonsUiState.Loading -> {
                                 //TODO: show loading
                             }
