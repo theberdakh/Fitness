@@ -1,6 +1,5 @@
 package com.theberdakh.fitness.data.network
 
-import androidx.paging.PagingData
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
@@ -12,7 +11,6 @@ import com.theberdakh.fitness.data.network.model.mobile.NetworkPack
 import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.data.network.model.mobile.NetworkTarget
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
-import com.theberdakh.fitness.data.network.retrofit.PaginationList
 
 /*Inspired from https://github.com/android/nowinandroid/blob/main/core/network/src/main/kotlin/com/google/samples/apps/nowinandroid/core/network/NiaNetworkDataSource.kt */
 interface FitnessNetworkDataSource {

@@ -23,8 +23,6 @@ fun NetworkModule.toDomain() = Module(
     isViewFinished = false
 )
 
-
-
 fun Module.toExtendedModuleItem() = ModulesModel.ModuleItemExtended(
     moduleId = id,
     title = name,

@@ -11,7 +11,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenFreeLessonsBinding
 import com.theberdakh.fitness.feature.common.error.ErrorDelegate
-import com.theberdakh.fitness.feature.free_lessons.model.FreeLessonItem
 import com.theberdakh.fitness.feature.lesson.LessonScreen
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -19,33 +18,22 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FreeLessonsScreen : Fragment(R.layout.screen_free_lessons) {
     private val viewBinding by viewBinding(ScreenFreeLessonsBinding::bind)
+    private val errorDelegate: ErrorDelegate by inject()
+    private val viewModel: FreeLessonsViewModel by viewModel<FreeLessonsViewModel>()
     private val freeLessonsAdapter = FreeLessonsAdapter(
-        onVideoClick = { freeLessonItem ->
-            navigateToLesson(freeLessonItem)
+        onVideoClick = { freeLessonItem -> findNavController().navigate(R.id.action_freeLessonsScreen_to_LessonScreen,
+                LessonScreen.byLesson(
+                    lessonId = freeLessonItem.id,
+                    lessonTitle = freeLessonItem.name,
+                    lessonUrl = freeLessonItem.url
+                )
+            )
         }
     )
-    private val errorDelegate: ErrorDelegate by inject()
-
-
-    private fun navigateToLesson(freeLessonItem: FreeLessonItem.FreeLessonVideoItem) {
-        findNavController().navigate(
-            R.id.action_freeLessonsScreen_to_LessonScreen,
-            LessonScreen.byLesson(
-                lessonId = freeLessonItem.id,
-                lessonTitle = freeLessonItem.name,
-                lessonUrl = freeLessonItem.url
-            )
-        )
-    }
-
-    private val viewModel: FreeLessonsViewModel by viewModel<FreeLessonsViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initViews()
         initObservers()
-
-
     }
 
     private fun initObservers() {
@@ -53,24 +41,27 @@ class FreeLessonsScreen : Fragment(R.layout.screen_free_lessons) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getAllFreeLessonsUiState.collect {
                     when (it) {
-                        is FreeLessonsUiState.Error -> errorDelegate.errorToast(it.message)
-                        FreeLessonsUiState.Loading -> handleLoading()
-                        is FreeLessonsUiState.Success -> freeLessonsAdapter.submitList(it.data)
+                        is FreeLessonsUiState.Error -> {
+                            errorDelegate.errorSnackbarLoading(
+                                viewBinding.rvFreeLessons,
+                                it.message,
+                                { viewModel.refresh() }
+                            )
+                        }
+                        FreeLessonsUiState.Loading -> viewBinding.srlFreeLessons.isRefreshing = true
+                        is FreeLessonsUiState.Success -> {
+                            viewBinding.srlFreeLessons.isRefreshing = false
+                            freeLessonsAdapter.submitList(it.data)
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun handleLoading() {
-
-    }
-
     private fun initViews() {
-        viewBinding.tbFreeLessons.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-
+        viewBinding.tbFreeLessons.setNavigationOnClickListener { findNavController().popBackStack() }
+        viewBinding.srlFreeLessons.setOnRefreshListener { viewModel.refresh() }
         viewBinding.rvFreeLessons.adapter = freeLessonsAdapter
     }
 }

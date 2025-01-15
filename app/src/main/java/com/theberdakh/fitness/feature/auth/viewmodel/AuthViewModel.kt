@@ -74,7 +74,9 @@ private fun getProfileUiState(repository: FitnessRepository) =
     flow {
         emit(GetProfileUiState.Loading)
         when (val result = repository.getProfile()) {
-            is Result.Error -> emit(GetProfileUiState.Error)
+            is Result.Error -> {
+                emit(GetProfileUiState.Error(result.message))
+            }
             is Result.Success -> {
                 emit(GetProfileUiState.Success(result.data.toLocalUserPreference()))
             }
@@ -83,7 +85,7 @@ private fun getProfileUiState(repository: FitnessRepository) =
 
 sealed interface GetProfileUiState {
     data class Success(val data: LocalUserPreference) : GetProfileUiState
-    data object Error : GetProfileUiState
+    data class Error(val message: String) : GetProfileUiState
     data object Loading : GetProfileUiState
 }
 

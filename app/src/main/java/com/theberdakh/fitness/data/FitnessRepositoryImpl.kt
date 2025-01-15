@@ -75,20 +75,19 @@ class FitnessRepositoryImpl(
     }
 
     override suspend fun getProfile(): Result<UserPreference> {
-        networkDataSource.getProfile().let {
-            return when (it) {
-                is NetworkResult.Success -> {
-                    preferences.saveUserData(
-                        preferences.getUserData().copy(
-                            name = it.data.name,
-                            phone = it.data.phone,
-                            userGoalId = it.data.targetId ?: UserPreference.NO_GOAL_ID
-                        )
-                    )
-                    Result.Success(preferences.getUserData().toDomain())
-                }
+        return when (val networkResult = networkDataSource.getProfile()) {
+            is NetworkResult.Error -> {
+                Result.Success(preferences.getUserData().toDomain())
+            }
 
-                is NetworkResult.Error -> Result.Error(it.message)
+            is NetworkResult.Success -> {
+                val updatedUser = preferences.getUserData().copy(
+                    name = networkResult.data.name,
+                    phone = networkResult.data.phone,
+                    userGoalId = networkResult.data.targetId ?: UserPreference.NO_GOAL_ID
+                )
+                preferences.saveUserData(updatedUser)
+                Result.Success(preferences.getUserData().toDomain())
             }
         }
     }
@@ -157,6 +156,7 @@ class FitnessRepositoryImpl(
                 is NetworkResult.Success -> {
                     Result.Success(it.data.map { lesson -> lesson.toDomain() })
                 }
+
                 is NetworkResult.Error -> {
                     Result.Error(it.message)
                 }

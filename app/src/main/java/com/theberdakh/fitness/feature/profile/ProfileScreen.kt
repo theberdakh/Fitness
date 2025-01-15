@@ -7,18 +7,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
-import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.data.preferences.LocalUserPreference
 import com.theberdakh.fitness.databinding.ScreenProfileBinding
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
 import com.theberdakh.fitness.feature.auth.viewmodel.GetProfileUiState
 import com.theberdakh.fitness.feature.auth.viewmodel.LogOutUiState
 import com.theberdakh.fitness.feature.common.dialog.UniversalDialog
+import com.theberdakh.fitness.feature.common.error.ErrorDelegate
 import com.theberdakh.fitness.feature.profile.adapter.ProfileAdapter
 import com.theberdakh.fitness.feature.profile.model.ProfileItem
 import com.theberdakh.fitness.feature.profile.model.ProfileItemType
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileScreen : Fragment(R.layout.screen_profile) {
@@ -26,6 +27,7 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
     private var profileItems: List<ProfileItem> = emptyList()
     private var profileAdapter: ProfileAdapter? = null
     private val viewModel by viewModel<AuthViewModel>()
+    private val errorDelegate by inject<ErrorDelegate>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,7 +39,7 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
     private fun getProfile() {
         viewModel.getProfileUiState.onEach {
             when(it){
-                GetProfileUiState.Error -> handleError("Error")
+                is GetProfileUiState.Error -> errorDelegate.errorToast(it.message)
                 GetProfileUiState.Loading -> handleLoading()
                 is GetProfileUiState.Success -> handleSuccess(it.data)
             }
@@ -53,9 +55,6 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
 
     }
 
-    private fun handleInitial() {
-
-    }
 
     private fun handleError(message: String) {
 

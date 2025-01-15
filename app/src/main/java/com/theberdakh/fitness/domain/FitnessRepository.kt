@@ -1,11 +1,8 @@
 package com.theberdakh.fitness.domain
 
-import androidx.paging.PagingData
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
-import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
-import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
 import com.theberdakh.fitness.domain.model.Goal
 import com.theberdakh.fitness.domain.model.Lesson
@@ -13,7 +10,6 @@ import com.theberdakh.fitness.domain.model.Module
 import com.theberdakh.fitness.domain.model.SubscriptionOrder
 import com.theberdakh.fitness.domain.model.SubscriptionPack
 import com.theberdakh.fitness.domain.model.UserPreference
-import kotlinx.coroutines.flow.Flow
 
 interface FitnessRepository {
 

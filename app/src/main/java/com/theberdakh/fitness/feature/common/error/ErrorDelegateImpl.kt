@@ -8,14 +8,35 @@ import com.theberdakh.fitness.R
 
 class ErrorDelegateImpl(
     private val context: Context
-): ErrorDelegate {
+) : ErrorDelegate {
     override fun errorToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
-    override fun errorSnackbar(view: View, message: String, action: (() -> Unit)?) =
+
+    override fun errorSnackbar(
+        view: View,
+        message: String,
+        actionText: String,
+        action: (() -> Unit)?
+    ) {
+        context.setTheme(R.style.Theme_Fitness)
         Snackbar.make(context, view, message, Snackbar.LENGTH_SHORT).apply {
             action?.let {
-                setAction(context.getString(R.string.retry)) { it() }
+                setAction(actionText) { action() }
             }
         }.show()
+    }
+
+    /** Snackbar with pre-defined values and action
+     * @param loadingAction -> how to load  */
+    override fun errorSnackbarLoading(
+        view: View,
+        message: String,
+        loadingAction: (() -> Unit)
+    ) {
+        context.setTheme(R.style.Theme_Fitness)
+        Snackbar.make(context, view, message, Snackbar.LENGTH_INDEFINITE).apply {
+            setAction(context.getString(R.string.retry)) { loadingAction() }
+        }.show()
+    }
 }

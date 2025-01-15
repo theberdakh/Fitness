@@ -2,6 +2,7 @@ package com.theberdakh.fitness
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -37,8 +38,6 @@ class MainActivity : AppCompatActivity() {
                 networkMonitor.isOnline.collect {
                     if (!it){
                         Toast.makeText(this@MainActivity, R.string.error_network_state, Toast.LENGTH_SHORT).show()
-                    } else {
-
                     }
                }
           }

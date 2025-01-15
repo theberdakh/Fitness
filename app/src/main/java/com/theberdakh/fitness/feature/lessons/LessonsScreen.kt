@@ -44,12 +44,13 @@ class LessonsScreen : Fragment(R.layout.screen_lessons) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 if (moduleId != ARG_MODULE_ID_DEFAULT) {
-                    viewModel.getLessons(moduleId, isAvailable).collect{
+                    viewModel.getLessons(moduleId, isAvailable).collect {
                         when (it) {
                             is LessonsUiState.Error -> errorDelegate.errorToast(it.message)
                             LessonsUiState.Loading -> {
                                 //TODO: show loading
                             }
+
                             is LessonsUiState.Success -> {
                                 adapter.submitList(it.data)
                             }
@@ -96,8 +97,15 @@ class LessonsScreen : Fragment(R.layout.screen_lessons) {
     private fun setUpRecyclerView() {
         viewBinding.rvLessons.adapter = adapter
         adapter.setOnLessonClick { lesson ->
-            if (lesson.isAvailable){
-                findNavController().navigate(R.id.action_lessonsScreen_to_LessonScreen, LessonScreen.byLesson(lessonId = lesson.id, lessonTitle = lesson.title, lessonUrl = lesson.youtubeUrl))
+            if (lesson.isAvailable) {
+                findNavController().navigate(
+                    R.id.action_lessonsScreen_to_LessonScreen,
+                    LessonScreen.byLesson(
+                        lessonId = lesson.id,
+                        lessonTitle = lesson.title,
+                        lessonUrl = lesson.youtubeUrl
+                    )
+                )
             } else {
                 UniversalDialog.Builder(requireContext())
                     .setTitle(getString(R.string.lesson_unavailable))
