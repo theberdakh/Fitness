@@ -13,6 +13,7 @@ import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.data.network.model.mobile.NetworkModule
 import com.theberdakh.fitness.data.network.model.mobile.NetworkNotification
+import com.theberdakh.fitness.data.network.model.mobile.NetworkNotificationDetail
 import com.theberdakh.fitness.data.network.model.mobile.NetworkOrder
 import com.theberdakh.fitness.data.network.model.mobile.NetworkOrderModule
 import com.theberdakh.fitness.data.network.model.mobile.NetworkPack
@@ -99,6 +100,10 @@ interface FitnessNetworkApi {
     @Headers("Accept: application/json")
     @GET("api/v1/mobile/notifications")
     suspend fun getNotifications(): Response<ServerResponse<List<NetworkNotification>>>
+
+    @Headers("Accept: application/json")
+    @GET("api/v1/mobile/notifications/{notificationId}")
+    suspend fun getNotification(@Path("notificationId") notificationId: Int): Response<ServerResponse<NetworkNotificationDetail>>
 }
 
 /**
@@ -168,6 +173,7 @@ suspend fun <T> makeRequest(apiCall: suspend () -> Response<T>): NetworkResult<T
                 }
                     ?: NetworkResult.Error(message = "Error ${response.code()}: ${response.message()}")
             }
+
             401 -> NetworkResult.Error(message = "Unauthorized")
             else -> {
                 errorBody?.let {
@@ -229,5 +235,7 @@ class RetrofitFitnessNetwork(private val api: FitnessNetworkApi) : FitnessNetwor
         makeRequest { api.getModulesByOrderId(orderId) }.unwrap()
 
     override suspend fun getNotifications() = makeRequest { api.getNotifications() }.unwrap()
+    override suspend fun getNotification(notificationId: Int): NetworkResult<NetworkNotificationDetail> =
+        makeRequest { api.getNotification(notificationId) }.unwrap()
 
 }

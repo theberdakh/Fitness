@@ -8,6 +8,7 @@ import com.theberdakh.fitness.feature.lesson.LessonScreenViewModel
 import com.theberdakh.fitness.feature.lessons.LessonsScreenViewModel
 import com.theberdakh.fitness.feature.modules.ModulesScreenViewModel
 import com.theberdakh.fitness.feature.notification.NotificationViewModel
+import com.theberdakh.fitness.feature.notification_details.NotificationDetailsScreenViewModel
 import com.theberdakh.fitness.feature.packs.PacksScreenViewModel
 import com.theberdakh.fitness.feature.subscriptions.SubscriptionScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -25,5 +26,6 @@ object CoreViewModel {
         viewModel { ModulesScreenViewModel(repository = get()) }
         viewModel { LessonsScreenViewModel(repository = get()) }
         viewModel { NotificationViewModel(repository = get()) }
+        viewModel { NotificationDetailsScreenViewModel(repository = get()) }
     }
 }

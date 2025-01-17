@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_nav">
 
     <fragment
         android:id="@+id/mainScreen"
         android:name="com.theberdakh.fitness.feature.main.MainScreen"
         android:label="MainFragment"
-        tools:layout="@layout/screen_main" >
+        tools:layout="@layout/screen_main">
 
         <action
             android:id="@+id/action_mainScreen_to_chatWithCoachScreen"
@@ -16,16 +16,14 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
         <action
             android:id="@+id/action_mainScreen_to_notificationScreen"
             app:destination="@id/notificationScreen"
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
         <action
             android:id="@+id/action_mainScreen_to_subscriptionsScreen"
@@ -33,8 +31,7 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
         <action
             android:id="@+id/action_mainScreen_to_aboutScreen"
@@ -42,34 +39,33 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
-        <action android:id="@+id/action_mainScreen_to_LogoScreen"
+        <action
+            android:id="@+id/action_mainScreen_to_LogoScreen"
             app:destination="@id/logoScreen"
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/from_right"
             app:popUpTo="@id/mainScreen"
-            app:popUpToInclusive="true"
-            />
+            app:popUpToInclusive="true" />
 
-        <action android:id="@+id/action_mainScreen_to_LessonScreen"
+        <action
+            android:id="@+id/action_mainScreen_to_LessonScreen"
             app:destination="@id/lessonScreen"
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
-        <action android:id="@+id/action_mainScreen_to_FreeLessonsScreen"
+        <action
+            android:id="@+id/action_mainScreen_to_FreeLessonsScreen"
             app:destination="@id/freeLessonsScreen"
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
         <action
             android:id="@+id/action_mainScreen_to_ModulesScreen"
@@ -93,15 +89,14 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
     </fragment>
 
     <fragment
         android:id="@+id/addPhoneNumberScreen"
         android:name="com.theberdakh.fitness.feature.auth.AddPhoneNumberScreen"
-        tools:layout="@layout/screen_add_phone_number" >
+        tools:layout="@layout/screen_add_phone_number">
 
         <action
             android:id="@+id/action_addPhoneNumberScreen_to_enterSMSCodeScreen"
@@ -109,7 +104,7 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"/>
+            app:popExitAnim="@anim/from_right" />
     </fragment>
 
     <fragment
@@ -125,7 +120,7 @@
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/from_right"
             app:popUpTo="@id/logoScreen"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -142,15 +137,14 @@
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/from_right"
             app:popUpTo="@id/logoScreen"
-            app:popUpToInclusive="true"
-          />
+            app:popUpToInclusive="true" />
 
     </fragment>
 
     <fragment
         android:id="@+id/addAgeGenderScreen"
         android:name="com.theberdakh.fitness.feature.auth.AddAgeGenderScreen"
-        tools:layout="@layout/screen_add_age_gender" >
+        tools:layout="@layout/screen_add_age_gender">
 
         <action
             android:id="@+id/action_addAgeGenderScreen_to_addWeightScreen"
@@ -158,8 +152,7 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-          />
+            app:popExitAnim="@anim/from_right" />
 
     </fragment>
     <fragment
@@ -173,82 +166,91 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-         />
+            app:popExitAnim="@anim/from_right" />
 
     </fragment>
 
-      <fragment
+    <fragment
         android:id="@+id/addHeightScreen"
         android:name="com.theberdakh.fitness.feature.auth.AddHeightScreen"
-        tools:layout="@layout/screen_add_weight" >
+        tools:layout="@layout/screen_add_weight">
 
-          <action
-              android:id="@+id/action_addHeightScreen_to_addGoalScreen"
-              app:destination="@id/addGoalScreen"
-              app:enterAnim="@anim/to_right"
-              app:exitAnim="@anim/to_left"
-              app:popEnterAnim="@anim/from_left"
-              app:popExitAnim="@anim/from_right"
-              />
-      </fragment>
 
-      <fragment
+        <action
+            android:id="@+id/action_addHeightScreen_to_addGoalScreen"
+            app:destination="@id/addGoalScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right" />
+    </fragment>
+
+    <fragment
         android:id="@+id/addGoalScreen"
         android:name="com.theberdakh.fitness.feature.auth.AddGoalScreen"
-        tools:layout="@layout/screen_add_goal" >
+        tools:layout="@layout/screen_add_goal">
 
-          <action
-              android:id="@+id/action_addGoalScreen_to_mainScreen"
-              app:destination="@id/mainScreen"
-              app:enterAnim="@anim/to_right"
-              app:exitAnim="@anim/to_left"
-              app:popEnterAnim="@anim/from_left"
-              app:popExitAnim="@anim/from_right"
-              app:popUpTo="@id/logoScreen"
-              app:popUpToInclusive="true"
+        <action
+            android:id="@+id/action_addGoalScreen_to_mainScreen"
+            app:destination="@id/mainScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right"
+            app:popUpTo="@id/logoScreen"
+            app:popUpToInclusive="true"
 
-              />
+            />
 
-      </fragment>
+    </fragment>
 
     <fragment
         android:id="@+id/chatWithCoachScreen"
         android:name="com.theberdakh.fitness.feature.chat.ChatWithCoachScreen"
-        tools:layout="@layout/screen_chat_with_coach"/>
+        tools:layout="@layout/screen_chat_with_coach" />
 
     <fragment
         android:id="@+id/notificationScreen"
         android:name="com.theberdakh.fitness.feature.notification.NotificationScreen"
-        tools:layout="@layout/screen_notification"/>
+        tools:layout="@layout/screen_notification">
+
+        <action
+            android:id="@+id/action_notificationScreen_to_notificationDetailsScreen"
+            app:destination="@id/notificationDetailsScreen"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/subscriptionsScreen"
         android:name="com.theberdakh.fitness.feature.subscriptions.SubscriptionsScreen"
-        tools:layout="@layout/screen_subscription"/>
+        tools:layout="@layout/screen_subscription" />
 
     <fragment
         android:id="@+id/aboutScreen"
         android:name="com.theberdakh.fitness.feature.about.AboutScreen"
-        tools:layout="@layout/screen_about"/>
+        tools:layout="@layout/screen_about" />
 
     <fragment
         android:id="@+id/lessonScreen"
         android:name="com.theberdakh.fitness.feature.lesson.LessonScreen"
-        tools:layout="@layout/screen_lesson"/>
+        tools:layout="@layout/screen_lesson" />
 
     <fragment
         android:id="@+id/freeLessonsScreen"
         android:name="com.theberdakh.fitness.feature.free_lessons.FreeLessonsScreen"
         tools:layout="@layout/screen_free_lessons">
 
-        <action android:id="@+id/action_freeLessonsScreen_to_LessonScreen"
+        <action
+            android:id="@+id/action_freeLessonsScreen_to_LessonScreen"
             app:destination="@id/lessonScreen"
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
     </fragment>
 
@@ -263,15 +265,14 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
     </fragment>
 
     <fragment
         android:id="@+id/modulesScreen"
-        tools:layout="@layout/screen_modules"
-        android:name="com.theberdakh.fitness.feature.modules.ModulesScreen">
+        android:name="com.theberdakh.fitness.feature.modules.ModulesScreen"
+        tools:layout="@layout/screen_modules">
 
         <action
             android:id="@+id/action_modulesScreen_to_LessonsScreen"
@@ -279,12 +280,14 @@
             app:enterAnim="@anim/to_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/from_right"
-            />
+            app:popExitAnim="@anim/from_right" />
 
     </fragment>
 
-
+    <fragment
+        android:id="@+id/notificationDetailsScreen"
+        android:name="com.theberdakh.fitness.feature.notification_details.NotificationDetailsScreen"
+        tools:layout="@layout/screen_notification_details" />
 
 
 </navigation>

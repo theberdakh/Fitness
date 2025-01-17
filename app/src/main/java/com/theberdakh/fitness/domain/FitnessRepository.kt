@@ -43,4 +43,6 @@ interface FitnessRepository {
     suspend fun getMyOrders(): Result<List<SubscriptionOrder>>
 
     suspend fun getNotifications(): Result<List<Notification>>
+
+    suspend fun getNotification(notificationId: Int): Result<Notification>
 }

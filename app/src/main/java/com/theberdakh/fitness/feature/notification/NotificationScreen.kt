@@ -13,6 +13,7 @@ import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenNotificationBinding
 import com.theberdakh.fitness.feature.common.error.ErrorDelegate
 import com.theberdakh.fitness.feature.notification.adapter.NotificationItemListAdapter
+import com.theberdakh.fitness.feature.notification_details.NotificationDetailsScreen
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,7 +22,14 @@ class NotificationScreen : Fragment(R.layout.screen_notification) {
     private val viewModel by viewModel<NotificationViewModel>()
     private val errorDelegate: ErrorDelegate by inject()
     private val viewBinding by viewBinding(ScreenNotificationBinding::bind)
-    private val adapter = NotificationItemListAdapter()
+    private val adapter = NotificationItemListAdapter(
+        onNotificationClick = {
+            findNavController().navigate(
+                R.id.action_notificationScreen_to_notificationDetailsScreen,
+                NotificationDetailsScreen.byNotificationId(it.id)
+            )
+        }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,11 +39,15 @@ class NotificationScreen : Fragment(R.layout.screen_notification) {
 
     private fun initObservers() {
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.notifications.collect {
-                    when(it){
+                    when (it) {
                         is NotificationUiState.Error -> errorDelegate.errorToast(it.message)
-                        NotificationUiState.Loading -> Log.i("NotificationScreen", "initObservers: Loading")
+                        NotificationUiState.Loading -> Log.i(
+                            "NotificationScreen",
+                            "initObservers: Loading"
+                        )
+
                         is NotificationUiState.Success -> {
                             Log.i("NotificationScreen", "initObservers: Success")
                             adapter.submitList(it.data)
@@ -50,6 +62,6 @@ class NotificationScreen : Fragment(R.layout.screen_notification) {
         viewBinding.tbNotification.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-        viewBinding.rvNotification.adapter =adapter
+        viewBinding.rvNotification.adapter = adapter
     }
 }

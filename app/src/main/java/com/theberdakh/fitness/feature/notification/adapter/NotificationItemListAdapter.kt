@@ -8,7 +8,9 @@ import com.theberdakh.fitness.databinding.ItemNotificationBinding
 import com.theberdakh.fitness.feature.notification.model.NotificationItem
 import com.theberdakh.fitness.feature.notification.model.NotificationItemDiffCallback
 
-class NotificationItemListAdapter :
+class NotificationItemListAdapter(
+   private val onNotificationClick: (NotificationItem) -> Unit
+) :
     ListAdapter<NotificationItem, NotificationItemListAdapter.ViewHolder>(
         NotificationItemDiffCallback
     ) {
@@ -28,12 +30,15 @@ class NotificationItemListAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(getItem(position))
 
-    class ViewHolder(private val binding: ItemNotificationBinding) :
+    inner class ViewHolder(private val binding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: NotificationItem) {
             binding.tvNotificationTitle.text = item.title
             binding.tvNotificationSubtitle.text = item.date
+            binding.root.setOnClickListener {
+                onNotificationClick.invoke(item)
+            }
         }
 
     }

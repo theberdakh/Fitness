@@ -1,6 +1,5 @@
 package com.theberdakh.fitness.data
 
-import android.util.Log
 import com.theberdakh.fitness.data.network.FitnessNetworkDataSource
 import com.theberdakh.fitness.data.network.NetworkResult
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
@@ -194,6 +193,15 @@ class FitnessRepositoryImpl(
         networkDataSource.getNotifications().let {
             return when (it) {
                 is NetworkResult.Success -> Result.Success(it.data.map { networkNotification -> networkNotification.toDomain() })
+                is NetworkResult.Error -> Result.Error(it.message)
+            }
+        }
+    }
+
+    override suspend fun getNotification(notificationId: Int): Result<Notification> {
+        networkDataSource.getNotification(notificationId).let {
+            return when (it) {
+                is NetworkResult.Success -> Result.Success(it.data.toDomain())
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
