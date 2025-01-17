@@ -7,6 +7,7 @@ import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
+import com.theberdakh.fitness.data.network.model.mobile.toDomain
 import com.theberdakh.fitness.data.preferences.FitnessPreferences
 import com.theberdakh.fitness.data.preferences.LocalUserSession
 import com.theberdakh.fitness.domain.FitnessRepository
@@ -15,6 +16,7 @@ import com.theberdakh.fitness.domain.converter.toDomain
 import com.theberdakh.fitness.domain.model.Goal
 import com.theberdakh.fitness.domain.model.Lesson
 import com.theberdakh.fitness.domain.model.Module
+import com.theberdakh.fitness.domain.model.Notification
 import com.theberdakh.fitness.domain.model.SubscriptionOrder
 import com.theberdakh.fitness.domain.model.SubscriptionPack
 import com.theberdakh.fitness.domain.model.UserPreference
@@ -183,6 +185,15 @@ class FitnessRepositoryImpl(
         networkDataSource.getMyOrders().let {
             return when (it) {
                 is NetworkResult.Success -> Result.Success(it.data.map { order -> order.toDomain() })
+                is NetworkResult.Error -> Result.Error(it.message)
+            }
+        }
+    }
+
+    override suspend fun getNotifications(): Result<List<Notification>> {
+        networkDataSource.getNotifications().let {
+            return when (it) {
+                is NetworkResult.Success -> Result.Success(it.data.map { networkNotification -> networkNotification.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }

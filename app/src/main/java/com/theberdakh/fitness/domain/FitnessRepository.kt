@@ -7,6 +7,7 @@ import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
 import com.theberdakh.fitness.domain.model.Goal
 import com.theberdakh.fitness.domain.model.Lesson
 import com.theberdakh.fitness.domain.model.Module
+import com.theberdakh.fitness.domain.model.Notification
 import com.theberdakh.fitness.domain.model.SubscriptionOrder
 import com.theberdakh.fitness.domain.model.SubscriptionPack
 import com.theberdakh.fitness.domain.model.UserPreference
@@ -40,4 +41,6 @@ interface FitnessRepository {
     suspend fun getLesson(lessonId: Int): Result<NetworkLesson>
 
     suspend fun getMyOrders(): Result<List<SubscriptionOrder>>
+
+    suspend fun getNotifications(): Result<List<Notification>>
 }

@@ -5,6 +5,7 @@ import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.data.network.model.mobile.NetworkModule
+import com.theberdakh.fitness.data.network.model.mobile.NetworkNotification
 import com.theberdakh.fitness.data.network.model.mobile.NetworkOrder
 import com.theberdakh.fitness.data.network.model.mobile.NetworkOrderModule
 import com.theberdakh.fitness.data.network.model.mobile.NetworkPack
@@ -42,4 +43,6 @@ interface FitnessNetworkDataSource {
     suspend fun getMyOrders(): NetworkResult<List<NetworkOrder>>
 
     suspend fun getModulesByOrderId(orderId: Int): NetworkResult<List<NetworkOrderModule>>
+
+    suspend fun getNotifications(): NetworkResult<List<NetworkNotification>>
 }

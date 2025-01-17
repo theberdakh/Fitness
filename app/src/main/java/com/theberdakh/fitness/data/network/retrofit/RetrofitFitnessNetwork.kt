@@ -12,6 +12,7 @@ import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.data.network.model.mobile.NetworkModule
+import com.theberdakh.fitness.data.network.model.mobile.NetworkNotification
 import com.theberdakh.fitness.data.network.model.mobile.NetworkOrder
 import com.theberdakh.fitness.data.network.model.mobile.NetworkOrderModule
 import com.theberdakh.fitness.data.network.model.mobile.NetworkPack
@@ -94,6 +95,10 @@ interface FitnessNetworkApi {
     @Headers("Accept: application/json")
     @GET("api/v1/mobile/my/modules")
     suspend fun getModulesByOrderId(@Query("order_id") orderId: Int): Response<ServerResponse<List<NetworkOrderModule>>>
+
+    @Headers("Accept: application/json")
+    @GET("api/v1/mobile/notifications")
+    suspend fun getNotifications(): Response<ServerResponse<List<NetworkNotification>>>
 }
 
 /**
@@ -222,4 +227,7 @@ class RetrofitFitnessNetwork(private val api: FitnessNetworkApi) : FitnessNetwor
 
     override suspend fun getModulesByOrderId(orderId: Int) =
         makeRequest { api.getModulesByOrderId(orderId) }.unwrap()
+
+    override suspend fun getNotifications() = makeRequest { api.getNotifications() }.unwrap()
+
 }
