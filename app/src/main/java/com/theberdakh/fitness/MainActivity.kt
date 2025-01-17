@@ -1,6 +1,7 @@
 package com.theberdakh.fitness
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -42,6 +43,8 @@ class MainActivity : AppCompatActivity() {
                }
           }
         }
+
+        Log.i("MainActivity", "onCreate: ${mainActivityViewModel.isLoggedIn}")
 
         if (mainActivityViewModel.isLoggedIn){
             navGraph.setStartDestination(R.id.mainScreen)

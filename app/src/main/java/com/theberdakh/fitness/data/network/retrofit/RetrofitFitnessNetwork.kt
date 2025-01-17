@@ -155,16 +155,22 @@ suspend fun <T> makeRequest(apiCall: suspend () -> Response<T>): NetworkResult<T
         } ?: NetworkResult.Error("Empty response body")
     } else {
         val errorBody = response.errorBody()?.string()
-        if (response.code() == 422) {
-            errorBody?.let {
-                val networkServerError = Json.decodeFromString<NetworkServerError>(it)
-                NetworkResult.Error(networkServerError.message)
-            } ?: NetworkResult.Error(message = "Error ${response.code()}: ${response.message()}")
-        } else {
-            errorBody?.let {
-                val networkServerError = Json.decodeFromString<NetworkMessage>(it)
-                NetworkResult.Error(networkServerError.message)
-            } ?: NetworkResult.Error(message = "Error ${response.code()}: ${response.message()}")
+        when (response.code()) {
+            422 -> {
+                errorBody?.let {
+                    val networkServerError = Json.decodeFromString<NetworkServerError>(it)
+                    NetworkResult.Error(networkServerError.message)
+                }
+                    ?: NetworkResult.Error(message = "Error ${response.code()}: ${response.message()}")
+            }
+            401 -> NetworkResult.Error(message = "Unauthorized")
+            else -> {
+                errorBody?.let {
+                    val networkServerError = Json.decodeFromString<NetworkMessage>(it)
+                    NetworkResult.Error(networkServerError.message)
+                }
+                    ?: NetworkResult.Error(message = "Error ${response.code()}: ${response.message()}")
+            }
         }
     }
 } catch (e: Exception) {

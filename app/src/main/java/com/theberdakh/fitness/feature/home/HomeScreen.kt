@@ -75,10 +75,18 @@ class HomeScreen : Fragment(R.layout.screen_home) {
                                 loadingAction = { homeViewModel.refresh() }
                             )
                         }
+
                         HomeUiState.Loading -> viewBinding.srlHome.isRefreshing = true
                         is HomeUiState.Success -> {
                             viewBinding.srlHome.isRefreshing = false
-                            homeAdapter.submitList(state.data)
+                            homeAdapter.submitList(
+                                listOf(
+                                    ListItem.CategoryHeader(
+                                        CATEGORY_FREE_VIDEOS
+                                    ),
+                                    ListItem.VideoList(state.data)
+                                )
+                            )
                         }
                     }
                 }

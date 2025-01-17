@@ -1,5 +1,6 @@
 package com.theberdakh.fitness.data
 
+import android.util.Log
 import com.theberdakh.fitness.data.network.FitnessNetworkDataSource
 import com.theberdakh.fitness.data.network.NetworkResult
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
@@ -141,7 +142,12 @@ class FitnessRepositoryImpl(
         networkDataSource.getRandomFreeLessons().let {
             return when (it) {
                 is NetworkResult.Success -> Result.Success(it.data.map { lesson -> lesson.toDomain() })
-                is NetworkResult.Error -> Result.Error(it.message)
+                is NetworkResult.Error -> {
+                    if (it.message == "Unauthorized") {
+                        preferences.isUserLoggedIn = false
+                    }
+                    Result.Error(it.message)
+                }
             }
         }
     }
