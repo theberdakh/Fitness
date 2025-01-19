@@ -10,6 +10,7 @@ import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ItemCategoryBinding
 import com.theberdakh.fitness.databinding.ItemLoadingBinding
 import com.theberdakh.fitness.databinding.ItemSubscriptionPackBinding
+import com.theberdakh.fitness.domain.model.SubscriptionOrderStatus
 import com.theberdakh.fitness.feature.packs.model.PackListItem
 import kotlin.jvm.Throws
 
@@ -23,7 +24,13 @@ sealed class PackListItemViewHolder private constructor(view: View) : RecyclerVi
             with(binding){
                 tvPackPrice.isVisible = false
                 tvPackName.text = packItemUnsubscribed.title
-                btnBuy.text = root.context.getString(R.string.start)
+                btnBuy.text = when(packItemUnsubscribed.status){
+                    SubscriptionOrderStatus.SUBSCRIBED -> root.context.getString(R.string.start)
+                    SubscriptionOrderStatus.FINISHED -> root.context.getString(R.string.buy)
+                    SubscriptionOrderStatus.NEW -> root.context.getString(R.string.buy)
+                    SubscriptionOrderStatus.UNDEFINED -> root.context.getString(R.string.buy)
+                }
+
                 tvPackContent.text = packItemUnsubscribed.createdAt
                 btnBuy.setOnClickListener {
                     onPackClickListener?.invoke(packItemUnsubscribed)

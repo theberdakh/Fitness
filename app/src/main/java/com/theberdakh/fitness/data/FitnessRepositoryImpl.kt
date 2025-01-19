@@ -181,6 +181,15 @@ class FitnessRepositoryImpl(
         }
     }
 
+    override suspend fun getAllOrders(): Result<List<SubscriptionOrder>> {
+        networkDataSource.getAllOrders().let {
+            return when (it) {
+                is NetworkResult.Success -> Result.Success(it.data.map { order -> order.toDomain() })
+                is NetworkResult.Error -> Result.Error(it.message)
+            }
+        }
+    }
+
     override suspend fun getMyOrders(): Result<List<SubscriptionOrder>> {
         networkDataSource.getMyOrders().let {
             return when (it) {

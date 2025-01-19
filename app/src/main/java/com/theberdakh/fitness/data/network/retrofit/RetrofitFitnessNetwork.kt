@@ -92,6 +92,10 @@ interface FitnessNetworkApi {
     suspend fun getLesson(@Path("lessonId") lessonId: Int): Response<ServerResponse<NetworkLesson>>
 
     @Headers("Accept: application/json")
+    @GET("api/v1/mobile/orders")
+    suspend fun getAllOrders(): Response<ServerResponse<List<NetworkOrder>>>
+
+    @Headers("Accept: application/json")
     @GET("api/v1/mobile/my/orders")
     suspend fun getMyOrders(): Response<ServerResponse<List<NetworkOrder>>>
 
@@ -254,6 +258,10 @@ class RetrofitFitnessNetwork(private val api: FitnessNetworkApi) : FitnessNetwor
 
     override suspend fun sendMessage(message: String): NetworkResult<NetworkMessage> {
         return makeRequest { api.postMessage(NetworkMessageRequest(message)) }
+    }
+
+    override suspend fun getAllOrders(): NetworkResult<List<NetworkOrder>> {
+        return makeRequest { api.getAllOrders() }.unwrap()
     }
 
 }

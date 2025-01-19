@@ -1,6 +1,7 @@
 package com.theberdakh.fitness.feature.packs.model
 
 import androidx.recyclerview.widget.DiffUtil
+import com.theberdakh.fitness.domain.model.SubscriptionOrderStatus
 
 sealed class PackListItem {
     data class PackHeader(val title: String): PackListItem()
@@ -9,7 +10,9 @@ sealed class PackListItem {
         val title: String,
         val amount: String,
         val createdAt: String,
-        val orderId: Int
+        val paymentUrl: String,
+        val orderId: Int,
+        val status: SubscriptionOrderStatus
     ): PackListItem()
     data object Loading: PackListItem()
 

@@ -17,17 +17,20 @@ data class SubscriptionOrder(
     val pack: SubscriptionPack,
     val amount: String,
     val status: SubscriptionOrderStatus,
+    val paymentUrl: String,
     val createdAt: String
 )
+
+
 
 
 /**
  * Status of each training pack.
  * @property [SUBSCRIBED] user bought pack
  * @property [FINISHED] user completed pack
- * @property [UNAVAILABLE] user has not bought pack yet
+ * @property [NEW] user has not bought pack yet
  * @property [UNDEFINED] in case, status is mapping incorrectly */
 
 enum class SubscriptionOrderStatus {
-    SUBSCRIBED, FINISHED, UNAVAILABLE, UNDEFINED
+    SUBSCRIBED, FINISHED, NEW, UNDEFINED
 }

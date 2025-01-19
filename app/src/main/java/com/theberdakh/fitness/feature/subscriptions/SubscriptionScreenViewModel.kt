@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theberdakh.fitness.domain.FitnessRepository
 import com.theberdakh.fitness.domain.Result
+import com.theberdakh.fitness.domain.converter.toPackListItems
 import com.theberdakh.fitness.domain.converter.toSubscriptionPackItems
+import com.theberdakh.fitness.feature.packs.model.PackListItem
 import com.theberdakh.fitness.feature.subscriptions.model.SubscriptionPackItem
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
@@ -21,14 +23,14 @@ class SubscriptionScreenViewModel(repository: FitnessRepository) : ViewModel() {
 
 private fun subscriptionPackState(repository: FitnessRepository) = flow {
     emit(SubscriptionUiState.Loading)
-    when (val result = repository.getSubscriptionPacks()) {
+    when (val result = repository.getAllOrders()) {
         is Result.Error -> emit(SubscriptionUiState.Error(result.message))
-        is Result.Success -> emit(SubscriptionUiState.Success(result.data.toSubscriptionPackItems()))
+        is Result.Success -> emit(SubscriptionUiState.Success(result.data.toPackListItems()))
     }
 }
 
 sealed interface SubscriptionUiState {
     data object Loading : SubscriptionUiState
-    data class Success(val subscriptionPacks: List<SubscriptionPackItem>) : SubscriptionUiState
+    data class Success(val subscriptionPacks: List<PackListItem.PackItemUnsubscribed>) : SubscriptionUiState
     data class Error(val message: String) : SubscriptionUiState
 }
