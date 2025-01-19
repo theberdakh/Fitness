@@ -4,6 +4,7 @@ import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
+import com.theberdakh.fitness.data.network.model.mobile.NetworkMessage
 import com.theberdakh.fitness.data.network.model.mobile.NetworkModule
 import com.theberdakh.fitness.data.network.model.mobile.NetworkNotification
 import com.theberdakh.fitness.data.network.model.mobile.NetworkNotificationDetail
@@ -17,7 +18,7 @@ import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
 /*Inspired from https://github.com/android/nowinandroid/blob/main/core/network/src/main/kotlin/com/google/samples/apps/nowinandroid/core/network/NiaNetworkDataSource.kt */
 interface FitnessNetworkDataSource {
 
-    suspend fun sendCode(request: NetworkSendCodeRequest): NetworkResult<NetworkMessage>
+    suspend fun sendCode(request: NetworkSendCodeRequest): NetworkResult<NetworkServerMessage>
 
     suspend fun login(request: NetworkLoginRequest): NetworkResult<NetworkLoginResponse>
 
@@ -48,4 +49,6 @@ interface FitnessNetworkDataSource {
     suspend fun getNotifications(): NetworkResult<List<NetworkNotification>>
 
     suspend fun getNotification(notificationId: Int): NetworkResult<NetworkNotificationDetail>
+
+    suspend fun getMessages(): NetworkResult<List<NetworkMessage>>
 }

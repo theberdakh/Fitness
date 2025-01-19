@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="OpenSansFontStyle" parent="android:Widget.TextView">
+        <item name="fontFamily">@font/open_sans</item>
+    </style>
+</resources>

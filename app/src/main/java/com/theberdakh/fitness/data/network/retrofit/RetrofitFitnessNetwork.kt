@@ -4,13 +4,14 @@ package com.theberdakh.fitness.data.network.retrofit
 import android.util.Log
 import com.google.gson.annotations.SerializedName
 import com.theberdakh.fitness.data.network.FitnessNetworkDataSource
-import com.theberdakh.fitness.data.network.NetworkMessage
+import com.theberdakh.fitness.data.network.NetworkServerMessage
 import com.theberdakh.fitness.data.network.NetworkResult
 import com.theberdakh.fitness.data.network.NetworkServerError
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
+import com.theberdakh.fitness.data.network.model.mobile.NetworkMessage
 import com.theberdakh.fitness.data.network.model.mobile.NetworkModule
 import com.theberdakh.fitness.data.network.model.mobile.NetworkNotification
 import com.theberdakh.fitness.data.network.model.mobile.NetworkNotificationDetail
@@ -40,7 +41,7 @@ interface FitnessNetworkApi {
 
     @Headers("Accept: application/json")
     @POST(value = "api/v1/auth/send-code")
-    suspend fun sendCode(@Body body: NetworkSendCodeRequest): Response<NetworkMessage>
+    suspend fun sendCode(@Body body: NetworkSendCodeRequest): Response<NetworkServerMessage>
 
     @Headers("Accept: application/json")
     @POST(value = "api/v1/auth/login")
@@ -104,6 +105,10 @@ interface FitnessNetworkApi {
     @Headers("Accept: application/json")
     @GET("api/v1/mobile/notifications/{notificationId}")
     suspend fun getNotification(@Path("notificationId") notificationId: Int): Response<ServerResponse<NetworkNotificationDetail>>
+
+    @Headers("Accept: application/json")
+    @GET("api/v1/mobile/messages")
+    suspend fun getMessages(): Response<ServerResponse<List<NetworkMessage>>>
 }
 
 /**
@@ -177,7 +182,7 @@ suspend fun <T> makeRequest(apiCall: suspend () -> Response<T>): NetworkResult<T
             401 -> NetworkResult.Error(message = "Unauthorized")
             else -> {
                 errorBody?.let {
-                    val networkServerError = Json.decodeFromString<NetworkMessage>(it)
+                    val networkServerError = Json.decodeFromString<NetworkServerMessage>(it)
                     NetworkResult.Error(networkServerError.message)
                 }
                     ?: NetworkResult.Error(message = "Error ${response.code()}: ${response.message()}")
@@ -237,5 +242,9 @@ class RetrofitFitnessNetwork(private val api: FitnessNetworkApi) : FitnessNetwor
     override suspend fun getNotifications() = makeRequest { api.getNotifications() }.unwrap()
     override suspend fun getNotification(notificationId: Int): NetworkResult<NetworkNotificationDetail> =
         makeRequest { api.getNotification(notificationId) }.unwrap()
+
+    override suspend fun getMessages(): NetworkResult<List<NetworkMessage>> {
+        return makeRequest { api.getMessages() }.unwrap()
+    }
 
 }

@@ -3,6 +3,12 @@
     <style name="Base.Theme.Fitness" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:colorBackground">@color/white</item>
         <item name="colorSurfaceContainer">@color/white</item> <!--Bottom Nav container-->
+        <item name="colorPrimary">#3498db</item>
+
+        <item name="colorPrimaryDark">#3498db</item>
+        <item name="android:windowBackground">#eaf2f8 </item>
+        <item name="android:navigationBarColor">#d6eaf8 </item>
+        <item name="fontFamily">@font/open_sans</item>
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>

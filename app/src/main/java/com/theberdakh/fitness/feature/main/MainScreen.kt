@@ -42,10 +42,10 @@ class MainScreen : Fragment(R.layout.screen_main) {
                     true
                 }
 
-                R.id.action_progress -> {
+              /*  R.id.action_progress -> {
                     replaceFragment(ProgressScreen())
                     true
-                }
+                }*/
 
                 R.id.action_profile -> {
                     replaceFragment(ProfileScreen())

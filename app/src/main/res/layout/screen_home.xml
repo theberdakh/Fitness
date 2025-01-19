@@ -22,6 +22,8 @@
                 android:id="@+id/tb_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?colorPrimary"
+                app:titleTextColor="@color/white"
                 style="@style/Widget.Material3.CollapsingToolbar"
                 app:menu="@menu/menu_notification_and_chat"
                 app:title="@string/app_name" />

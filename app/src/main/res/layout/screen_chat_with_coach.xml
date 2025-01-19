@@ -17,6 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:stackFromEnd="true"
+        app:layout_constraintTop_toBottomOf="@id/tb_add_chat"
+        app:layout_constraintBottom_toTopOf="@id/chat_input_layout"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     
     <com.theberdakh.fitness.ui.ChatInputLayout
         android:id="@+id/chat_input_layout"

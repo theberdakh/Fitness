@@ -27,7 +27,7 @@
         android:id="@+id/tab_layout_lesson"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@android:color/transparent"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"/>
 

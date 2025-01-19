@@ -2,6 +2,7 @@ package com.theberdakh.fitness.feature
 
 import com.theberdakh.fitness.MainActivityViewModel
 import com.theberdakh.fitness.feature.auth.viewmodel.AuthViewModel
+import com.theberdakh.fitness.feature.chat.ChatWithCoachScreenViewModel
 import com.theberdakh.fitness.feature.free_lessons.FreeLessonsViewModel
 import com.theberdakh.fitness.feature.home.HomeViewModel
 import com.theberdakh.fitness.feature.lesson.LessonScreenViewModel
@@ -27,5 +28,6 @@ object CoreViewModel {
         viewModel { LessonsScreenViewModel(repository = get()) }
         viewModel { NotificationViewModel(repository = get()) }
         viewModel { NotificationDetailsScreenViewModel(repository = get()) }
+        viewModel { ChatWithCoachScreenViewModel(repository = get()) }
     }
 }

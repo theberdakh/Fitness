@@ -18,9 +18,8 @@
 
     <ImageButton
         android:id="@+id/icon_next"
-        android:visibility="gone"
         android:layout_width="24dp"
-        android:background="@drawable/ripple"
+        android:background="@android:color/transparent"
         android:layout_height="24dp"
         android:src="@drawable/ic_next_24"
         android:layout_margin="8dp"/>

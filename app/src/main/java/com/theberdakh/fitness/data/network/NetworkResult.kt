@@ -19,7 +19,7 @@ data class NetworkServerError(
 )
 
 @Serializable
-data class NetworkMessage(
+data class NetworkServerMessage(
     val message: String
 )
 

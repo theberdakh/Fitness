@@ -6,6 +6,7 @@ import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
 import com.theberdakh.fitness.domain.model.Goal
 import com.theberdakh.fitness.domain.model.Lesson
+import com.theberdakh.fitness.domain.model.Message
 import com.theberdakh.fitness.domain.model.Module
 import com.theberdakh.fitness.domain.model.Notification
 import com.theberdakh.fitness.domain.model.SubscriptionOrder
@@ -45,4 +46,6 @@ interface FitnessRepository {
     suspend fun getNotifications(): Result<List<Notification>>
 
     suspend fun getNotification(notificationId: Int): Result<Notification>
+
+    suspend fun getMessages(): Result<List<Message>>
 }

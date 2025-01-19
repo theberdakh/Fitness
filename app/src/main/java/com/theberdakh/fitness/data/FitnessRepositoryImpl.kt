@@ -14,6 +14,7 @@ import com.theberdakh.fitness.domain.Result
 import com.theberdakh.fitness.domain.converter.toDomain
 import com.theberdakh.fitness.domain.model.Goal
 import com.theberdakh.fitness.domain.model.Lesson
+import com.theberdakh.fitness.domain.model.Message
 import com.theberdakh.fitness.domain.model.Module
 import com.theberdakh.fitness.domain.model.Notification
 import com.theberdakh.fitness.domain.model.SubscriptionOrder
@@ -202,6 +203,15 @@ class FitnessRepositoryImpl(
         networkDataSource.getNotification(notificationId).let {
             return when (it) {
                 is NetworkResult.Success -> Result.Success(it.data.toDomain())
+                is NetworkResult.Error -> Result.Error(it.message)
+            }
+        }
+    }
+
+    override suspend fun getMessages(): Result<List<Message>> {
+        networkDataSource.getMessages().let {
+            return when (it) {
+                is NetworkResult.Success -> Result.Success(it.data.map { networkMessage -> networkMessage.toDomain() })
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }

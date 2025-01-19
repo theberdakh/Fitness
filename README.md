@@ -30,4 +30,3 @@ findNavController().navigate(R.id.action_screenA_to_screenB, ScreenB.args("arg1"
 ```
 
 
-

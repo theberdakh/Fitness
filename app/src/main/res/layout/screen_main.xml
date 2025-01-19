@@ -18,6 +18,9 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:labelVisibilityMode="labeled"
+        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
+        android:background="#d6eaf8"
         android:layout_gravity="bottom"
         app:menu="@menu/menu_bottom_nav" />
 
