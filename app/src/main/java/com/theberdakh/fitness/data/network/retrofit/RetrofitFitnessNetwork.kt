@@ -12,6 +12,7 @@ import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.data.network.model.mobile.NetworkMessage
+import com.theberdakh.fitness.data.network.model.mobile.NetworkMessageRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkModule
 import com.theberdakh.fitness.data.network.model.mobile.NetworkNotification
 import com.theberdakh.fitness.data.network.model.mobile.NetworkNotificationDetail
@@ -109,6 +110,10 @@ interface FitnessNetworkApi {
     @Headers("Accept: application/json")
     @GET("api/v1/mobile/messages")
     suspend fun getMessages(): Response<ServerResponse<List<NetworkMessage>>>
+
+    @Headers("Accept: application/json")
+    @POST("api/v1/mobile/messages")
+    suspend fun postMessage(@Body body: NetworkMessageRequest): Response<NetworkMessage>
 }
 
 /**
@@ -245,6 +250,10 @@ class RetrofitFitnessNetwork(private val api: FitnessNetworkApi) : FitnessNetwor
 
     override suspend fun getMessages(): NetworkResult<List<NetworkMessage>> {
         return makeRequest { api.getMessages() }.unwrap()
+    }
+
+    override suspend fun sendMessage(message: String): NetworkResult<NetworkMessage> {
+        return makeRequest { api.postMessage(NetworkMessageRequest(message)) }
     }
 
 }

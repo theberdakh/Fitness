@@ -217,4 +217,13 @@ class FitnessRepositoryImpl(
         }
     }
 
+    override suspend fun sendMessage(message: String): Result<Message> {
+        networkDataSource.sendMessage(message).let {
+            return when (it) {
+                is NetworkResult.Success -> Result.Success(it.data.toDomain())
+                is NetworkResult.Error -> Result.Error(it.message)
+            }
+        }
+    }
+
 }

@@ -48,4 +48,6 @@ interface FitnessRepository {
     suspend fun getNotification(notificationId: Int): Result<Notification>
 
     suspend fun getMessages(): Result<List<Message>>
+
+    suspend fun sendMessage(message: String): Result<Message>
 }

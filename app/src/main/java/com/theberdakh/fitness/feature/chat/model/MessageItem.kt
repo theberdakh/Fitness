@@ -28,10 +28,10 @@ object MessageItemDiffCallback: DiffUtil.ItemCallback<MessageItem>(){
     override fun areContentsTheSame(oldItem: MessageItem, newItem: MessageItem): Boolean {
         return when(oldItem){
             is MessageItem.MyMessage -> {
-                newItem is MessageItem.MyMessage && oldItem.id == newItem.id
+                newItem is MessageItem.MyMessage && oldItem.id == newItem.id && oldItem.text == newItem.text
             }
             is MessageItem.CoachMessage -> {
-                newItem is MessageItem.CoachMessage && oldItem.id == newItem.id
+                newItem is MessageItem.CoachMessage && oldItem.id == newItem.id && oldItem.text == newItem.text
             }
         }
     }

@@ -51,4 +51,6 @@ interface FitnessNetworkDataSource {
     suspend fun getNotification(notificationId: Int): NetworkResult<NetworkNotificationDetail>
 
     suspend fun getMessages(): NetworkResult<List<NetworkMessage>>
+
+    suspend fun sendMessage(message: String): NetworkResult<NetworkMessage>
 }

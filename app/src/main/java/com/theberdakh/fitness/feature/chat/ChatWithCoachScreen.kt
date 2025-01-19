@@ -29,6 +29,24 @@ class ChatWithCoachScreen: Fragment(R.layout.screen_chat_with_coach) {
         viewBinding.tbAddChat.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        viewBinding.chatInputLayout.setOnSendClickListener { message ->
+            Log.i("Send", "onViewCreated: $message")
+            lifecycleScope.launch {
+                    viewModel.sendMessage(message).collect {
+                        when(it){
+                            is SendMessageUiState.Error -> errorDelegate.errorToast(it.message)
+                            is SendMessageUiState.Loading -> Log.i("Send", "onViewCreated: Loading")
+                            is SendMessageUiState.Success -> {
+                                adapter.submitList(adapter.currentList + it.message)
+                                adapter.notifyDataSetChanged()
+                            }
+                        }
+                    }
+            }
+
+        }
+
         viewBinding.rvChat.adapter = adapter
         initObservers()
     }
