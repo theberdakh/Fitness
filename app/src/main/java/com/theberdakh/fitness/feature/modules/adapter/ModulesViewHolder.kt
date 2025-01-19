@@ -44,7 +44,10 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
                     R.string.placeholder_current_module,
                     module.title
                 ) else module.title
-                tvSubtitle.text = root.context.getString(R.string.placeholder_lessons, module.totalLessons)
+                tvSubtitle.text = root.context.getString(
+                    R.string.placeholder_lessons,
+                    module.totalLessons
+                )
                 root.setOnClickListener {
                     onModuleClickListener?.invoke(module)
                 }

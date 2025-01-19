@@ -38,6 +38,7 @@
         android:id="@+id/icon_next"
         android:visibility="gone"
         android:layout_width="24dp"
+        android:contentDescription="@string/cd_icon_next"
         android:layout_gravity="center_vertical"
         android:background="@drawable/ripple"
         android:layout_height="24dp"

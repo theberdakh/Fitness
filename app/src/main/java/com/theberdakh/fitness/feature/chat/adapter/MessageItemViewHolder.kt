@@ -12,7 +12,7 @@ sealed class MessageItemViewHolder private constructor(view: View): RecyclerView
 
     class MyMessageViewHolder private constructor(private val binding: ItemMessageSendBinding): MessageItemViewHolder(binding.root){
         fun bind(message: MessageItem.MyMessage){
-            binding.tvTextSend.text = "${message.id} ${message.text}"
+            binding.tvTextSend.text = message.text
         }
 
         companion object {
@@ -26,7 +26,7 @@ sealed class MessageItemViewHolder private constructor(view: View): RecyclerView
 
     class CoachMessageViewHolder private constructor(private val binding: ItemMessageReceivedBinding): MessageItemViewHolder(binding.root){
         fun bind(message: MessageItem.CoachMessage){
-            binding.tvTextReceived.text = "${message.id} ${message.text}"
+            binding.tvTextReceived.text = message.text
         }
 
         companion object {

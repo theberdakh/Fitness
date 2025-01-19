@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.theberdakh.fitness.R
 import com.theberdakh.fitness.core.log.LogEx.TAG
 import com.theberdakh.fitness.databinding.ItemVideoBinding
 import com.theberdakh.fitness.feature.home.utils.YouTubeThumbnail
@@ -20,7 +21,7 @@ class VideoViewHolder(
         animateLoadAnimation(binding.root)
         YouTubeThumbnail.loadThumbnail(binding.ivThumbnail, item.url)
         binding.tvTitle.text = item.name
-        binding.tvSubtitle.text = "Модуль ${item.module}"
+        binding.tvSubtitle.text = binding.root.context.getString(R.string.placeholder_module_number, item.module)
 
         binding.root.setOnTouchListener { view, motionEvent ->
             when (motionEvent.action) {

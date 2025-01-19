@@ -1,5 +1,6 @@
 package com.theberdakh.fitness.feature.chat
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -23,6 +24,7 @@ class ChatWithCoachScreen: Fragment(R.layout.screen_chat_with_coach) {
     private val errorDelegate by inject<ErrorDelegate>()
     private val adapter by lazy { MessageItemAdapter() }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
