@@ -49,6 +49,6 @@ class RetrofitFitnessNetwork(private val api: FitnessNetworkApi) : FitnessNetwor
     override suspend fun getNotifications() = makeRequest { api.getNotifications() }.unwrap()
     override suspend fun getNotification(notificationId: Int): NetworkResult<NetworkNotificationDetail> = makeRequest { api.getNotification(notificationId) }.unwrap()
     override suspend fun getMessages() = makeRequest { api.getMessages() }.unwrap()
-    override suspend fun sendMessage(message: String) =  makeRequest { api.postMessage(NetworkMessageRequest(message)) }
+    override suspend fun sendMessage(message: String) =  makeRequest { api.postMessage(NetworkMessageRequest(message)) }.unwrap()
     override suspend fun getAllOrders() = makeRequest { api.getAllOrders() }.unwrap()
 }

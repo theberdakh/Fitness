@@ -113,7 +113,7 @@ interface FitnessNetworkApi {
 
     @Headers("Accept: application/json")
     @POST("api/v1/mobile/messages")
-    suspend fun postMessage(@Body body: NetworkMessageRequest): Response<NetworkMessage>
+    suspend fun postMessage(@Body body: NetworkMessageRequest): Response<ServerResponse<NetworkMessage>>
 
     @Headers("Accept: application/json")
     @GET("api/v1/mobile/free-lessons")

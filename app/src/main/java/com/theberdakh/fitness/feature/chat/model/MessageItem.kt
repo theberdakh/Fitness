@@ -1,9 +1,11 @@
 package com.theberdakh.fitness.feature.chat.model
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import com.theberdakh.fitness.domain.model.Message
 
 fun Message.toMessageItem(): MessageItem {
+    Log.i("Chat Messsage", "toMessageItem: $this")
     return if (isMyMessage) {
         MessageItem.MyMessage(id, text, time)
     } else {

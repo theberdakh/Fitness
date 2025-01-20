@@ -24,7 +24,6 @@ class ChatWithCoachScreen: Fragment(R.layout.screen_chat_with_coach) {
     private val errorDelegate by inject<ErrorDelegate>()
     private val adapter by lazy { MessageItemAdapter() }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,8 +39,10 @@ class ChatWithCoachScreen: Fragment(R.layout.screen_chat_with_coach) {
                             is SendMessageUiState.Error -> errorDelegate.errorToast(it.message)
                             is SendMessageUiState.Loading -> Log.i("Send", "onViewCreated: Loading")
                             is SendMessageUiState.Success -> {
-                                adapter.submitList(adapter.currentList + it.message)
-                                adapter.notifyDataSetChanged()
+                                Log.i("Chat", "onViewCreated: ${it.message}" )
+                                adapter.submitList(adapter.currentList + it.message) {
+                                    viewBinding.rvChat.smoothScrollToPosition(adapter.itemCount - 1)
+                                }
                             }
                         }
                     }
