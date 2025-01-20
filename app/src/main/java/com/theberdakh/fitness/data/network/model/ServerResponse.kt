@@ -2,11 +2,11 @@ package com.theberdakh.fitness.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-class PagingResponse<T> (
+data class ServerResponse<T>(
     val message: String,
-    val data: List<T>,
-    val links: PagingLinks,
-    val meta: PagingMeta
+    val data: T,
+    val links: PagingLinks?,
+    val meta: PagingMeta?
 )
 
 data class PagingMeta(
@@ -20,8 +20,8 @@ data class PagingMeta(
 )
 
 data class PagingLinks(
-    val first: String,
-    val last: String,
+    val first: String?,
+    val last: String?,
     val prev: String?,
     val next: String?
 )

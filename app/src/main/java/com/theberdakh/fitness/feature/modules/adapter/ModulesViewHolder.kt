@@ -37,7 +37,7 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
     class ModuleExtendedItemViewHolder private constructor(
         private val binding: ItemModuleExtendedBinding,
         private val onModuleClickListener: ((ModulesModel.ModuleItemExtended) -> Unit)? = null
-    ): ModulesViewHolder(binding.root) {
+    ) : ModulesViewHolder(binding.root) {
         fun bind(module: ModulesModel.ModuleItemExtended) {
             with(binding) {
                 tvName.text = if (module.isAvailable) binding.root.context.getString(
@@ -81,7 +81,6 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
                 }
             }
         }
-
         companion object {
             fun from(
                 parent: ViewGroup,
@@ -96,6 +95,4 @@ sealed class ModulesViewHolder private constructor(view: View) : RecyclerView.Vi
             }
         }
     }
-
-    class ModuleItemLoadingViewHolder private constructor(view: View) : ModulesViewHolder(view) {}
 }

@@ -3,7 +3,7 @@ package com.theberdakh.fitness.data.preferences
 import android.content.SharedPreferences
 
 class FitnessPreferences(private val preferences: SharedPreferences): PreferenceManager {
-    fun clear(): Boolean {
+    fun  clear(): Boolean {
         preferences.edit().clear().apply()
         return true
     }
