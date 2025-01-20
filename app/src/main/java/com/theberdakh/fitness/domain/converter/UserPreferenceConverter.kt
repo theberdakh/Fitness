@@ -9,7 +9,7 @@ import com.theberdakh.fitness.domain.model.UserPreference
 
 fun NetworkLoginResponse.toDomain() = UserPreference(
     id = this.user.id,
-    name = this.user.name,
+    name = this.user.name ?: "",
     phone = this.user.phone,
     goalId = this.user.targetId ?: UserPreference.NO_GOAL_ID,
 )

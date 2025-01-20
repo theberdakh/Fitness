@@ -1,6 +1,7 @@
 package com.theberdakh.fitness.data.network.retrofit
 
 import com.theberdakh.fitness.data.network.NetworkServerMessage
+import com.theberdakh.fitness.data.network.model.ServerMessage
 import com.theberdakh.fitness.data.network.model.ServerResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
@@ -45,7 +46,7 @@ interface FitnessNetworkApi {
 
     @Headers("Accept: application/json")
     @DELETE(value = "api/v1/auth/logout")
-    suspend fun logout(): Response<String>
+    suspend fun logout(): Response<ServerMessage>
 
     @Headers("Accept: application/json")
     @GET("api/v1/mobile/targets")
@@ -113,4 +114,8 @@ interface FitnessNetworkApi {
     @Headers("Accept: application/json")
     @POST("api/v1/mobile/messages")
     suspend fun postMessage(@Body body: NetworkMessageRequest): Response<NetworkMessage>
+
+    @Headers("Accept: application/json")
+    @GET("api/v1/mobile/free-lessons")
+    fun getFreeLessonsPaging(perPage: Int, cursor: String?): Response<ServerResponse<List<NetworkLesson>>>
 }

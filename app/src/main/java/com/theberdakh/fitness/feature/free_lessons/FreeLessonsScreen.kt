@@ -11,6 +11,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
 import com.theberdakh.fitness.databinding.ScreenFreeLessonsBinding
 import com.theberdakh.fitness.feature.common.error.ErrorDelegate
+import com.theberdakh.fitness.feature.free_lessons.pagination.FreeLessonsPagingAdapter
 import com.theberdakh.fitness.feature.lesson.LessonScreen
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -30,6 +31,7 @@ class FreeLessonsScreen : Fragment(R.layout.screen_free_lessons) {
             )
         }
     )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()

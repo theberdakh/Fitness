@@ -42,6 +42,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_sms_code"
             android:layout_width="match_parent"
+            android:maxLength="4"
             android:layout_height="match_parent"
             android:autofillHints="creditCardSecurityCode"
             android:inputType="phone" />

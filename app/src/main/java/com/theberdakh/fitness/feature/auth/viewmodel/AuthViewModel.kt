@@ -1,5 +1,6 @@
 package com.theberdakh.fitness.feature.auth.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
@@ -128,10 +129,14 @@ private fun loginState(
     repository: FitnessRepository
 ) = flow {
     emit(LoginUiState.Loading)
-    when (val result =
-        repository.login(NetworkLoginRequest(phone = phone, verificationCode = code))) {
-        is Result.Error -> emit(LoginUiState.Error(result.message))
+    Log.i("LoginUiState", "loginState: Called")
+    when (val result = repository.login(NetworkLoginRequest(phone = phone, verificationCode = code))) {
+        is Result.Error -> {
+            Log.i("LoginUiState", "loginState: Error ${result.message}")
+            emit(LoginUiState.Error(result.message))
+        }
         is Result.Success -> {
+            Log.i("LoginUiState", "loginState: Success ${result.data}")
             emit(LoginUiState.Success)
         }
     }
@@ -146,12 +151,15 @@ sealed interface LoginUiState {
 private fun sendCodeUiState(
     phoneNumber: String,
     repository: FitnessRepository
-): Flow<SendCodeUiState> =
-    flow {
+) = flow {
         emit(SendCodeUiState.Loading)
         when (val result = repository.sendCode(NetworkSendCodeRequest(phoneNumber))) {
-            is Result.Error -> emit(SendCodeUiState.Error(result.message))
+            is Result.Error -> {
+                Log.i("SendPhoneNumber", "sendCodeUiState: ${result.message}")
+                emit(SendCodeUiState.Error(result.message))
+            }
             is Result.Success -> {
+                Log.i("SendPhoneNumber", "sendCodeUiState: ${result.data}")
                 emit(SendCodeUiState.Success(result.data))
             }
         }

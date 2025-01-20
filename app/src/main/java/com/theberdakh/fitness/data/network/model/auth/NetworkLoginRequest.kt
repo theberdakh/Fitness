@@ -18,7 +18,7 @@ data class NetworkLoginResponse(
 
 data class NetworkLoginUserDto(
     val id: Int,
-    val name: String,
+    val name: String?,
     val phone: String,
     @SerializedName("target_id")
     val targetId: Int? = null,

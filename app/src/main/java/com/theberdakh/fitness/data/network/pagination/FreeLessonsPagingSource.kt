@@ -1,28 +1,36 @@
 package com.theberdakh.fitness.data.network.pagination
 
-/*
-class FreeLessonsPagingSource(
-    private val networkDataSource: FitnessNetworkDataSource
-) : PagingSource<String, Lesson>() {
-    override fun getRefreshKey(state: PagingState<String, Lesson>): String? = null
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
+import com.theberdakh.fitness.data.network.retrofit.FitnessNetworkApi
 
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, Lesson> {
+
+class FreeLessonsPagingSource(
+    private val api: FitnessNetworkApi
+) : PagingSource<String, NetworkLesson>() {
+
+    override fun getRefreshKey(state: PagingState<String, NetworkLesson>): String? {
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey
+        }
+    }
+
+    override suspend fun load(params: LoadParams<String>): LoadResult<String, NetworkLesson> {
         return try {
-            when (val result = networkDataSource.getFreeLessons(perPage = 5, cursor = null)) {
-                is NetworkResult.Error -> {
-                    LoadResult.Error(Exception(result.message))
-                }
-                is NetworkResult.Success -> {
-                    LoadResult.Page(
-                        data = result.data..map { it.toDomain() },
-                        prevKey = result.data.meta.prevCursor,
-                        nextKey = result.data.meta.nextCursor
-                    )
-                }
+            val response = api.getFreeLessons(params.loadSize, params.key)
+            if (response.isSuccessful) {
+                return LoadResult.Page(
+                    data = response.body()?.data ?: emptyList(),
+                    prevKey = response.body()?.meta?.prevCursor ?: "",
+                    nextKey = response.body()?.meta?.nextCursor ?: ""
+                )
+            } else {
+                LoadResult.Error(Exception(response.errorBody()?.string()))
             }
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }
 
-}*/
+}

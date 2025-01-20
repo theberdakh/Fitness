@@ -1,5 +1,6 @@
 package com.theberdakh.fitness.domain
 
+import androidx.paging.PagingData
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
@@ -12,6 +13,7 @@ import com.theberdakh.fitness.domain.model.Notification
 import com.theberdakh.fitness.domain.model.SubscriptionOrder
 import com.theberdakh.fitness.domain.model.SubscriptionPack
 import com.theberdakh.fitness.domain.model.UserPreference
+import kotlinx.coroutines.flow.Flow
 
 interface FitnessRepository {
 
@@ -52,4 +54,6 @@ interface FitnessRepository {
     suspend fun getMessages(): Result<List<Message>>
 
     suspend fun sendMessage(message: String): Result<Message>
+
+    suspend fun getFreeLessonsPaging(perPage: Int, cursor: String?): Flow<PagingData<Lesson>>
 }

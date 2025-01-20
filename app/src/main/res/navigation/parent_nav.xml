@@ -198,10 +198,7 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/from_right"
-            app:popUpTo="@id/logoScreen"
-            app:popUpToInclusive="true"
-
-            />
+            app:popUpTo="@id/parent_nav" />
 
     </fragment>
 

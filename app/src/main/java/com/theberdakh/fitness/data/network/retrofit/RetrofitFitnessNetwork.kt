@@ -1,15 +1,21 @@
 package com.theberdakh.fitness.data.network.retrofit
 
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.theberdakh.fitness.data.network.FitnessNetworkDataSource
 import com.theberdakh.fitness.data.network.NetworkResult
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
+import com.theberdakh.fitness.data.network.model.mobile.NetworkLesson
 import com.theberdakh.fitness.data.network.model.mobile.NetworkMessageRequest
 import com.theberdakh.fitness.data.network.model.mobile.NetworkNotificationDetail
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
+import com.theberdakh.fitness.data.network.pagination.FreeLessonsPagingSource
 import com.theberdakh.fitness.data.network.retrofit.utils.NetworkUtils.makeRequest
 import com.theberdakh.fitness.data.network.retrofit.utils.NetworkUtils.unwrap
+import kotlinx.coroutines.flow.Flow
 
 
 /**
@@ -27,6 +33,16 @@ class RetrofitFitnessNetwork(private val api: FitnessNetworkApi) : FitnessNetwor
     override suspend fun getLessons(moduleId: Int) = makeRequest { api.getLessons(moduleId) }.unwrap()
     override suspend fun getRandomFreeLessons() = makeRequest { api.getRandomFreeLessons() }.unwrap()
     override suspend fun getFreeLessons(perPage: Int, cursor: String?) = makeRequest { api.getFreeLessons(perPage, cursor) }.unwrap()
+    override suspend fun getFreeLessonsPaging(
+        perPage: Int,
+        cursor: String?
+    ): Flow<PagingData<NetworkLesson>> {
+        return Pager(
+            config = PagingConfig(pageSize = perPage),
+            pagingSourceFactory = { FreeLessonsPagingSource(api) }
+        ).flow
+    }
+
     override suspend fun getLesson(lessonId: Int) = makeRequest { api.getLesson(lessonId) }.unwrap()
     override suspend fun getMyOrders() = makeRequest { api.getMyOrders() }.unwrap()
     override suspend fun getModulesByOrderId(orderId: Int) = makeRequest { api.getModulesByOrderId(orderId) }.unwrap()

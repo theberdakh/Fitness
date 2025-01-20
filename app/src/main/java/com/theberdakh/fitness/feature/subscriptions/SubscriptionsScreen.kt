@@ -49,7 +49,10 @@ class SubscriptionsScreen : Fragment(R.layout.screen_subscription) {
             when (it) {
                 is SubscriptionUiState.Error -> errorDelegate.errorToast(it.message)
                 SubscriptionUiState.Loading -> handleLoading()
-                is SubscriptionUiState.Success -> subscriptionsAdapter.submitList(it.subscriptionPacks)
+                is SubscriptionUiState.Success -> {
+                    Log.i("Subs", "initObservers: ${it.subscriptionPacks}")
+                    subscriptionsAdapter.submitList(it.subscriptionPacks)
+                }
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

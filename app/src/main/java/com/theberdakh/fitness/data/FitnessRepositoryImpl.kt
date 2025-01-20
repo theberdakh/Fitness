@@ -1,5 +1,8 @@
 package com.theberdakh.fitness.data
 
+import android.util.Log
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.theberdakh.fitness.data.network.FitnessNetworkDataSource
 import com.theberdakh.fitness.data.network.NetworkResult
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
@@ -21,6 +24,8 @@ import com.theberdakh.fitness.domain.model.SubscriptionOrder
 import com.theberdakh.fitness.domain.model.SubscriptionPack
 import com.theberdakh.fitness.domain.model.UserPreference
 import com.theberdakh.fitness.domain.model.toDomain
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class FitnessRepositoryImpl(
     private val networkDataSource: FitnessNetworkDataSource,
@@ -40,6 +45,7 @@ class FitnessRepositoryImpl(
         networkDataSource.login(request).let {
             return when (it) {
                 is NetworkResult.Success -> {
+                    Log.i("LoginUiState Success", "login: ${it.data}")
                     preferences.saveUserSession(
                         LocalUserSession(
                             accessToken = it.data.accessToken,
@@ -47,10 +53,14 @@ class FitnessRepositoryImpl(
                             isLoggedIn = true
                         )
                     )
+                    Log.i("LoginUiState", preferences.getUserSession().toString())
                     Result.Success(it.data.toDomain())
                 }
 
-                is NetworkResult.Error -> Result.Error(it.message)
+                is NetworkResult.Error -> {
+                    Log.i("LoginUiState", "login: ${it.message}")
+                    Result.Error(it.message)
+                }
             }
         }
     }
@@ -60,9 +70,8 @@ class FitnessRepositoryImpl(
             return when (it) {
                 is NetworkResult.Success -> {
                     preferences.clear()
-                    Result.Success(it.data)
+                    Result.Success(it.data.message)
                 }
-
                 is NetworkResult.Error -> Result.Error(it.message)
             }
         }
@@ -232,6 +241,15 @@ class FitnessRepositoryImpl(
                 is NetworkResult.Success -> Result.Success(it.data.toDomain())
                 is NetworkResult.Error -> Result.Error(it.message)
             }
+        }
+    }
+
+    override suspend fun getFreeLessonsPaging(
+        perPage: Int,
+        cursor: String?
+    ): Flow<PagingData<Lesson>> {
+        return networkDataSource.getFreeLessonsPaging(perPage, cursor).map { pagingData ->
+            pagingData.map { lesson -> lesson.toDomain() }
         }
     }
 

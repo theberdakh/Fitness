@@ -1,9 +1,11 @@
 package com.theberdakh.fitness.feature.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.theberdakh.fitness.R
@@ -17,8 +19,10 @@ import com.theberdakh.fitness.feature.common.error.ErrorDelegate
 import com.theberdakh.fitness.feature.profile.adapter.ProfileAdapter
 import com.theberdakh.fitness.feature.profile.model.ProfileItem
 import com.theberdakh.fitness.feature.profile.model.ProfileItemType
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -88,13 +92,25 @@ class ProfileScreen : Fragment(R.layout.screen_profile) {
                             .setTitle(getString(R.string.exit))
                             .setMessage(getString(R.string.message_are_your_sure_to_leave))
                             .setPrimaryButton(getString(R.string.exit)) {
-                                viewModel.logOutUiState.onEach {
-                                    when(it){
-                                        LogOutUiState.Error -> handleError("Log out error")
-                                        LogOutUiState.Loading -> handleLoading()
-                                        is LogOutUiState.Success ->  findNavController().navigate(R.id.action_mainScreen_to_LogoScreen)
+                                lifecycleScope.launch {
+                                    viewModel.logOutUiState.collect { logOutState ->
+                                        when(logOutState){
+                                            LogOutUiState.Error -> {
+                                                Log.i("Logout", "logout: Error")
+                                                handleError("Log out error")
+                                            }
+                                            LogOutUiState.Loading -> {
+                                                Log.i("Logout", "logout: Loading")
+                                                handleLoading()
+                                            }
+                                            is LogOutUiState.Success -> {
+                                                Log.i("Logout", "logout: Success")
+                                                findNavController().navigate(R.id.action_mainScreen_to_LogoScreen)
+                                            }
+                                        }
                                     }
                                 }
+
                             }
                             .setSecondaryButton(getString(R.string.stay))
                             .build().show()

@@ -9,6 +9,10 @@ data class ServerResponse<T>(
     val meta: PagingMeta?
 )
 
+data class ServerMessage(
+    val message: String
+)
+
 data class PagingMeta(
     val path: String,
     @SerializedName("per_page")

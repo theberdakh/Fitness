@@ -1,5 +1,8 @@
 package com.theberdakh.fitness.data.network
 
+import androidx.paging.PagingData
+import com.theberdakh.fitness.data.network.model.ServerMessage
+import com.theberdakh.fitness.data.network.model.ServerResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginRequest
 import com.theberdakh.fitness.data.network.model.auth.NetworkLoginResponse
 import com.theberdakh.fitness.data.network.model.auth.NetworkSendCodeRequest
@@ -14,6 +17,7 @@ import com.theberdakh.fitness.data.network.model.mobile.NetworkPack
 import com.theberdakh.fitness.data.network.model.mobile.NetworkProfile
 import com.theberdakh.fitness.data.network.model.mobile.NetworkTarget
 import com.theberdakh.fitness.data.network.model.mobile.NetworkUpdateNameRequest
+import kotlinx.coroutines.flow.Flow
 
 /*Inspired from https://github.com/android/nowinandroid/blob/main/core/network/src/main/kotlin/com/google/samples/apps/nowinandroid/core/network/NiaNetworkDataSource.kt */
 interface FitnessNetworkDataSource {
@@ -22,7 +26,7 @@ interface FitnessNetworkDataSource {
 
     suspend fun login(request: NetworkLoginRequest): NetworkResult<NetworkLoginResponse>
 
-    suspend fun logout(): NetworkResult<String>
+    suspend fun logout(): NetworkResult<ServerMessage>
 
     suspend fun getTargets(): NetworkResult<List<NetworkTarget>>
 
@@ -39,6 +43,8 @@ interface FitnessNetworkDataSource {
     suspend fun getRandomFreeLessons(): NetworkResult<List<NetworkLesson>>
 
     suspend fun getFreeLessons(perPage: Int, cursor: String?): NetworkResult<List<NetworkLesson>>
+
+    suspend fun getFreeLessonsPaging(perPage: Int, cursor: String?): Flow<PagingData<NetworkLesson>>
 
     suspend fun getLesson(lessonId: Int): NetworkResult<NetworkLesson>
 

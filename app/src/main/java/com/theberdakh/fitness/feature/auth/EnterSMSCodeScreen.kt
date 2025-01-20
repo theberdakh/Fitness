@@ -35,6 +35,7 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
     }
 
     private fun handleSuccess() {
+        Log.i("LoginUiState", "handleSuccess: HandleSuccess")
         viewBinding.btnContinue.stopLoading()
         findNavController().navigate(R.id.action_enterSMSCodeScreen_to_addNameScreen)
     }
@@ -66,9 +67,15 @@ class EnterSMSCodeScreen : Fragment(R.layout.screen_enter_sms_code) {
                 Log.i(TAG, "sendRequest: $_phoneNumber")
                 viewModel.login(phone = _phoneNumber, code = code).collect {
                     when (it) {
-                        is LoginUiState.Error -> handleError(it.message)
+                        is LoginUiState.Error -> {
+                            Log.i(TAG, "sendRequest: ${it.message} $_phoneNumber")
+                            handleError(it.message)
+                        }
                         LoginUiState.Loading -> handleLoading()
-                        LoginUiState.Success -> handleSuccess()
+                        LoginUiState.Success -> {
+                            Log.i(TAG, "sendRequest: Success")
+                            handleSuccess()
+                        }
                     }
                 }
             }
