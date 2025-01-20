@@ -1,6 +1,5 @@
 package com.theberdakh.fitness.feature.chat
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ChatWithCoachScreen: Fragment(R.layout.screen_chat_with_coach) {
+class ChatWithCoachScreen : Fragment(R.layout.screen_chat_with_coach) {
     private val viewBinding by viewBinding(ScreenChatWithCoachBinding::bind)
     private val viewModel by viewModel<ChatWithCoachScreenViewModel>()
     private val errorDelegate by inject<ErrorDelegate>()
@@ -32,20 +31,18 @@ class ChatWithCoachScreen: Fragment(R.layout.screen_chat_with_coach) {
         }
 
         viewBinding.chatInputLayout.setOnSendClickListener { message ->
-            Log.i("Send", "onViewCreated: $message")
             lifecycleScope.launch {
-                    viewModel.sendMessage(message).collect {
-                        when(it){
-                            is SendMessageUiState.Error -> errorDelegate.errorToast(it.message)
-                            is SendMessageUiState.Loading -> Log.i("Send", "onViewCreated: Loading")
-                            is SendMessageUiState.Success -> {
-                                Log.i("Chat", "onViewCreated: ${it.message}" )
-                                adapter.submitList(adapter.currentList + it.message) {
-                                    viewBinding.rvChat.smoothScrollToPosition(adapter.itemCount - 1)
-                                }
+                viewModel.sendMessage(message).collect {
+                    when (it) {
+                        is SendMessageUiState.Error -> errorDelegate.errorToast(it.message)
+                        is SendMessageUiState.Loading -> Log.i("Send", "onViewCreated: Loading")
+                        is SendMessageUiState.Success -> {
+                            adapter.submitList(adapter.currentList + it.message) {
+                                viewBinding.rvChat.smoothScrollToPosition(adapter.itemCount - 1)
                             }
                         }
                     }
+                }
             }
 
         }
@@ -56,9 +53,9 @@ class ChatWithCoachScreen: Fragment(R.layout.screen_chat_with_coach) {
 
     private fun initObservers() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.messages.collect {
-                    when(it){
+                    when (it) {
                         is ChatUiState.Error -> errorDelegate.errorToast(it.message)
                         is ChatUiState.Loading -> Log.i("Messages", "initObservers: Loading")
                         is ChatUiState.Success -> adapter.submitList(it.messages.asReversed())
